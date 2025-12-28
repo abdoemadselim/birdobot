@@ -60,7 +60,7 @@ export default async function HomePage() {
               */
             }
             <p className="text-base/7 max-w-prose text-gray-600 text-pretty text-center">
-              PingPanda is the easiest way to monitor your SaaS. Get instant notifications for {" "}
+              RingRang is the easiest way to monitor your SaaS. Get instant notifications for {" "}
               <span className="font-semibold text-gray-700">sales, new users, or any other event</span> {" "}
               send directly to your Discord
             </p>
@@ -103,7 +103,7 @@ export default async function HomePage() {
               <MockDiscordUI>
                 <AnimatedList>
                   <DiscordMessage
-                    avatarAlt="PingPanda Avatar"
+                    avatarAlt="RingRang Avatar"
                     avatarSrc="/brand-asset-profile-picture.png"
                     badgeColor="#43b581"
                     badgeText="SignUp"
@@ -113,12 +113,12 @@ export default async function HomePage() {
                     }}
                     timestamp="Today at 12.35PM"
                     title="👤 New user signed up"
-                    username="PingPanda"
+                    username="RingRang"
                   />
                   <DiscordMessage
                     avatarSrc="/brand-asset-profile-picture.png"
-                    avatarAlt="PingPanda Avatar"
-                    username="PingPanda"
+                    avatarAlt="RingRang Avatar"
+                    username="RingRang"
                     timestamp="Today at 12:35PM"
                     badgeText="Revenue"
                     badgeColor="#faa61a"
@@ -131,8 +131,8 @@ export default async function HomePage() {
                   />
                   <DiscordMessage
                     avatarSrc="/brand-asset-profile-picture.png"
-                    avatarAlt="PingPanda Avatar"
-                    username="PingPanda"
+                    avatarAlt="RingRang Avatar"
+                    username="RingRang"
                     timestamp="Today at 5:11AM"
                     badgeText="Milestone"
                     badgeColor="#5865f2"
@@ -185,9 +185,9 @@ export default async function HomePage() {
             <div className="bg-white sm:px-10 px-8 sm:pt-10 pt-8 rounded-xl ring-2 ring-black/3 shadow-sm shadow-gray-200 relative h-full flex flex-col">
               <h3 className="font-medium tracking-tight text-brand-950 text-center pb-2 text-lg/7">Track Any Event</h3>
               <p className="text-gray-600 text-sm/6 max-w-lg mx-auto text-center">
-                From new user signups to successful payments, PingPanda
-                notifies you for all critical events in your SaaS.</p>
-
+                From new user signups to successful payments, RingRang
+                notifies you for all critical events in your SaaS.
+              </p>
               <div className="mt-6 flex flex-col justify-center items-center">
                 <Image
                   className="w-full max-lg:max-w-xs"
@@ -224,14 +224,14 @@ export default async function HomePage() {
                 Easy Integration
               </h3>
               <p className="text-gray-600 text-sm/6 max-w-lg mx-auto text-center">
-                Connect PingPanda with your existing workflows in minutes
+                Connect RingRang with your existing workflows in minutes
                 and call our intuitive logging API from any language.
               </p>
 
               <div className="relative min-h-[30rem]">
                 <div className="bg-gray-900 h-full mt-6 absolute top-10 left-10 w-full rounded-tl-2xl shadow-2xl">
                   <div className="h-10 bg-gray-700/40 w-full rounded-tl-2xl">
-                    <div className="bg-white/10 w-fit text-white px-4 h-full border-b border-r border-white/20 font-medium text-sm/6 flex items-center justify-center">pingpanda.js</div>
+                    <div className="bg-white/10 w-fit text-white px-4 h-full border-b border-r border-white/20 font-medium text-sm/6 flex items-center justify-center">RingRang.js</div>
                   </div>
 
                   <SyntaxHighlighter
@@ -276,7 +276,7 @@ export default async function HomePage() {
               </div>
 
               <p className="text-pretty sm:pt-8 pt-6 lg:max-w-2xl max-w-xl mx-auto font-medium text-center sm:text-lg/8 text-base text-brand-950 tracking-tight">
-                PingPanda has been a game-changer for me. I've been using it for
+                RingRang has been a game-changer for me. I've been using it for
                 two months now and seeing sales pop up in real-time is super
                 satisfying.
               </p>
@@ -301,7 +301,7 @@ export default async function HomePage() {
               </div>
 
               <p className="text-pretty sm:pt-8 pt-6 lg:max-w-2xl max-w-xl mx-auto font-medium text-center sm:text-lg/8 text-base text-brand-950 tracking-tight">
-                PingPanda's been paying off for our SaaS. Nice to have simple
+                RingRang's been paying off for our SaaS. Nice to have simple
                 way to see how we're doing day-to-day. Definitely makes our
                 lives easier.
               </p>
