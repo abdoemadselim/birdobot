@@ -21,8 +21,8 @@ export default async function Navbar() {
             <MaxWidthWrapper>
                 <div className="h-15 flex items-center justify-between w-full">
                     <Link href="/" className="font-semibold">
-                        Ping
-                        <span className="text-brand-700">Panda</span>
+                        Ring
+                        <span className="text-brand-700">Rang</span>
                     </Link>
 
                     <div className="flex gap-4 items-center">
