@@ -40,7 +40,7 @@ export const userTable = pgTable(
   ]
 )
 
-export const eventCategory = pgTable(
+export const eventCategoryTable = pgTable(
   "eventCategory",
   {
     id: serial("id").primaryKey(),
@@ -58,7 +58,7 @@ export const eventCategory = pgTable(
   ]
 )
 
-export const event = pgTable(
+export const eventTable = pgTable(
   "event",
   {
     id: serial("id").primaryKey(),
@@ -68,7 +68,7 @@ export const event = pgTable(
     formattedMessage: text("formattedMessage"),
     fields: jsonb("fields"),
 
-    eventCategoryId: integer("eventCategoryId").references(() => eventCategory.id),
+    eventCategoryId: integer("eventCategoryId").references(() => eventCategoryTable.id, { onDelete: "cascade" }),
 
     deliveryStatus: deliveryStatusEnum("deliveryStatus").default("PENDING"),
 

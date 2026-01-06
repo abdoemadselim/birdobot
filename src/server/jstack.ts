@@ -35,9 +35,9 @@ const authMiddleware = j.middleware(async ({ c, ctx, next }) => {
   const apiKey = authorizationHeader?.split(" ")[1]
 
   if (apiKey) {
-    const user = await db.select()
+    const user = (await db.select()
       .from(userTable)
-      .where(eq(userTable.apiKey, apiKey))
+      .where(eq(userTable.apiKey, apiKey)))[0]
 
     if (user) {
       return await next({ user })
@@ -52,9 +52,9 @@ const authMiddleware = j.middleware(async ({ c, ctx, next }) => {
     })
   }
 
-  const user = await db.select()
+  const user = (await db.select()
     .from(userTable)
-    .where(eq(userTable.externalId, auth.id))
+    .where(eq(userTable.externalId, auth.id)))[0]
 
   return await next({ user })
 })

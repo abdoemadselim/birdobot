@@ -21,23 +21,27 @@ export default function DashboardLayout({ children, title, cta, hideBackButton =
 
     return (
         <div className="bg-brand-25 flex flex-col flex-1">
-            <div className="border border-b-gray-200 p-6 sm:p-8 flex flex-col items-start gap-2">
-                {
-                    hideBackButton ? null : (
-                        <Button variant="outline" size="lg" className="px-6 cursor-pointer" onClick={() => router.push("/dashboard")}>
-                            <ArrowLeft className="size-4" />
-                        </Button>
-                    )
-                }
-                <Heading className="sm:text-4xl text-3xl">
-                    {title}
-                </Heading>
+            <div className="border border-b-gray-200 p-6 sm:p-8 flex flex-col items-start gap-4">
 
-                {
-                    cta ? (
-                        <div>{cta}</div>
-                    ) : null
-                }
+                <div className="flex m:items-center sm:flex-row flex-col gap-4 w-full sm:w-fit">
+                    <div className="flex items-center gap-4">
+                        {
+                            hideBackButton ? null : (
+                                <Button variant="outline" size="lg" className="px-6 cursor-pointer" onClick={() => router.push("/dashboard")}>
+                                    <ArrowLeft className="size-4" />
+                                </Button>
+                            )
+                        }
+                        <Heading className="sm:text-3xl text-2xl">
+                            {title}
+                        </Heading>
+                    </div>
+                    {
+                        cta ? (
+                            <div className="w-full">{cta}</div>
+                        ) : null
+                    }
+                </div>
             </div>
 
             <div className="p-6 sm:p-8 flex flex-col flex-1">
