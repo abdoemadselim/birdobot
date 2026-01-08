@@ -9,6 +9,7 @@ import z from "zod";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { InferSelectModel } from "drizzle-orm";
 
 // Components
 import Modal from "./ui/modal";
@@ -20,9 +21,11 @@ import { toast } from "sonner";
 
 // Schemas
 import { EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
+import { eventCategoryTable } from "@/server/db/schema";
 
 // Client
 import { client } from "@/lib/client";
+
 
 type EVENT_CATEGORY_TYPE = z.infer<typeof EVENT_CATEGORY_VALIDATOR>
 
@@ -72,7 +75,11 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
             const previousEventCategories = context.client.getQueryData(['event-categories'])
 
             // Optimistically update to the new value
-            context.client.setQueryData(['event-categories'], (old) => [...old, {
+            context.client.setQueryData(['event-categories'], (old: {
+                info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
+                events_count: number,
+                unique_field_count: number
+            }[]) => [...old, {
                 info: {
                     ...newEventCategory,
                     createdAt: new Date(),

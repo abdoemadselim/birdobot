@@ -8,6 +8,7 @@ import { ArrowRight, BarChart2, Clock, Database, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { InferSelectModel } from "drizzle-orm";
 
 // Components
 import LoadingSpinner from "@/components/loading-spinner";
@@ -16,8 +17,9 @@ import Modal from "@/components/ui/modal";
 import Toaster from "@/components/ui/toaser";
 import DashboardEmptyState from "./dashboard-empty-state";
 import { toast } from "sonner";
-import { InferSelectModel } from "drizzle-orm";
-import { eventCategoryTable } from "@/server/db/schema.js";
+
+// Schema
+import { eventCategoryTable } from "@/server/db/schema";
 
 export default function DashboardPageContent() {
     const [openDeleteModal, setOpenDeleteModal] = useState(false)
