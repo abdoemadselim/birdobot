@@ -13,7 +13,7 @@ export const eventRouter = j.router({
         const { id: categoryId } = input;
 
         const hasEvents = await db
-            .$count(eventTable, and(eq(eventTable.eventCategoryId, categoryId), eq(eventTable.userId, user?.id))) > 0
+            .$count(eventTable, and(eq(eventTable.eventCategoryId, categoryId), eq(eventTable.userId, user?.id!))) > 0
 
         return c.superjson({ success: true, hasEvents })
     })
