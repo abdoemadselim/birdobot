@@ -16,6 +16,8 @@ import Modal from "@/components/ui/modal";
 import Toaster from "@/components/ui/toaser";
 import DashboardEmptyState from "./dashboard-empty-state";
 import { toast } from "sonner";
+import { InferSelectModel } from "drizzle-orm";
+import { eventCategoryTable } from "@/server/db/schema.js";
 
 export default function DashboardPageContent() {
     const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -44,7 +46,11 @@ export default function DashboardPageContent() {
             const previousEventCategories = context.client.getQueryData(['event-categories'])
 
             // Optimistically update to the new value
-            context.client.setQueryData(['event-categories'], (old) => {
+            context.client.setQueryData(['event-categories'], (old: {
+                info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
+                events_count: number,
+                unique_field_count: number
+            }[]) => {
                 return old.filter((category) => category.info.name !== categoryName)
             })
 

@@ -1,5 +1,5 @@
 // Libs
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, InferSelectModel, sql } from "drizzle-orm";
 import { eventCategoryTable, userTable } from "@/server/db/schema";
 import { j, privateProcedure } from "../jstack";
 import z from "zod";
@@ -74,7 +74,7 @@ export const eventCategoryRouter = j.router({
         ])
         ).map(({ rows }) => rows)
 
-        const merged = eventCategoriesResult?.map(eventCategory => {
+        const merged = (eventCategoriesResult?.map(eventCategory => {
             // Find count and unique fields for this category
             const countObj = eventsCountResult?.find(c => c.id === eventCategory.id);
             const uniqueFieldsObj = eventsUniqueFieldsResult?.find(u => u.id === eventCategory.id);
@@ -84,7 +84,12 @@ export const eventCategoryRouter = j.router({
                 events_count: countObj ? Number(countObj.count) : 0,
                 unique_field_count: uniqueFieldsObj ? Number(uniqueFieldsObj.unique_field_keys) : 0
             };
-        }) || []
+        })) as unknown as {
+            info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
+            events_count: number,
+            unique_field_count: number
+        }[] || []
+
 
         return c.superjson({ eventsCategories: merged })
     }),

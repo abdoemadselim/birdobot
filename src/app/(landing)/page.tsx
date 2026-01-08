@@ -33,7 +33,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="py-24 sm:py-32 sm:pb-90 bg-brand-25">
+      <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
             <div>
@@ -122,8 +122,8 @@ export default async function HomePage() {
           <div className="bg-brand-700 absolute bottom-24 top-24 inset-x-0"></div>
           <div className="relative min-h-[900px]">
             <div
-              className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 min-w-[90%] mx-auto
-             ring-gray-900/10 peer/a lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[20%] max-xl:left-1/2 max-xl:-translate-x-1/2 xl:w-[95%]
+              className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-xl:min-w-[90%] mx-auto
+             ring-gray-900/10 peer/a lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[20%] max-xl:left-1/2 max-xl:-translate-x-1/2 
               xl:opacity-60 hover:opacity-100  hover:xl:-translate-y-[calc(50%+60px)] transition-all
               duration-400 hover:z-100 z-10 top-1/2 -translate-y-1/2 w-fit
               max-xl:active:-translate-y-[calc(50%+100px)]
@@ -175,11 +175,11 @@ export default async function HomePage() {
               </MockDiscordUI>
             </div>
 
-            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 min-w-[90%] mx-auto
-            max-xl:top-[calc(50%+80px)] max-xl:shadow-2xl
-            ring-gray-900/10 peer/b lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[50%] max-xl:left-1/2 max-xl:-translate-x-1/2 
+            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-xl:min-w-[90%] mx-auto
+            max-xl:top-[calc(50%+80px)] max-xl:shadow-2xl 
+            ring-gray-900/10 peer/b lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[50%] max-xl:left-1/2 max-xl:-translate-x-1/2
              xl:opacity-60 hover:opacity-100 transition-all duration-400 hover:z-100 z-20
-             xl:top-1/2 hover:xl:-translate-y-[calc(50%+60px)] max-xl:-translate-y-1/2 w-fit
+             xl:top-1/2 hover:xl:-translate-y-[calc(50%+60px)] -translate-y-[calc(50%)] max-xl:-translate-y-1/2 w-fit
              max-xl:active:-translate-y-[calc(50%+200px)]
              "
             >
@@ -187,7 +187,7 @@ export default async function HomePage() {
               </MockSlackUI>
             </div>
 
-            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:ring-gray-900/10 min-w-[90%] mx-auto
+            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:ring-gray-900/10 max-xl:min-w-[90%] mx-auto
              max-xl:top-170 peer-hover/b:ring-gray-900/10 peer-hover/b:-translate-y-[50%] peer-hover/a:-translate-y-[50%]  max-xl:left-1/2 max-xl:-translate-x-1/2 
               lg:rounded-2xl lg:p-4 peer-hover/a:opacity-60 peer-hover/b:opacity-60 lg:-m-4 p-2 -m-2 absolute
               xl:left-[35%] opacity-100 hover:opacity-100  -translate-y-[calc(50%+60px)] transition-all
