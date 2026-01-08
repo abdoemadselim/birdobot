@@ -30,6 +30,20 @@
     --color-discord-text: #dcddde;
     --color-discord-timestamp: #72767d;
 
+    /* SLACK */
+    --color-slack-background: #ffffff;
+    --color-slack-brand-color: #471348;
+    --color-slack-brand-color-light: #663A69;
+
+    /* TELEGRAM */
+    --color-telegram-background: #ffffff;
+    --color-telegram-brand-color: #24A1DE;
+    --color-telegram-gray: #D9DDDF;
+
+    /* EMAIL */
+    --color-email-background: #34B1EE;
+    --color-email-brand-color: #24A1
+
     /* THEME COLORS */
     --color-background: hsl(var(--background));
     --color-foreground: hsl(var(--foreground));
@@ -180,10 +194,11 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
 }

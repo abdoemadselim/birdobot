@@ -8,6 +8,7 @@ import { currentUser } from "@clerk/nextjs/server";
 // Components
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
+import Image from "next/image.js";
 
 export default async function Navbar() {
     const user = await currentUser()
@@ -17,12 +18,18 @@ export default async function Navbar() {
         * backdrop-blur-bg with bg-white/0: adds blur background
          * 
          */
-        <nav className="sticky h-15 inset-x-0 w-full border-b-2 border-gray-200 bg-white/80 z-20 top-0 backdrop-blur-lg" >
+        <nav className="sticky h-15 inset-x-0 w-full border-b-2 border-gray-200 bg-white/80 z-50 top-0 backdrop-blur-lg" >
             <MaxWidthWrapper>
                 <div className="h-15 flex items-center justify-between w-full">
                     <Link href="/" className="font-semibold">
-                        Ring
-                        <span className="text-brand-700">Rang</span>
+                        <Image
+                            src="/logo/logo.webp"
+                            width={100}
+                            height={57}
+                            alt="Birdo Logo"
+                            className="w-[100px] h-[57px]"
+                            priority
+                        />
                     </Link>
 
                     <div className="flex gap-4 items-center">

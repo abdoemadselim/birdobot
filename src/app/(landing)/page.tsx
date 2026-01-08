@@ -9,6 +9,8 @@ import MaxWidthWrapper from "@/components/max-width-wrapper"
 import Heading from "@/components/heading"
 import ShinyButton from "@/components/shiny-button"
 import MockDiscordUI from "@/components/mock-discord-ui"
+import MockTelegramUI from "@/components/mock-telegram-ui";
+import MockSlackUI from "@/components/mock-slack-ui"
 import { AnimatedList } from "@/components/ui/animated-list"
 import DiscordMessage from "@/components/discord-message"
 import { Icons } from "@/components/icons";
@@ -31,12 +33,12 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="py-24 sm:py-32 bg-brand-25">
+      <section className="py-24 sm:py-32 sm:pb-90 bg-brand-25">
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
             <div>
               <Heading>
-                <span className="leading-12">Real-Time SaaS Insights</span>
+                <span className="leading-12">Real-Time Insights</span>
                 <br />
 
                 {
@@ -45,7 +47,7 @@ export default async function HomePage() {
                     text-transparent: required to remove the original text color to take the mask
                   */
                 }
-                <span className="bg-linear-to-r block leading-12 text-transparent bg-clip-text from-brand-700 to-brand-800">Delivered to Your Discord</span>
+                <span className="bg-linear-to-r block leading-14 text-transparent bg-clip-text from-brand-700 to-brand-800">Delivered to You wherever you are </span>
               </Heading>
             </div>
 
@@ -60,13 +62,13 @@ export default async function HomePage() {
               */
             }
             <p className="text-base/7 max-w-prose text-gray-600 text-pretty text-center">
-              RingRang is the easiest way to monitor your SaaS. Get instant notifications for {" "}
+              Get instant notifications for {" "}
               <span className="font-semibold text-gray-700">sales, new users, or any other event</span> {" "}
-              send directly to your Discord
+              send directly to your discord, slack or telegram
             </p>
 
             <ul className="flex flex-col space-y-2 text-base/7 text-gray-600 text-left items-start">
-              {["Real-Time Discord alerts for critical events",
+              {["Real-Time alerts for critical events",
                 "Buy once, use forever",
                 "Track sales, new users, or any other event"
               ].map((item, index) => (
@@ -85,8 +87,28 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section>
 
-      <section className="pb-4 relative bg-brand-25">
-        <div className="mx-auto">
+      <section className="pb-4 relative bg-brand-25 w-full">
+        <div className="pb-5">
+          <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Smart Routing</h2>
+          <Heading className="text-center">You choose the channel for each event category</Heading>
+        </div>
+        <div className="flex justify-center gap-2 items-center pb-30">
+          <div className="bg-discord-brand-color/90 text-white w-fit rounded-lg p-1 text-sm cursor-pointer">
+            <Icons.discord className="size-4" />
+          </div>
+          <div className="bg-telegram-brand-color/90 text-white w-fit rounded-lg p-1 text-sm cursor-pointer">
+            <Icons.telegram className="size-4" />
+          </div>
+          <div className="bg-slack-brand-color/90 text-white w-fit rounded-lg p-1 text-sm cursor-pointer">
+            <Icons.slack className="size-4" />
+          </div>
+          <div className="bg-email-brand-color/90 text-white w-fit rounded-lg p-1 text-sm cursor-pointer">
+            <Icons.email className="size-4 text-white" />
+          </div>
+        </div>
+        <div className="mx-auto relative w-full">
+
+
           {
             /**
              * bottom-24 with top-24 makes the item takes the height from top-24 to bottom-24
@@ -98,12 +120,19 @@ export default async function HomePage() {
              */
           }
           <div className="bg-brand-700 absolute bottom-24 top-24 inset-x-0"></div>
-          <MaxWidthWrapper className="relative">
-            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2">
+          <div className="relative min-h-[900px]">
+            <div
+              className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 min-w-[90%] mx-auto
+             ring-gray-900/10 peer/a lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[20%] max-xl:left-1/2 max-xl:-translate-x-1/2 xl:w-[95%]
+              xl:opacity-60 hover:opacity-100  hover:xl:-translate-y-[calc(50%+60px)] transition-all
+              duration-400 hover:z-100 z-10 top-1/2 -translate-y-1/2 w-fit
+              max-xl:active:-translate-y-[calc(50%+100px)]
+              "
+            >
               <MockDiscordUI>
                 <AnimatedList>
                   <DiscordMessage
-                    avatarAlt="RingRang Avatar"
+                    avatarAlt="Birdo Avatar"
                     avatarSrc="/brand-asset-profile-picture.png"
                     badgeColor="#43b581"
                     badgeText="SignUp"
@@ -113,12 +142,12 @@ export default async function HomePage() {
                     }}
                     timestamp="Today at 12.35PM"
                     title="👤 New user signed up"
-                    username="RingRang"
+                    username="Birdo"
                   />
                   <DiscordMessage
                     avatarSrc="/brand-asset-profile-picture.png"
-                    avatarAlt="RingRang Avatar"
-                    username="RingRang"
+                    avatarAlt="Birdo Avatar"
+                    username="Birdo"
                     timestamp="Today at 12:35PM"
                     badgeText="Revenue"
                     badgeColor="#faa61a"
@@ -131,8 +160,8 @@ export default async function HomePage() {
                   />
                   <DiscordMessage
                     avatarSrc="/brand-asset-profile-picture.png"
-                    avatarAlt="RingRang Avatar"
-                    username="RingRang"
+                    avatarAlt="Birdo Avatar"
+                    username="Birdo"
                     timestamp="Today at 5:11AM"
                     badgeText="Milestone"
                     badgeColor="#5865f2"
@@ -145,11 +174,36 @@ export default async function HomePage() {
                 </AnimatedList>
               </MockDiscordUI>
             </div>
-          </MaxWidthWrapper>
-        </div>
-      </section >
 
-      <section className="sm:py-32 py-24 bg-brand-25">
+            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 min-w-[90%] mx-auto
+            max-xl:top-[calc(50%+80px)] max-xl:shadow-2xl
+            ring-gray-900/10 peer/b lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[50%] max-xl:left-1/2 max-xl:-translate-x-1/2 
+             xl:opacity-60 hover:opacity-100 transition-all duration-400 hover:z-100 z-20
+             xl:top-1/2 hover:xl:-translate-y-[calc(50%+60px)] max-xl:-translate-y-1/2 w-fit
+             max-xl:active:-translate-y-[calc(50%+200px)]
+             "
+            >
+              <MockSlackUI>
+              </MockSlackUI>
+            </div>
+
+            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:ring-gray-900/10 min-w-[90%] mx-auto
+             max-xl:top-170 peer-hover/b:ring-gray-900/10 peer-hover/b:-translate-y-[50%] peer-hover/a:-translate-y-[50%]  max-xl:left-1/2 max-xl:-translate-x-1/2 
+              lg:rounded-2xl lg:p-4 peer-hover/a:opacity-60 peer-hover/b:opacity-60 lg:-m-4 p-2 -m-2 absolute
+              xl:left-[35%] opacity-100 hover:opacity-100  -translate-y-[calc(50%+60px)] transition-all
+              duration-400 hover:z-100 z-30 top-1/2 -translate-y-1/2 w-fit
+              max-xl:active:-translate-y-[calc(50%+300px)]
+              "
+            >
+              <MockTelegramUI>
+              </MockTelegramUI>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section className="sm:py-32 py-24 max-xl:py-48 bg-brand-25">
         <MaxWidthWrapper>
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Intuitive Monitoring</h2>
@@ -185,7 +239,7 @@ export default async function HomePage() {
             <div className="bg-white sm:px-10 px-8 sm:pt-10 pt-8 rounded-xl ring-2 ring-black/3 shadow-sm shadow-gray-200 relative h-full flex flex-col">
               <h3 className="font-medium tracking-tight text-brand-950 text-center pb-2 text-lg/7">Track Any Event</h3>
               <p className="text-gray-600 text-sm/6 max-w-lg mx-auto text-center">
-                From new user signups to successful payments, RingRang
+                From new user signups to successful payments, BirdoBot
                 notifies you for all critical events in your SaaS.
               </p>
               <div className="mt-6 flex flex-col justify-center items-center">
@@ -224,7 +278,7 @@ export default async function HomePage() {
                 Easy Integration
               </h3>
               <p className="text-gray-600 text-sm/6 max-w-lg mx-auto text-center">
-                Connect RingRang with your existing workflows in minutes
+                Connect BirdoBot with your existing workflows in minutes
                 and call our intuitive logging API from any language.
               </p>
 
@@ -276,7 +330,7 @@ export default async function HomePage() {
               </div>
 
               <p className="text-pretty sm:pt-8 pt-6 lg:max-w-2xl max-w-xl mx-auto font-medium text-center sm:text-lg/8 text-base text-brand-950 tracking-tight">
-                RingRang has been a game-changer for me. I've been using it for
+                BirdoBot has been a game-changer for me. I've been using it for
                 two months now and seeing sales pop up in real-time is super
                 satisfying.
               </p>
@@ -301,7 +355,7 @@ export default async function HomePage() {
               </div>
 
               <p className="text-pretty sm:pt-8 pt-6 lg:max-w-2xl max-w-xl mx-auto font-medium text-center sm:text-lg/8 text-base text-brand-950 tracking-tight">
-                RingRang's been paying off for our SaaS. Nice to have simple
+                BirdoBot been paying off for our SaaS. Nice to have simple
                 way to see how we're doing day-to-day. Definitely makes our
                 lives easier.
               </p>

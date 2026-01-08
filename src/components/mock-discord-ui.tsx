@@ -6,18 +6,18 @@ import { PropsWithChildren } from "react";
 
 export default function MockDiscordUI({ children }: PropsWithChildren) {
     return (
-        <div className="bg-gray-600 min-h-[800px] rounded-xl max-w-[1200px] shadow-xl relative flex w-full overflow-hidden">
+        <div className="bg-gray-600 min-h-[800px] rounded-xl max-w-[800px] shadow-xl relative flex w-full overflow-hidden">
             <div className="p-4 hidden sm:flex flex-col w-[78px] h-[800px] bg-[#202225] gap-4">
                 <div className="bg-discord-brand-color rounded-xl hover:rounded-lg hidden sm:flex flex-col justify-center items-center size-12">
                     <Icons.discord className="text-white size-3/5" />
                 </div>
-                <div className="w-10 mx-auto h-px bg-gray-500/40" />
+                <div className="w-8 mx-auto h-px bg-gray-500/40" />
                 {
                     [...Array(5)].map((_, i) => (
                         <div className="relative w-full group">
                             <div className="bg-white rounded-full absolute -left-1/2 translate-x-1/2 top-1/2 -translate-y-1/2 w-[7px] h-[7px] group-hover:scale-y-[2.5] transition-transform duration-200" />
                             <div key={i}
-                                className="hover:bg-brand-700 duration-300 transition hover:rounded-2xl cursor-not-allowed rounded-full size-12 
+                                className="hover:bg-brand-700 duration-300 transition hover:rounded-2xl cursor-not-allowed rounded-full size-10 
                             bg-discord-background text-white/80 text-center flex flex-col items-center justify-center"
                             >
                                 {String.fromCharCode(65 + i)}
@@ -34,9 +34,9 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                 </div>
             </div>
 
-            <div className="bg-[#2f3136] w-60 hidden lg:flex flex-col">
+            <div className="bg-[#2f3136] w-50 hidden lg:flex flex-col">
                 <div className="h-16 flex items-center px-4 mb-4 border-b border-[#202225] border-sm">
-                    <div className="bg-[#202225] w-full text-gray-500 px-2 h-8 py-2 text-sm rounded-sm cursor-not-allowed flex items-center">
+                    <div className="bg-[#202225] w-full text-gray-500 px-2 h-8 py-2 text-[12px] rounded-sm cursor-not-allowed flex items-center">
                         Find or start a conversation
                     </div>
                 </div>
@@ -76,16 +76,16 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                     </div>
                 </div>
                 <div className="mt-auto bg-discord-background w-full p-2 flex items-center">
-                    <div className="bg-brand-700 rounded-full size-8" />
+                    <div className="bg-brand-700 rounded-full size-4" />
                     <div className="flex flex-col ml-2">
-                        <p className="text-white text-sm font-medium">You</p>
-                        <p className="text-[#b9bbbe] text-xs">@your_account</p>
+                        <p className="text-white text-[10px] font-medium">You</p>
+                        <p className="text-[#b9bbbe] text-[10px]">@your_account</p>
                     </div>
 
                     <div className="flex gap-2 text-[#b9bbbe] ml-auto">
-                        <Mic className="size-5 hover:text-white" />
-                        <Headphones className="size-5 hover:text-white" />
-                        <Cog className="size-5 hover:text-white" />
+                        <Mic className="size-3 hover:text-white" />
+                        <Headphones className="size-3 hover:text-white" />
+                        <Cog className="size-3 hover:text-white" />
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                 </div>
 
                 {/*Message History*/}
-                <div className="bg-discord-background pt-auto px-6 h-full flex items-end pb-6">
+                <div className="bg-discord-background pt-auto px-6 h-full flex items-end pb-6 w-full">
                     {children}
                 </div>
 
