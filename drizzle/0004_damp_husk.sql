@@ -1,0 +1,1 @@
+ALTER TABLE "quota" ALTER COLUMN "count" SET NOT NULL;

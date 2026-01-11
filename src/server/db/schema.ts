@@ -48,7 +48,7 @@ export const eventCategoryTable = pgTable(
 
     name: varchar("name", { length: 100 }).notNull(),
     emoji: varchar("emoji", { length: 32 }),
-    color: integer("color"),
+    color: integer("color").notNull(),
 
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
@@ -87,7 +87,7 @@ export const quotaTable = pgTable(
     id: serial("id").primaryKey(),
     userId: integer("userId").references(() => userTable.id),
 
-    count: integer("count").default(0),
+    count: integer("count").default(0).notNull(),
     month: integer("month"),
     year: integer("year"),
 

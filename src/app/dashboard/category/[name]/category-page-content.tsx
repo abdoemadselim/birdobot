@@ -18,7 +18,7 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
         initialData: { hasEvents: initialHasEvents }
     })
 
-    if (!initialHasEvents) {
+    if (!events.hasEvents) {
         return (
             <CategoryEmptyState categoryName={category.name} categoryId={category.id} />
         )

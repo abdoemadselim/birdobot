@@ -14,6 +14,8 @@ import MockSlackUI from "@/components/mock-slack-ui"
 import { AnimatedList } from "@/components/ui/animated-list"
 import DiscordMessage from "@/components/discord-message"
 import { Icons } from "@/components/icons";
+import BackgroundPattern from "@/components/background-pattern";
+import BirdsPattern from "@/components/birds-pattern";
 
 export default async function HomePage() {
   const codeSnippet = `await fetch("http://localhost:3000/api/v1/events", {
@@ -34,6 +36,13 @@ export default async function HomePage() {
   return (
     <>
       <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
+        <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
+        <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-1/3 -translate-1/2 z-0" />
+        <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-2/3 -translate-1/2 z-0" />
+
+        <div className="opacity-5 z-0 absolute top-[400px] left-1/2 -translate-1/2 max-h-[400px] overflow-hidden">
+          <BirdsPattern />
+        </div>
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
             <div>
@@ -47,7 +56,9 @@ export default async function HomePage() {
                     text-transparent: required to remove the original text color to take the mask
                   */
                 }
-                <span className="bg-linear-to-r block leading-14 text-transparent bg-clip-text from-brand-700 to-brand-800">Delivered to You wherever you are </span>
+                <p className="bg-linear-to-r block leading-14 text-transparent bg-clip-text from-brand-700 to-brand-800">
+                  Delivered to You wherever you are
+                </p>
               </Heading>
             </div>
 
@@ -56,8 +67,8 @@ export default async function HomePage() {
               max-w-prose: max-width: 65ch;
               Around 60–70 characters per line is considered the optimal reading width for long text. 
               This makes paragraphs easier to read and prevents very long lines.
-
-
+  
+  
               text-pretty: makes the text wrap, so a single word isn't left alone on a line for instance
               */
             }
@@ -85,7 +96,7 @@ export default async function HomePage() {
             </ShinyButton>
           </div>
         </MaxWidthWrapper>
-      </section>
+      </section >
 
       <section className="pb-4 relative bg-brand-25 w-full">
         <div className="pb-5">
@@ -123,10 +134,9 @@ export default async function HomePage() {
           <div className="relative min-h-[900px]">
             <div
               className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-xl:min-w-[90%] mx-auto
-             ring-gray-900/10 peer/a lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[20%] max-xl:left-1/2 max-xl:-translate-x-1/2 
-              xl:opacity-60 hover:opacity-100  hover:xl:-translate-y-[calc(50%+60px)] transition-all
-              duration-400 hover:z-100 z-10 top-1/2 -translate-y-1/2 w-fit
-              max-xl:active:-translate-y-[calc(50%+100px)]
+             ring-gray-900/10 peer/a lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute 2xl:left-[20%] xl:left-[10%] max-xl:left-1/2 max-xl:-translate-x-1/2 
+              xl:opacity-60 hover:xl:opacity-100  hover:xl:-translate-y-[calc(50%+60px)] transition-all
+              duration-400 hover:z-[50] z-10 top-1/2 -translate-y-1/2 w-fit
               "
             >
               <MockDiscordUI>
@@ -175,24 +185,22 @@ export default async function HomePage() {
               </MockDiscordUI>
             </div>
 
-            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-xl:min-w-[90%] mx-auto
+            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-xl:min-w-[92%] mx-auto
             max-xl:top-[calc(50%+80px)] max-xl:shadow-2xl 
-            ring-gray-900/10 peer/b lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute xl:left-[50%] max-xl:left-1/2 max-xl:-translate-x-1/2
-             xl:opacity-60 hover:opacity-100 transition-all duration-400 hover:z-100 z-20
+            ring-gray-900/10 peer/b lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute 2xl:left-[50%] xl:left-[40%] max-xl:left-1/2 max-xl:-translate-x-1/2
+             xl:opacity-60 hover:opacity-100 transition-all duration-400 hover:z-50 z-20
              xl:top-1/2 hover:xl:-translate-y-[calc(50%+60px)] -translate-y-[calc(50%)] max-xl:-translate-y-1/2 w-fit
-             max-xl:active:-translate-y-[calc(50%+200px)]
              "
             >
               <MockSlackUI>
               </MockSlackUI>
             </div>
 
-            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:ring-gray-900/10 max-xl:min-w-[90%] mx-auto
+            <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:ring-gray-900/10 max-xl:min-w-[94%] mx-auto
              max-xl:top-170 peer-hover/b:ring-gray-900/10 peer-hover/b:-translate-y-[50%] peer-hover/a:-translate-y-[50%]  max-xl:left-1/2 max-xl:-translate-x-1/2 
               lg:rounded-2xl lg:p-4 peer-hover/a:opacity-60 peer-hover/b:opacity-60 lg:-m-4 p-2 -m-2 absolute
-              xl:left-[35%] opacity-100 hover:opacity-100  -translate-y-[calc(50%+60px)] transition-all
-              duration-400 hover:z-100 z-30 top-1/2 -translate-y-1/2 w-fit
-              max-xl:active:-translate-y-[calc(50%+300px)]
+              2xl:left-[35%] xl:left-[25%] opacity-100 hover:opacity-100  -translate-y-[calc(50%+60px)] transition-all
+              duration-400 hover:z-50 z-30 top-1/2 -translate-y-1/2 w-fit
               "
             >
               <MockTelegramUI>

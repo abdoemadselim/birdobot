@@ -5,8 +5,8 @@ import { PropsWithChildren } from "react";
 
 export default function MockSlackUI({ children }: PropsWithChildren) {
     return (
-        <div className="bg-gray-700 min-h-[800px]  max-w-[800px] shadow-2xl relative  w-full overflow-hidden">
-            <div className="bg-slack-brand-color h-[40px] w-full flex justify-center items-center p-4">
+        <div className="bg-gray-700 min-h-[800px]  rounded-xl max-w-[800px] shadow-2xl relative  w-full overflow-hidden">
+            <div className="bg-slack-brand-color rounded-t-xl h-[40px] w-full flex justify-center items-center p-4">
                 <div className=" hover:bg-slack-brand-color-light p-1 transition-colors flex items-center justify-center rounded-md">
                     <ArrowLeft className="size-4 text-white" />
                 </div>

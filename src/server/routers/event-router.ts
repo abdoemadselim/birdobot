@@ -16,5 +16,5 @@ export const eventRouter = j.router({
             .$count(eventTable, and(eq(eventTable.eventCategoryId, categoryId), eq(eventTable.userId, user?.id!))) > 0
 
         return c.superjson({ success: true, hasEvents })
-    })
+    }),
 })

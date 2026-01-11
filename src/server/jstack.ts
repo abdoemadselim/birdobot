@@ -30,7 +30,7 @@ const databaseMiddleware = j.middleware(async ({ c, next }) => {
 })
 
 const authMiddleware = j.middleware(async ({ c, ctx, next }) => {
-  const authorizationHeader = c.req.header("api-key")
+  const authorizationHeader = c.req.header("birdo-api-key")
 
   const apiKey = authorizationHeader?.split(" ")[1]
 

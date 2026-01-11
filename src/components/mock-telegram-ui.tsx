@@ -5,12 +5,12 @@ import { PropsWithChildren } from "react";
 
 export default function MockTelegramUI({ children }: PropsWithChildren) {
     return (
-        <div className="bg-gray-700 min-h-[800px]  max-w-[800px] shadow-2xl relative flex w-full overflow-hidden">
+        <div className="bg-gray-700 min-h-[800px] rounded-xl  max-w-[800px] shadow-2xl relative flex w-full overflow-hidden">
             <div className=" lg:hidden flex-col items-center w-[75] h-[800px] bg-telegram-background gap-4 border-r border-gray-200">
                 <div className="flex items-center justify-center pt-4 pb-3">
                     <Menu className="text-gray-500 size-4 text-center" />
                 </div>
-                <div className="hover:bg-telegram-gray cursor-not-allowed pb-2 flex items-center gap-4 relative px-2 py-2">
+                <div className="hover:bg-telegram-gray cursor-not-allowed pb-2 flex items-center justify-center gap-4 relative px-2 py-2">
                     <Image
                         src="/brand-asset-profile-picture.png"
                         alt="PingPong Avatar"
@@ -19,7 +19,7 @@ export default function MockTelegramUI({ children }: PropsWithChildren) {
                         className="w-[32px] h-[32px] rounded-full object-cover"
                     />
 
-                    <div className="bg-telegram-brand-color size-4 rounded-xl absolute bottom-1 right-1 mx-[2px] text-[12px] flex justify-center items-center text-white">1</div>
+                    <div className="bg-telegram-brand-color size-4 rounded-xl absolute bottom-1 right-4 mx-[2px] text-[12px] flex justify-center items-center text-white">1</div>
                 </div>
 
                 <div className="space-y-3 px-2">
@@ -28,7 +28,7 @@ export default function MockTelegramUI({ children }: PropsWithChildren) {
                             <div key={i} className="hover:bg-telegram-gray cursor-not-allowed flex justify-center items-center relative">
                                 <div className="bg-discord-background rounded-full w-[32px] h-[32px]" />
 
-                                <div className="bg-gray-400 size-4 rounded-xl absolute -bottom-1 -right-1 mx-[2px] text-[12px] flex justify-center items-center text-white">
+                                <div className="bg-gray-400 size-4 rounded-xl absolute -bottom-1 right-2 mx-[2px] text-[12px] flex justify-center items-center text-white">
                                     {Math.floor(Math.random() * 9 + 1)}
                                 </div>
                             </div>
@@ -37,7 +37,7 @@ export default function MockTelegramUI({ children }: PropsWithChildren) {
                 </div>
             </div>
 
-            <div className="bg-telegram-background w-55 hidden lg:flex flex-col pt-2 border-r border-gray-200">
+            <div className="bg-telegram-background w-65 hidden lg:flex flex-col pt-2 border-r border-gray-200">
                 <div className="flex items-center pb-4 gap-2 px-2 ">
                     <Menu className="text-gray-400 size-5 text-center cursor-not-allowed" />
                     <div className="bg-telegram-gray w-full text-gray-400 px-4 h-6 text-[10px] rounded-xl cursor-not-allowed flex items-center ">

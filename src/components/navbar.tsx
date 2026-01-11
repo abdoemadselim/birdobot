@@ -16,9 +16,8 @@ export default async function Navbar() {
     return (
         /**
         * backdrop-blur-bg with bg-white/0: adds blur background
-         * 
          */
-        <nav className="sticky h-15 inset-x-0 w-full border-b-2 border-gray-200 bg-white/80 z-50 top-0 backdrop-blur-lg" >
+        <nav className="sticky h-15 inset-x-0 w-full border-b-2 border-gray-200 bg-white/80 z-100 top-0 backdrop-blur-lg" >
             <MaxWidthWrapper>
                 <div className="h-15 flex items-center justify-between w-full">
                     <Link href="/" className="font-semibold">

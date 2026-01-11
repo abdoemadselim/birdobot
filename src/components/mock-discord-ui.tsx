@@ -119,7 +119,7 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                 </div>
 
                 {/*Message History*/}
-                <div className="bg-discord-background pt-auto px-6 h-full flex items-end pb-6 w-full">
+                <div className="bg-discord-background pt-auto px-6 h-full flex items-end pb-6">
                     {children}
                 </div>
 
@@ -128,7 +128,7 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                     <div className="bg-[#40444b] rounded-lg p-1 flex items-center">
                         <PlusCircle className="size-7 text-white/70 hover:text-white cursor-not-allowed mx-3" />
                         <input readOnly placeholder="Message @RingRang"
-                            className="w-full placeholder-discord-timestamp text-white/90 focus:outline-none outline-none py-2.5 px-1" />
+                            className="w-full placeholder-discord-timestamp text-white/90 focus:outline-none outline-none py-2.5 px-1 text-sm" />
 
                         <div className="flex mx-3 gap-3 items-center text-[#b9bbbe]">
                             <Gift className="hover:text-white size-5 cursor-not-allowed" />
