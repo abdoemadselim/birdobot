@@ -8,5 +8,5 @@ export const POST = async (request: NextRequest) => {
     console.log(body)
     telegramBot.bot.processUpdate(body as TelegramBot.Update)
 
-    NextResponse.json({ success: true })
+    return NextResponse.json({ success: true })
 }
