@@ -1,0 +1,1 @@
+ALTER TABLE "eventCategory" ALTER COLUMN "channel" SET NOT NULL;

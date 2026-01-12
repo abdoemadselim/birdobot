@@ -43,6 +43,48 @@
       "when": 1768128580575,
       "tag": "0005_pink_mongoose",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1768201265369,
+      "tag": "0006_fantastic_living_lightning",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1768201482029,
+      "tag": "0007_modern_pixie",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1768240019668,
+      "tag": "0008_illegal_patch",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1768240271137,
+      "tag": "0009_stormy_thing",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1768240317641,
+      "tag": "0010_chief_luminals",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1768240455794,
+      "tag": "0011_mature_pretty_boy",
+      "breakpoints": true
     }
   ]
 }

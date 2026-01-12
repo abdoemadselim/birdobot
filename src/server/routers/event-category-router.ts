@@ -23,6 +23,7 @@ export const eventCategoryRouter = j.router({
                 ec.name, 
                 ec.emoji,
                 ec.color, 
+                ec.channels,
                 ec."createdAt"
                 FROM (
                 SELECT *
@@ -74,13 +75,16 @@ export const eventCategoryRouter = j.router({
         ])
         ).map(({ rows }) => rows)
 
-        const merged = (eventCategoriesResult?.map(eventCategory => {
+        const merged = (eventCategoriesResult?.map((eventCategory) => {
             // Find count and unique fields for this category
             const countObj = eventsCountResult?.find(c => c.id === eventCategory.id);
             const uniqueFieldsObj = eventsUniqueFieldsResult?.find(u => u.id === eventCategory.id);
 
+            // The channels array is returned as `{discord,telegram}` from postgresql
+            let eventCategoryChannels = (eventCategory as Record<string, any>)["channels"].slice(1, -1).split(",")
+
             return {
-                info: eventCategory,
+                info: { ...eventCategory, channels: eventCategoryChannels },
                 events_count: countObj ? Number(countObj.count) : 0,
                 unique_field_count: uniqueFieldsObj ? Number(uniqueFieldsObj.unique_field_keys) : 0
             };
@@ -118,7 +122,7 @@ export const eventCategoryRouter = j.router({
         .input(EVENT_CATEGORY_VALIDATOR)
         .mutation(async ({ c, ctx, input }) => {
             const { user, db } = ctx
-            const { name, color, emoji } = input
+            const { name, color, emoji, channels } = input
 
             // TODO: HANDLE PAID PLANS
 
@@ -128,13 +132,15 @@ export const eventCategoryRouter = j.router({
                     name: name.toLowerCase(),
                     color: parseColor(color),
                     emoji: emoji,
+                    channels: channels,
                     userId: user?.id
                 })
                 .returning({
                     id: eventCategoryTable.id,
                     name: eventCategoryTable.name,
                     emoji: eventCategoryTable.emoji,
-                    color: eventCategoryTable.color
+                    color: eventCategoryTable.color,
+                    channels: eventCategoryTable.channels
                 })
 
             return c.json({ success: true, eventCategory: eventCategory[0] })
@@ -151,18 +157,21 @@ export const eventCategoryRouter = j.router({
                     userId: user?.id,
                     color: 0x2ECC71,
                     emoji: "🐛",
+                    channels: ["discord", "telegram"]
                 },
                 {
                     name: "sale",
                     userId: user?.id,
                     color: 0xFF6B6B,
                     emoji: "💰",
+                    channels: ["discord", "slack"]
                 },
                 {
                     name: "signup",
                     userId: user?.id,
                     color: 0x6C5CE7,
                     emoji: "👤",
+                    channels: ["discord"]
                 }
             ])
 

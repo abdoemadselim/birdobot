@@ -1,7 +1,6 @@
 'use client'
 
 // Libs
-import { Plus } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,6 +17,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import Toaster from "./ui/toaser";
 import { toast } from "sonner";
+import { Icons } from "./icons";
 
 // Schemas
 import { EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
@@ -55,6 +55,18 @@ const EMOJI_OPTIONS = [
     { emoji: "💡", label: "Idea" },
     { emoji: "🔔", label: "Notification" },
 ]
+
+const CHANNELS = [
+    {
+        name: "discord", icon: <Icons.discord className="w-5 h-5" />
+    },
+    {
+        name: "slack", icon: <Icons.slack className="w-4 h-4" />
+    },
+    {
+        name: "telegram", icon: <Icons.telegram className="w-4 h-4" />
+    }
+] as const
 
 export default function CreateCategoryModal({ trigger }: { trigger: ReactNode }) {
     const [open, setOpen] = useState(false)
@@ -127,7 +139,8 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
         defaultValues: {
             color: "",
             emoji: "",
-            name: ""
+            name: "",
+            channels: ["discord"]
         }
     })
 
@@ -137,6 +150,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
 
     const selectedColor = watch("color")
     const selectedEmoji = watch("emoji")
+    const selectedChannel = watch("channels")
 
     return (
         <Modal
@@ -197,6 +211,30 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
 
                         <p className="text-red-400 min-h-[10px]" aria-live="assertive">
                             {errors.emoji?.message}
+                        </p>
+                    </div>
+
+                    <div>
+                        <Label>Channel</Label>
+                        <span className="text-[14px] text-zinc-400 block pb-3 pt-1">Where to receive the notification</span>
+                        <div className="flex flex-wrap gap-4">
+                            {
+                                CHANNELS.map(({ name, icon }) => (
+                                    <button key={name} type="button" aria-label={name} onClick={() => setValue("channels", (() =>
+                                        selectedChannel.includes(name) ? selectedChannel.filter((channel) => channel !== name) : [...selectedChannel, name])())} className={
+                                            cn(
+                                                "rounded-md w-7 h-7 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer flex justify-center items-center",
+                                                selectedChannel.includes(name) && "ring-brand-700 ring-2"
+                                            )
+                                        }>
+                                        {icon}
+                                    </button>
+                                ))
+                            }
+                        </div>
+
+                        <p className="text-red-400 min-h-[10px]" aria-live="assertive">
+                            {errors.channels?.message}
                         </p>
                     </div>
 

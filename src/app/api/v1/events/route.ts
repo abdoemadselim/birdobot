@@ -35,17 +35,17 @@ export const POST = async (request: NextRequest) => {
         }
 
         // Check the api of a real user (in database)
-        const user = await db
+        const user = (await db
             .select()
             .from(userTable)
-            .where(eq(userTable.apiKey, apiKey))
+            .where(eq(userTable.apiKey, apiKey)))[0]
 
-        if (!user || !user.length) {
+        if (!user) {
             return NextResponse.json({ message: "Invalid API Key" }, { status: 401 })
         }
 
         // 2- VALIDATE DISCORD CHANNEL ID
-        if (!user[0]?.discordId) {
+        if (!user.discordId) {
             return NextResponse.json({ message: "Please enter your discord ID in your account settings" }, { status: 403 })
         }
 
@@ -61,7 +61,7 @@ export const POST = async (request: NextRequest) => {
             .from(quotaTable)
             .where(
                 and(
-                    eq(quotaTable.userId, user[0].id),
+                    eq(quotaTable.userId, user.id),
                     eq(quotaTable.month, month),
                     eq(quotaTable.year, year)
                 )
@@ -72,21 +72,20 @@ export const POST = async (request: NextRequest) => {
                 .insert(quotaTable)
                 .values({
                     count: 1,
-                    userId: user[0].id,
+                    userId: user.id,
                     month: month,
                     year: year
                 }).returning({ count: quotaTable.count }))[0]
         }
 
         const quotaLimit =
-            user[0].plan === "FREE" ?
+            user.plan === "FREE" ?
                 FREE_QUOTA.maxEventsPerMonth :
                 PRO_QUOTA.maxEventsPerMonth
 
         if (userQuota && userQuota?.count > quotaLimit) {
             return NextResponse.json({ message: "Monthly quota reacted. Please upgrade your plan for more events" }, { status: 429 })
         }
-
 
         // 4- VALIDATE BODY DATA
         let requestData = null
@@ -104,62 +103,75 @@ export const POST = async (request: NextRequest) => {
             id: eventCategoryTable.id,
             emoji: eventCategoryTable.emoji,
             name: eventCategoryTable.name,
-            color: eventCategoryTable.color
-        }).from(eventCategoryTable).where(and(eq(eventCategoryTable.name, validatedData.category), eq(eventCategoryTable.userId, user[0].id))))[0]
+            color: eventCategoryTable.color,
+            channels: eventCategoryTable.channels
+        }).from(eventCategoryTable).where(and(eq(eventCategoryTable.name, validatedData.category), eq(eventCategoryTable.userId, user.id))))[0]
 
         if (!category) {
             return NextResponse.json({ message: `You don't have a category named ${validatedData.category}` }, { status: 400 })
         }
 
-        // 6- CREATED EVENT DB RECORD
+        // 6-CREATED EVENT DB RECORD
         const event = await db.insert(eventTable).values({
-            userId: user[0].id,
+            userId: user.id,
             eventCategoryId: category.id,
             fields: validatedData.fields,
             name: category.name,
             formattedMessage: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
-        }).returning({ id: eventTable.id })
+        }).returning({ id: eventTable.id });
 
-        const eventData = {
-            title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
-            color: category.color,
-            fields: Object.entries(validatedData.fields || {}).map((field) => ({
-                name: field[0],
-                value: String(field[1]),
-                inline: true
-            })),
-            description: validatedData.description || `A new ${category.name} event has occurred`,
-            timestamp: new Date().toISOString(),
+        // 7- Check the category channels
+        (category.channels as Record<string, any>).slice(1, -1).split(",").map(async (channel: "discord" | "telegram" | "slack") => {
+            if (channel === "discord") {
+                const eventData = {
+                    title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
+                    color: category.color,
+                    fields: Object.entries(validatedData.fields || {}).map((field) => ({
+                        name: field[0],
+                        value: String(field[1]),
+                        inline: true
+                    })),
+                    description: validatedData.description || `A new ${category.name} event has occurred`,
+                    timestamp: new Date().toISOString(),
+                }
 
-        }
+                // 7- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
+                const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
 
-        // 7- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
-        const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
+                try {
+                    await discordClient.sendEmbed(user.discordId as string, eventData)
+                    await db.update(eventTable).set({
+                        deliveryStatus: "DELIVERED"
+                    })
 
-        try {
-            await discordClient.sendEmbed(user[0].discordId, eventData)
-            await db.update(eventTable).set({
-                deliveryStatus: "DELIVERED"
-            })
+                    await db
+                        .update(quotaTable)
+                        .set({
+                            count: sql`${quotaTable.count} + 1`,
+                            userId: user.id,
+                            month: month,
+                            year: year,
+                        })
+                } catch (error) {
+                    await db.update(eventTable).set({
+                        deliveryStatus: "FAILED"
+                    })
+                    console.error(error)
+                }
 
-            await db
-                .update(quotaTable)
-                .set({
-                    count: sql`${quotaTable.count} + 1`,
-                    userId: user[0].id,
-                    month: month,
-                    year: year,
+                return NextResponse.json({
+                    message: "Event processed successfully",
+                    eventId: event[0]?.id,
                 })
-        } catch (error) {
-            await db.update(eventTable).set({
-                deliveryStatus: "FAILED"
-            })
-            console.error(error)
-        }
+            } else if (channel === "telegram") {
 
-        return NextResponse.json({
-            message: "Event processed successfully",
-            eventId: event[0]?.id,
+                if (user.telegramId) {
+                    return NextResponse.json({
+                        message: "Event processed successfully",
+                        eventId: event[0]?.id,
+                    })
+                }
+            }
         })
     } catch (error) {
         console.error(error)

@@ -1,5 +1,5 @@
 import { REST } from '@discordjs/rest';
-import { APIEmbed, RESTPostAPIChannelMessageResult, RESTPostAPICurrentUserCreateDMChannelResult, Routes } from 'discord-api-types/v10';
+import { APIEmbed, RESTPostAPIChannelMessageResult, Routes } from 'discord-api-types/v10';
 
 export class DiscordClient {
     private rest: REST

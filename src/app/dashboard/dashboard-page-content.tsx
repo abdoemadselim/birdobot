@@ -17,6 +17,7 @@ import Modal from "@/components/ui/modal";
 import Toaster from "@/components/ui/toaser";
 import DashboardEmptyState from "./dashboard-empty-state";
 import { toast } from "sonner";
+import { Icons } from "@/components/icons";
 
 // Schema
 import { eventCategoryTable } from "@/server/db/schema";
@@ -101,7 +102,7 @@ export default function DashboardPageContent() {
                         <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 px-6 py-4" key={category.info.name}>
                             <div className="flex items-center gap-3">
                                 <div
-                                    className="rounded-full w-12 h-12"
+                                    className="rounded-full min-w-10 min-h-10"
                                     style={{
                                         backgroundColor:
                                             category.info.color !== null ?
@@ -110,10 +111,30 @@ export default function DashboardPageContent() {
                                     }}
                                 />
 
-                                <div className="flex flex-col">
-                                    <h3 className="mr-1 text-gray-950 text-lg/7">{category.info.emoji || "📂"} {category.info.name}</h3>
+                                <div className="flex justify-between items-center w-full">
+                                    <div className="flex flex-col">
+                                        <h3 className="mr-1 text-gray-950 text-lg/7">{category.info.emoji || "📂"} {category.info.name}</h3>
 
-                                    <p className="text-gray-500 text-sm/7">{format(category.info.createdAt, "MMM dd, yyyy")}</p>
+                                        <p className="text-gray-500 text-sm/7">{format(category.info.createdAt, "MMM dd, yyyy")}</p>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        {
+                                            category.info.channels.map((channel) => {
+                                                return (
+                                                    <div className="rounded-md w-6 h-6">
+                                                        {
+                                                            {
+                                                                slack: <Icons.slack className="w-[15px] h-[15px]" />,
+                                                                telegram: <Icons.telegram className="w-[15px] h-[15px]" />,
+                                                                discord: <Icons.discord className="text-brand-600 w-[18px] h-[18px] -mt-[1px]" />
+                                                            }[channel as "discord" | "telegram" | "slack"]
+                                                        }
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
                                 </div>
                             </div>
 

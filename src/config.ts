@@ -1,3 +1,5 @@
+import { Icons } from "@/components/icons"
+
 export const FREE_QUOTA = {
     maxEventsPerMonth: 100,
     maxEventCategories: 3

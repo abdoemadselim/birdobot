@@ -14,6 +14,7 @@ import {
 
 export const planEnum = pgEnum("plan", ["FREE", "PRO"])
 export const deliveryStatusEnum = pgEnum("deliveryStatusEnum", ["PENDING", "FAILED", "DELIVERED"])
+export const channelEnum = pgEnum("discord", ["discord", "telegram", "slack"])
 
 export const userTable = pgTable(
   "user",
@@ -24,6 +25,7 @@ export const userTable = pgTable(
     email: varchar("email", { length: 255 }).unique().notNull(),
 
     discordId: varchar("discordId", { length: 255 }),
+    telegramId: varchar("telegramId", { length: 255 }),
 
     apiKey: uuid("apiKey").defaultRandom(),
 
@@ -49,6 +51,7 @@ export const eventCategoryTable = pgTable(
     name: varchar("name", { length: 100 }).notNull(),
     emoji: varchar("emoji", { length: 32 }),
     color: integer("color").notNull(),
+    channels: channelEnum("channels").array().notNull().default(["discord"]),
 
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),

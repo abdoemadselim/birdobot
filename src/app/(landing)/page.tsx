@@ -43,6 +43,7 @@ export default async function HomePage() {
         <div className="opacity-5 z-0 absolute top-[400px] left-1/2 -translate-1/2 max-h-[400px] overflow-hidden">
           <BirdsPattern />
         </div>
+
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
             <div>
@@ -97,7 +98,6 @@ export default async function HomePage() {
           </div>
         </MaxWidthWrapper>
       </section >
-
       <section className="pb-4 relative bg-brand-25 w-full">
         <div className="pb-5">
           <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Smart Routing</h2>

@@ -1,0 +1,1 @@
+ALTER TABLE "eventCategory" RENAME COLUMN "channel" TO "channels";
