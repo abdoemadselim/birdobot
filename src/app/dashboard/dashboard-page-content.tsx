@@ -34,6 +34,7 @@ export default function DashboardPageContent() {
             const { eventsCategories } = await res.json()
             return eventsCategories
         },
+        refetchOnWindowFocus: false
     })
 
     const { mutateAsync: deleteEventCategory } = useMutation({
