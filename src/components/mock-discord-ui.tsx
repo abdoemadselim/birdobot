@@ -61,7 +61,7 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                             height={32}
                             className="w-[32px] h-[32px] rounded-full object-cover"
                         />
-                        <p className="text-white font-medium">RingRang</p>
+                        <p className="text-white font-medium">Birdo</p>
                     </div>
 
                     <div className="space-y-px">
@@ -97,15 +97,15 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                     </div>
                     <div className="relative size-10">
                         <Image
-                            src="/brand-asset-profile-picture.png"
-                            alt="RingRang Avatar"
+                            src="/logo/birdo-slack.png"
+                            alt="Birdo Avatar"
                             width={40}
                             height={40}
-                            className="rounded-full object-cover"
+                            className="rounded-full object-cover w-[40px] h-[40px]"
                         />
                         <div className="absolute bg-green-400 rounded-full size-3 right-1 border-2 border-[#36393f] -bottom-1" />
                     </div>
-                    <p className="text-white pl-3 font-medium">RingRang</p>
+                    <p className="text-white pl-3 font-medium">Birdo</p>
 
                     <div className="mr-[18px] ml-auto sm:flex hidden gap-3 text-[#b9bbbe]">
                         <Phone className="size-5 hover:text-white cursor-not-allowed" />
@@ -127,7 +127,7 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                 <div className="w-full p-4 bg-discord-background">
                     <div className="bg-[#40444b] rounded-lg p-1 flex items-center">
                         <PlusCircle className="size-7 text-white/70 hover:text-white cursor-not-allowed mx-3" />
-                        <input readOnly placeholder="Message @RingRang"
+                        <input readOnly placeholder="Message @BirdoBot"
                             className="w-full placeholder-discord-timestamp text-white/90 focus:outline-none outline-none py-2.5 px-1 text-sm" />
 
                         <div className="flex mx-3 gap-3 items-center text-[#b9bbbe]">

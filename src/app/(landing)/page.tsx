@@ -293,7 +293,7 @@ export default async function HomePage() {
               <div className="relative min-h-[30rem]">
                 <div className="bg-gray-900 h-full mt-6 absolute top-10 left-10 w-full rounded-tl-2xl shadow-2xl">
                   <div className="h-10 bg-gray-700/40 w-full rounded-tl-2xl">
-                    <div className="bg-white/10 w-fit text-white px-4 h-full border-b border-r border-white/20 font-medium text-sm/6 flex items-center justify-center">RingRang.js</div>
+                    <div className="bg-white/10 w-fit text-white px-4 h-full border-b border-r border-white/20 font-medium text-sm/6 flex items-center justify-center">BirdoBot.js</div>
                   </div>
 
                   <SyntaxHighlighter

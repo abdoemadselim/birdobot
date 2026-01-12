@@ -59,8 +59,8 @@ export default function AppSidebar() {
         <Sidebar >
             <SidebarHeader className="p-6">
                 <p className="font-semibold">
-                    Ring
-                    <span className="text-brand-700">Rang</span>
+                    Birdo
+                    <span className="text-brand-700">Bot</span>
                 </p>
             </SidebarHeader>
             <SidebarContent className="p-2">

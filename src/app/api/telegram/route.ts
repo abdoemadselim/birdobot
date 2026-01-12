@@ -1,5 +1,5 @@
 import { telegramBot } from "@/lib/telegram-client";
-import { NextRequest } from "next/server.js";
+import { NextRequest, NextResponse } from "next/server";
 import TelegramBot from "node-telegram-bot-api";
 
 export const POST = async (request: NextRequest) => {
@@ -7,4 +7,6 @@ export const POST = async (request: NextRequest) => {
 
     console.log(body)
     telegramBot.bot.processUpdate(body as TelegramBot.Update)
+
+    NextResponse.json({ success: true })
 }
