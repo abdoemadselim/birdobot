@@ -14,6 +14,8 @@ export const POST = async (request: NextRequest) => {
 
         const token = messageText.split(" ")[1];
 
+        console.log(token)
+
         if (!token) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }

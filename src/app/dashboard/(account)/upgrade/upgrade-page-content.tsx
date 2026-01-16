@@ -36,7 +36,7 @@ export default function UpgradePageContent({ plan }: { plan: string }) {
             <p className="text-muted-foreground pt-2">
                 {
                     plan == "FREE" ? "Get access to more events, categories and premium support." :
-                        "Thank you for supporting PingPanda. Find your increased usage limits below."
+                        "Thank you for supporting BirdoBot. Find your increased usage limits below."
                 }
             </p>
 
