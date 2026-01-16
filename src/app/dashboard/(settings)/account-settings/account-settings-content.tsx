@@ -84,7 +84,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
 
                     <p className="text-sm/5 text-gray-700 mb-2">
                         Haven't invited BirdoBot to your discord server yet? {" "}
-                        <a href="#" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
+                        <a href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
                     </p>
                 </div>
             </section>
