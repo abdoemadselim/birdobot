@@ -1,4 +1,3 @@
-import { redis } from "@/lib/redis";
 import { db } from "@/server/db";
 import { userTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -19,7 +18,6 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
-        //2- Compare the token to the user's token in redis
         const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, token)))[0]
 
         if (!user) {
