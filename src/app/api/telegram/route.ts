@@ -14,14 +14,13 @@ export const POST = async (request: NextRequest) => {
 
         const token = messageText.split(" ")[1];
 
-        console.log(token)
-
         if (!token) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
         const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, token)))[0]
 
+        console.log(user)
         if (!user || !body.chat?.id) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
