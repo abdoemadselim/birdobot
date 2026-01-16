@@ -14,7 +14,7 @@ export default function MockDiscordUI({ children }: PropsWithChildren) {
                 <div className="w-8 mx-auto h-px bg-gray-500/40" />
                 {
                     [...Array(5)].map((_, i) => (
-                        <div className="relative w-full group">
+                        <div className="relative w-full group" key={i}>
                             <div className="bg-white rounded-full absolute -left-1/2 translate-x-1/2 top-1/2 -translate-y-1/2 w-[7px] h-[7px] group-hover:scale-y-[2.5] transition-transform duration-200" />
                             <div key={i}
                                 className="hover:bg-brand-700 duration-300 transition hover:rounded-2xl cursor-not-allowed rounded-full size-10 

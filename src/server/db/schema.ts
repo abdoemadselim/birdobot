@@ -25,11 +25,11 @@ export const userTable = pgTable(
     email: varchar("email", { length: 255 }).unique().notNull(),
 
     discordId: varchar("discordId", { length: 255 }),
-    telegramId: varchar("telegramId", { length: 255 }),
+    telegramId: integer("telegramId"),
 
     apiKey: uuid("apiKey").defaultRandom(),
 
-    plan: planEnum("plan").default("FREE"),
+    plan: planEnum("plan").default("FREE").notNull(),
 
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),

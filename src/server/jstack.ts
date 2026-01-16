@@ -56,6 +56,12 @@ const authMiddleware = j.middleware(async ({ c, ctx, next }) => {
     .from(userTable)
     .where(eq(userTable.externalId, auth.id)))[0]
 
+  if (!user) {
+    throw new HTTPException(401, {
+      message: "Unauthorized, sign in to continue.",
+    })
+  }
+
   return await next({ user })
 })
 

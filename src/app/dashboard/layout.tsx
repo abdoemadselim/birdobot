@@ -1,18 +1,13 @@
 // Libs
 import { PropsWithChildren } from "react";
+import { telegramBot } from "@/lib/telegram-client";
 
 // Components
 import Sidebar, { AppSidebarTrigger } from "@/components/sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import TelegramBot from "node-telegram-bot-api";
-import { telegramBot } from "@/lib/telegram-client";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
     telegramBot.bot.setWebHook("https://ring-rang.vercel.app/api/telegram")
-
-    // bot.on("message", (msg) => {
-    //     console.log(msg.chat.id)
-    // })
 
     return (
         <SidebarProvider>

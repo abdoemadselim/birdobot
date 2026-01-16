@@ -16,7 +16,7 @@ class TelegramClient {
         return chatId
     }
 
-    async sendMessage(chatId: string, message: string) {
+    async sendMessage(chatId: number, message: string) {
         await this.bot.sendMessage(chatId, message, {
             parse_mode: 'Markdown'
         })

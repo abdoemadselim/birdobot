@@ -106,8 +106,6 @@ export default function AppSidebar() {
     )
 }
 
-
-
 export function AppSidebarTrigger() {
     const { toggleSidebar } = useSidebar()
 

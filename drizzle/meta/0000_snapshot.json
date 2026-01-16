@@ -1,123 +1,9 @@
 {
-  "id": "b6474050-b2a7-4273-bb75-16f7970cba53",
+  "id": "deab7204-ac23-47ff-bbc8-92652784c087",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.event": {
-      "name": "event",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "userId": {
-          "name": "userId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "formattedMessage": {
-          "name": "formattedMessage",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "fields": {
-          "name": "fields",
-          "type": "json",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "eventCategoryId": {
-          "name": "eventCategoryId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "deliveryStatus": {
-          "name": "deliveryStatus",
-          "type": "deliveryStatusEnum",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "'PENDING'"
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "createdAt_idx": {
-          "name": "createdAt_idx",
-          "columns": [
-            {
-              "expression": "createdAt",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "event_userId_user_id_fk": {
-          "name": "event_userId_user_id_fk",
-          "tableFrom": "event",
-          "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "event_eventCategoryId_eventCategory_id_fk": {
-          "name": "event_eventCategoryId_eventCategory_id_fk",
-          "tableFrom": "event",
-          "tableTo": "eventCategory",
-          "columnsFrom": [
-            "eventCategoryId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.eventCategory": {
       "name": "eventCategory",
       "schema": "",
@@ -150,7 +36,15 @@
           "name": "color",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "channels": {
+          "name": "channels",
+          "type": "discord[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{\"discord\"}'"
         },
         "createdAt": {
           "name": "createdAt",
@@ -198,6 +92,135 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.event": {
+      "name": "event",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "formattedMessage": {
+          "name": "formattedMessage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fields": {
+          "name": "fields",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "eventCategoryId": {
+          "name": "eventCategoryId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deliveryStatus": {
+          "name": "deliveryStatus",
+          "type": "deliveryStatusEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'PENDING'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "createdAt_idx": {
+          "name": "createdAt_idx",
+          "columns": [
+            {
+              "expression": "createdAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "fields_idx": {
+          "name": "fields_idx",
+          "columns": [
+            {
+              "expression": "fields",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "event_userId_user_id_fk": {
+          "name": "event_userId_user_id_fk",
+          "tableFrom": "event",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "event_eventCategoryId_eventCategory_id_fk": {
+          "name": "event_eventCategoryId_eventCategory_id_fk",
+          "tableFrom": "event",
+          "tableTo": "eventCategory",
+          "columnsFrom": [
+            "eventCategoryId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.quota": {
       "name": "quota",
       "schema": "",
@@ -218,7 +241,7 @@
           "name": "count",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 0
         },
         "month": {
@@ -298,6 +321,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "telegramId": {
+          "name": "telegramId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "apiKey": {
           "name": "apiKey",
           "type": "uuid",
@@ -326,6 +355,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "quotaLimit": {
+          "name": "quotaLimit",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -377,6 +412,15 @@
     }
   },
   "enums": {
+    "public.discord": {
+      "name": "discord",
+      "schema": "public",
+      "values": [
+        "discord",
+        "telegram",
+        "slack"
+      ]
+    },
     "public.deliveryStatusEnum": {
       "name": "deliveryStatusEnum",
       "schema": "public",

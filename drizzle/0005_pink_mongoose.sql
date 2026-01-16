@@ -1,1 +1,0 @@
-ALTER TABLE "eventCategory" ALTER COLUMN "color" SET NOT NULL;

@@ -47,8 +47,8 @@ export const Icons = {
         </svg>
     ),
     slack: (props: LucideProps) => (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2.45 0 2452.5 2452.5" enable-background="new 0 0 2447.6 2452.5" className={cn("w-4 h-4", props.className)}>
-            <g clip-rule="evenodd" fill-rule="evenodd">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2.45 0 2452.5 2452.5" enableBackground="new 0 0 2447.6 2452.5" className={cn("w-4 h-4", props.className)}>
+            <g clipRule="evenodd" fillRule="evenodd">
 
                 <path d="m897.4 0c-135.3.1-244.8 109.9-244.7 245.2-.1 135.3 109.5 245.1 244.8 245.2h244.8v-245.1c.1-135.3-109.5-245.1-244.9-245.3.1 0 .1 0 0 0m0 654h-652.6c-135.3.1-244.9 109.9-244.8 245.2-.2 135.3 109.4 245.1 244.7 245.3h652.7c135.3-.1 244.9-109.9 244.8-245.2.1-135.4-109.5-245.2-244.8-245.3z" fill="#36c5f0" />
 
@@ -64,8 +64,8 @@ export const Icons = {
     ),
     email: (props: LucideProps) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className={cn("w-4 h-4", props.className)}>
-            <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <rect x="3" y="5" width="18" height="14" rx="2" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+            <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="3" y="5" width="18" height="14" rx="2" stroke="#ffffff" strokeWidth="2" stroke-linecap="round" />
         </svg>
     ),
 

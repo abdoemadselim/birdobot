@@ -11,6 +11,7 @@ import { FREE_QUOTA, PRO_QUOTA } from "@/config";
 // Schemas
 import { eventCategoryTable, eventTable, quotaTable, userTable } from "@/server/db/schema";
 import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
+import { telegramBot } from "@/lib/telegram-client.js";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,
@@ -34,7 +35,7 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "Invalid API Key" }, { status: 401 })
         }
 
-        // Check the api of a real user (in database)
+        // 2- Check the api of a real user (in database)
         const user = (await db
             .select()
             .from(userTable)
@@ -42,11 +43,6 @@ export const POST = async (request: NextRequest) => {
 
         if (!user) {
             return NextResponse.json({ message: "Invalid API Key" }, { status: 401 })
-        }
-
-        // 2- VALIDATE DISCORD CHANNEL ID
-        if (!user.discordId) {
-            return NextResponse.json({ message: "Please enter your discord ID in your account settings" }, { status: 403 })
         }
 
         // 3- VALIDATE USER QUOTA LIMIT
@@ -120,9 +116,17 @@ export const POST = async (request: NextRequest) => {
             formattedMessage: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
         }).returning({ id: eventTable.id });
 
-        // 7- Check the category channels
-        (category.channels as Record<string, any>).slice(1, -1).split(",").map(async (channel: "discord" | "telegram" | "slack") => {
+        // 7- Send the even to each channel 
+        (category.channels as Record<string, any>).slice(1, -1).split(",").forEach(async (channel: "discord" | "telegram" | "slack") => {
             if (channel === "discord") {
+                if (!user.discordId) {
+                    await db.update(eventTable).set({
+                        deliveryStatus: "FAILED"
+                    })
+
+                    return
+                }
+
                 const eventData = {
                     title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
                     color: category.color,
@@ -135,7 +139,7 @@ export const POST = async (request: NextRequest) => {
                     timestamp: new Date().toISOString(),
                 }
 
-                // 7- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
+                // 7.1- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
                 const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
 
                 try {
@@ -158,20 +162,22 @@ export const POST = async (request: NextRequest) => {
                     })
                     console.error(error)
                 }
-
-                return NextResponse.json({
-                    message: "Event processed successfully",
-                    eventId: event[0]?.id,
-                })
             } else if (channel === "telegram") {
-
-                if (user.telegramId) {
-                    return NextResponse.json({
-                        message: "Event processed successfully",
-                        eventId: event[0]?.id,
+                if (!user.telegramId) {
+                    await db.update(eventTable).set({
+                        deliveryStatus: "FAILED"
                     })
+
+                    return;
                 }
+
+                telegramBot.sendMessage(user.telegramId, 'Hello world')
             }
+        })
+
+        NextResponse.json({
+            message: "Event processed successfully",
+            eventId: event[0]?.id,
         })
     } catch (error) {
         console.error(error)

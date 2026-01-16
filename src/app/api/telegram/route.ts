@@ -1,12 +1,52 @@
-import { telegramBot } from "@/lib/telegram-client";
+import { redis } from "@/lib/redis";
+import { db } from "@/server/db";
+import { userTable } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import TelegramBot from "node-telegram-bot-api";
 
 export const POST = async (request: NextRequest) => {
-    const body = await request.json()
+    try {
+        const body = await request.json() as { message: TelegramBot.Message, chat: TelegramBot.Chat }
 
-    console.log(body)
-    telegramBot.bot.processUpdate(body as TelegramBot.Update)
+        //1- Check Token From The Body
+        const messageText = body.message.text
+        if (!messageText || !messageText.startsWith("/start")) return NextResponse.json({ message: "invalid token" }, { status: 401 })
 
-    return NextResponse.json({ success: true })
+        const token = messageText.split(" ")[1];
+
+        if (!token) {
+            return NextResponse.json({ message: "invalid token" }, { status: 401 })
+        }
+
+        //2- Compare the token to the user's token in redis
+        const userSession = await redis.get(`telegram-${token}`) as { id: number } | undefined
+
+        if (!userSession) {
+            return NextResponse.json({ message: "invalid token" }, { status: 401 })
+        }
+
+        const dbUser = (await db
+            .select({
+                id: userTable.id
+            })
+            .from(userTable)
+            .where(eq(userTable.id, userSession.id)))[0]
+
+        if (!dbUser) {
+            return NextResponse.json({ message: "invalid token" }, { status: 401 })
+        }
+
+        //3- Store the user telegram channel id in db
+        await db
+            .update(userTable)
+            .set({
+                telegramId: body.chat.id
+            }).where(eq(userTable.id, dbUser.id))
+
+        return NextResponse.json({ message: "User telegram channel has been set" })
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({ success: "Internal server error" }, { status: 500 })
+    }
 }

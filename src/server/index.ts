@@ -1,7 +1,12 @@
+// Libs
 import { j } from "./jstack"
+
+// Routers
 import { authRouter } from "./routers/auth-router"
 import { eventCategoryRouter } from "./routers/event-category-router"
 import { eventRouter } from "./routers/event-router"
+import { paymentRouter } from "./routers/payment-router"
+import { userRouter } from "./routers/user-router"
 
 /**
  * This is your base API.
@@ -32,7 +37,9 @@ api.onError((err, c) => {
 const appRouter = j.mergeRouters(api, {
   auth: authRouter,
   eventCategory: eventCategoryRouter,
-  event: eventRouter
+  event: eventRouter,
+  user: userRouter,
+  payment: paymentRouter
 })
 
 export type AppRouter = typeof appRouter

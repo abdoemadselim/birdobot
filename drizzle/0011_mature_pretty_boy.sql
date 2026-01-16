@@ -1,1 +1,0 @@
-ALTER TABLE "eventCategory" ALTER COLUMN "channels" SET DEFAULT '{"discord"}';
