@@ -20,8 +20,6 @@ export const POST = async (request: NextRequest) => {
 
         const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, token)))[0]
 
-        console.log(body)
-
         if (!user || !body.message.chat?.id) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
