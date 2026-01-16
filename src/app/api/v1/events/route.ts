@@ -4,6 +4,8 @@ import { db } from "@/server/db";
 import { and, eq, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
+import { escapeMarkdownV2 } from "@/lib/utils";
+import { telegramBot } from "@/lib/telegram-client";
 
 // Config
 import { FREE_QUOTA, PRO_QUOTA } from "@/config";
@@ -11,7 +13,6 @@ import { FREE_QUOTA, PRO_QUOTA } from "@/config";
 // Schemas
 import { eventCategoryTable, eventTable, quotaTable, userTable } from "@/server/db/schema";
 import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
-import { telegramBot } from "@/lib/telegram-client";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,
@@ -116,8 +117,9 @@ export const POST = async (request: NextRequest) => {
             formattedMessage: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
         }).returning({ id: eventTable.id });
 
+
         // 7- Send the even to each channel 
-        (category.channels as Record<string, any>).slice(1, -1).split(",").forEach(async (channel: "discord" | "telegram" | "slack") => {
+        category.channels.forEach(async (channel: "discord" | "telegram" | "slack") => {
             if (channel === "discord") {
                 if (!user.discordId) {
                     await db.update(eventTable).set({
@@ -161,6 +163,7 @@ export const POST = async (request: NextRequest) => {
                         deliveryStatus: "FAILED"
                     })
                     console.error(error)
+                    return NextResponse.json({ message: "Internal server error" }, { status: 500 })
                 }
             } else if (channel === "telegram") {
                 if (!user.telegramId) {
@@ -171,11 +174,38 @@ export const POST = async (request: NextRequest) => {
                     return;
                 }
 
-                telegramBot.sendMessage(user.telegramId, 'Hello world')
+                const titleText = `${category.emoji || "🔔"} ${category.name.toUpperCase()}`;
+
+                const description =
+                    validatedData.description ||
+                    `A new ${category.name} event has occurred`;
+
+                const fieldsText = Object.entries(validatedData.fields || {})
+                    .map(([key, value]) =>
+                        `▸ *${escapeMarkdownV2(key)}*: ${escapeMarkdownV2(String(value))}`
+                    )
+                    .join("\n");
+
+                const divider = escapeMarkdownV2("━━━━━━━━━━━━━━━━━━");
+
+                const message = `
+${divider}
+*${escapeMarkdownV2(titleText)}*
+${divider}
+
+_${escapeMarkdownV2(description)}_
+
+${fieldsText}
+
+🕒 ${escapeMarkdownV2(new Date().toLocaleString())}
+`.trim();
+
+                await telegramBot.sendMessage(user.telegramId, message)
             }
         })
 
-        NextResponse.json({
+
+        return NextResponse.json({
             message: "Event processed successfully",
             eventId: event[0]?.id,
         })

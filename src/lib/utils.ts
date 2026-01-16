@@ -9,3 +9,6 @@ export function parseColor(color: string) {
   const hex = color.startsWith("#") ? color.slice(1) : color;
   return parseInt(hex, 16)
 }
+
+export const escapeMarkdownV2 = (text: string) =>
+  text.replace(/[_*[\]()~`>#+\-=|{}.!]/g, "\\$&");

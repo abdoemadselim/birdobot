@@ -24,7 +24,7 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
-        //3- Store the user telegram channel id in db
+        //2- Store the user telegram channel id in db
         await db
             .update(userTable)
             .set({
