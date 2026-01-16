@@ -15,6 +15,13 @@
       "when": 1768416808719,
       "tag": "0001_nasty_roulette",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768583305811,
+      "tag": "0002_cold_eternity",
+      "breakpoints": true
     }
   ]
 }

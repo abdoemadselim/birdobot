@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "telegramToken" uuid DEFAULT gen_random_uuid();

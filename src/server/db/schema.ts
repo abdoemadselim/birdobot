@@ -27,6 +27,8 @@ export const userTable = pgTable(
     discordId: varchar("discordId", { length: 255 }),
     telegramId: integer("telegramId"),
 
+    telegramToken: uuid("telegramToken").defaultRandom(),
+
     apiKey: uuid("apiKey").defaultRandom(),
 
     plan: planEnum("plan").default("FREE").notNull(),

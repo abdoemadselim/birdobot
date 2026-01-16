@@ -23,9 +23,7 @@ export default function PaymentSuccessModal() {
             const res = await client.user.getPlan.$get()
             return await res.json()
         },
-        refetchInterval: (query) => {
-            query.state.data?.plan === "FREE" ? 2000 : false
-        }
+        refetchInterval: (query) => query.state.data?.plan === "FREE" ? 2000 : false
     })
 
     const handleClose = () => {
