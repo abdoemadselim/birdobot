@@ -20,20 +20,9 @@ export const POST = async (request: NextRequest) => {
         }
 
         //2- Compare the token to the user's token in redis
-        const userSession = await redis.get(`telegram-${token}`) as { id: number } | undefined
+        const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, token)))[0]
 
-        if (!userSession) {
-            return NextResponse.json({ message: "invalid token" }, { status: 401 })
-        }
-
-        const dbUser = (await db
-            .select({
-                id: userTable.id
-            })
-            .from(userTable)
-            .where(eq(userTable.id, userSession.id)))[0]
-
-        if (!dbUser) {
+        if (!user) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
@@ -42,7 +31,7 @@ export const POST = async (request: NextRequest) => {
             .update(userTable)
             .set({
                 telegramId: body.chat.id
-            }).where(eq(userTable.id, dbUser.id))
+            }).where(eq(userTable.id, user.id))
 
         return NextResponse.json({ message: "User telegram channel has been set" })
     } catch (error) {
