@@ -286,8 +286,6 @@ export default async function HomePage() {
           </ShinyButton>
         </MaxWidthWrapper>
       </section>
-
-      <ServicePreview />
     </>
   )
 }
