@@ -22,7 +22,7 @@ export const POST = async (request: NextRequest) => {
 
         console.log(body)
 
-        if (!user || !body.chat?.id) {
+        if (!user || !body.message.chat?.id) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
