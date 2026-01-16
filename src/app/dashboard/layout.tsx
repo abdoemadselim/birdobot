@@ -7,7 +7,7 @@ import Sidebar, { AppSidebarTrigger } from "@/components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
-    telegramBot.bot.setWebHook("https://ring-rang.vercel.app/api/telegram")
+    // telegramBot.bot.setWebHook("https://ring-rang.vercel.app/api/telegram")
 
     return (
         <SidebarProvider>

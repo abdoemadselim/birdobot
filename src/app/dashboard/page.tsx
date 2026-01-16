@@ -12,8 +12,8 @@ import { redirect } from "next/navigation"
 import DashboardLayout from "@/components/dashboard-layout"
 import CreateCategoryModal from "@/components/create-category-modal"
 import { Button } from "@/components/ui/button"
-
 import DashboardPageContent from "./dashboard-page-content"
+import PaymentSuccessModal from "@/components/payment-success-modal"
 
 export default async function DashboardPage({
     searchParams,
@@ -52,17 +52,22 @@ export default async function DashboardPage({
     const success = (await searchParams).success
 
     return (
-        <DashboardLayout
-            hideBackButton={true}
-            cta={<CreateCategoryModal trigger={
-                <Button
-                    className="flex items-center gap-2 cursor-pointer rounded-sm w-full"
-                >
-                    <Plus className="size-4" />
-                    Add Category
-                </Button>}
-            />} title="Dashboard">
-            <DashboardPageContent />
-        </DashboardLayout>
+        <>
+            {
+                success && <PaymentSuccessModal />
+            }
+            <DashboardLayout
+                hideBackButton={true}
+                cta={<CreateCategoryModal trigger={
+                    <Button
+                        className="flex items-center gap-2 cursor-pointer rounded-sm w-full"
+                    >
+                        <Plus className="size-4" />
+                        Add Category
+                    </Button>}
+                />} title="Dashboard">
+                <DashboardPageContent />
+            </DashboardLayout>
+        </>
     )
 }

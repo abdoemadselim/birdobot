@@ -11,9 +11,9 @@ import ShinyButton from "@/components/shiny-button"
 import { Icons } from "@/components/icons";
 import BackgroundPattern from "@/components/background-pattern";
 import BirdsPattern from "@/components/birds-pattern";
+import PlanetCanvasContainer from "@/components/planetCanvas/planet-canvas-container";
 import ServicePreview from "./service-preview";
 import MockApps from "./mock-apps";
-import PlanetCanvas from "@/components/planet-canvas";
 
 export default async function HomePage() {
   const codeSnippet = `await fetch("http://localhost:3000/api/v1/events", {
@@ -107,7 +107,7 @@ export default async function HomePage() {
               <p className="text-gray-600 pt-4 text-lg">Birdo bots can find you anywhere. Earth, Mars… even Pluto.</p>
             </div>
 
-            <PlanetCanvas />
+            <PlanetCanvasContainer />
           </div>
         </MaxWidthWrapper>
       </section>

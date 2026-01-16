@@ -33,7 +33,6 @@ export default function PlanetCanvas() {
             height: window.innerHeight / 2
         }
 
-
         // Lights
         const ambientLight = new THREE.AmbientLight(0xffffff)
         scene.add(ambientLight)
@@ -42,9 +41,9 @@ export default function PlanetCanvas() {
         directionalLight.position.set(2, 5, 0)
         scene.add(directionalLight)
 
+        // Camera
         const camera = new THREE.PerspectiveCamera(85, sizes.width / sizes.height, 0.1, 1000)
         camera.position.z = 10
-
         scene.add(camera)
 
         // Orbit

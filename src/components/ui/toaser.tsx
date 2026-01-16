@@ -1,7 +1,6 @@
 // Libs
-import { toast } from "sonner";
 import { ReactNode } from "react";
-import { X, XCircle } from "lucide-react";
+import { Check, X, XCircle } from "lucide-react";
 
 type ToasterType = "error" | "success" | "info"
 
@@ -15,8 +14,8 @@ interface ErrorToasterProps {
 export default function Toaster({ type, title, children, t }: ErrorToasterProps) {
     const icon: Record<ToasterType, ReactNode> = {
         error: <XCircle className="text-red-400" />,
-        success: <XCircle className="text-red-400" />,
-        info: <XCircle className="text-red-400" />,
+        success: <Check className="text-green-400" />,
+        info: <XCircle className="text-yellow-400" />,
     }
 
     return (

@@ -15,7 +15,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface ModalProps {
     children: ReactNode,
-    trigger: ReactNode,
+    trigger?: ReactNode,
     open: boolean,
     handleModalOpen: (open: boolean) => void,
     title?: string
@@ -27,10 +27,14 @@ export default function Modal({ open, title, handleModalOpen, trigger, children 
     return (
         isMobile ? (
             <Drawer.Root open={open} onOpenChange={handleModalOpen}>
-                <Drawer.Trigger asChild
-                >
-                    {trigger}
-                </Drawer.Trigger>
+                {
+                    trigger && (
+                        <Drawer.Trigger asChild
+                        >
+                            {trigger}
+                        </Drawer.Trigger>
+                    )
+                }
                 <Drawer.Portal>
                     <Drawer.Overlay className="fixed inset-0 bg-gray-700/10 backdrop-blur-md" />
                     <Drawer.Content className="bg-gray-100 flex flex-col mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none sm:hidden">

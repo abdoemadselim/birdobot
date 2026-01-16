@@ -1,15 +1,29 @@
 'use client'
 
-import { SignIn } from "@clerk/nextjs"
-import { useSearchParams } from "next/navigation"
+import LoadingSpinner from "@/components/loading-spinner"
+import { SignIn, useUser } from "@clerk/nextjs"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function SignInPage() {
     const searchParams = useSearchParams()
     const intent = searchParams.get("intent")
 
+    const router = useRouter()
+    const { user, isLoaded } = useUser()
+
+    if (user) {
+        router.push("/dashboard")
+    }
+
     return (
         <div className="flex flex-col flex-1 justify-center items-center">
-            <SignIn forceRedirectUrl={intent ? `/dashboard/?intent=${intent}` : "/dashboard"} />
+            {
+                !isLoaded ? (
+                    <LoadingSpinner />
+                ) : (
+                    <SignIn forceRedirectUrl={intent ? `/dashboard/?intent=${intent}` : "/dashboard"} />
+                )
+            }
         </div>
     )
 }

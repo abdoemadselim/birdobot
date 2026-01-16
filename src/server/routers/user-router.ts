@@ -1,8 +1,10 @@
 import { addMonths, startOfMonth } from "date-fns";
 import { j, privateProcedure } from "../jstack";
-import { eventCategoryTable, quotaTable } from "../db/schema";
+import { eventCategoryTable, quotaTable, userTable } from "../db/schema";
 import { and, eq } from "drizzle-orm";
 import { FREE_QUOTA, PRO_QUOTA } from "@/config";
+
+import * as z from "zod"
 
 export const userRouter = j.router({
     getUserUsage: privateProcedure.query(async ({ ctx, c }) => {
@@ -33,5 +35,28 @@ export const userRouter = j.router({
             categories: { usage: categoriesCreated, limit: categoriesLimit },
             resetDate: resetDate
         })
+    }),
+
+    getPlan: privateProcedure.query(async ({ ctx, c }) => {
+        const { db, user } = ctx;
+
+        const dbUser = (await db.select().from(userTable).where(eq(userTable.id, user.id)))[0]
+
+        if (!dbUser) {
+            return c.json({ message: "Unauthenticated user", plan: null }, 401)
+        }
+
+        return c.json({ plan: dbUser.plan })
+    }),
+
+    updateDiscordId: privateProcedure.input(z.object({ discordId: z.string().min(1).max(40) })).mutation(async ({ ctx, c, input }) => {
+        const { db, user } = ctx;
+        const { discordId } = input
+
+        await db.update(userTable).set({
+            discordId: discordId
+        }).where(eq(userTable.id, user.id))
+
+        return c.json({ success: true })
     })
 })

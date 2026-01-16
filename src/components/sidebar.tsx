@@ -2,7 +2,7 @@
 
 // Libs
 import { Gem, Home, Key, LucideIcon, Menu, Settings } from "lucide-react"
-import Link from "next/link.js"
+import Link from "next/link"
 import { UserButton } from "@clerk/nextjs"
 
 // Components
@@ -20,6 +20,8 @@ import {
     useSidebar
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 interface SIDEBAR_ITEM {
     text: string,
@@ -55,6 +57,8 @@ const SIDEBAR_GROUPS: SIDEBAR_CROUP[] = [
 ]
 
 export default function AppSidebar() {
+    const pathName = usePathname()
+
     return (
         <Sidebar >
             <SidebarHeader className="p-6">
@@ -71,11 +75,11 @@ export default function AppSidebar() {
                             <SidebarGroupContent>
                                 <SidebarMenu>
                                     {items.map((item) => (
-                                        <SidebarMenuItem key={item.text} className="hover:bg-gray-50 group/item transition">
+                                        <SidebarMenuItem key={item.text} className={cn("group/item transition", pathName === item.href && "bg-gray-100 text-brand-700")}>
                                             <SidebarMenuButton asChild>
                                                 <Link href={item.href}>
-                                                    <item.icon className="text-zinc-500 group-hover/item:text-zinc-700 size-4" />
-                                                    <span className="text-sm font-medium text-zinc-700">{item.text}</span>
+                                                    <item.icon className={cn("text-zinc-500 size-4", pathName === item.href ? "text-brand-700" : "group-hover/item:text-zinc-700")} />
+                                                    <span className={cn("text-sm font-medium text-zinc-700", pathName === item.href && "text-brand-700")}>{item.text}</span>
                                                 </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
