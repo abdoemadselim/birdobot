@@ -11,7 +11,7 @@ import { FREE_QUOTA, PRO_QUOTA } from "@/config";
 // Schemas
 import { eventCategoryTable, eventTable, quotaTable, userTable } from "@/server/db/schema";
 import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
-import { telegramBot } from "@/lib/telegram-client.js";
+import { telegramBot } from "@/lib/telegram-client";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,

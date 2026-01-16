@@ -78,7 +78,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
 
                     <p className="text-sm/5 text-gray-700 mt-6 mb-2">
                         Don't know how to find your Discord channel ID? {" "}
-                        <a href="#" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
+                        <a href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
                     </p>
 
                     <p className="text-sm/5 text-gray-700 mb-2">
