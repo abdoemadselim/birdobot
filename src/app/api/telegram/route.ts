@@ -15,7 +15,7 @@ export const POST = async (request: NextRequest) => {
         const messageText = body.message.text
         if (!messageText || !messageText.startsWith("/start")) return NextResponse.json({ message: "invalid token" }, { status: 401 })
 
-        const token = messageText.split(" ")[1];
+        const token = messageText.split(" ")[1]?.trim();
 
         console.log(token)
 
