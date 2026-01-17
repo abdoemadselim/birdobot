@@ -34,8 +34,7 @@ export default function PaymentSuccessModal() {
                             Upgrade successful! 🎉
                         </p>
                         <p className="text-gray-600 text-sm/6 text-pretty pt-2">
-                            Thank you for upgrading to Pro and supporting PingPanda. Your
-                            account has been upgraded.
+                            Enjoy the additional credits you've just purchased. <br /> Have a good day
                         </p>
                     </div>
 
@@ -47,6 +46,6 @@ export default function PaymentSuccessModal() {
                     </div>
                 </div>
             </div>
-        </Modal>
+        </Modal >
     )
 }

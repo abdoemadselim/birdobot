@@ -1,7 +1,7 @@
-import { CORE_QUOTA, GROWTH_QUOTA, PREMIUM_QUOTA } from "@/config.js";
+import { CORE_QUOTA, GROWTH_QUOTA, PREMIUM_QUOTA } from "@/config";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/server/db/";
-import { userCreditsTable, userTable } from "@/server/db/schema";
+import { userCreditsTable } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
