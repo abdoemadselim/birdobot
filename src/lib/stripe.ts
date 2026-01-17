@@ -16,6 +16,7 @@ export const createCheckoutSession = async ({
             plan === "growth" ? process.env.GROWTH_PRODUCT_PRICE_ID : process.env.PREMIUM_PRODUCT_PRICE_ID
 
 
+    console.log(PRICE_PLAN)
     const session = await stripe.checkout.sessions.create({
         line_items: [
             {

@@ -68,9 +68,19 @@ export default function PricingPage() {
         }
     })
 
-    const handleCreateCheckout = (plan: "core" | "premium" | "growth") => {
+    const handleCreateCheckout = (plan: "free" | "core" | "premium" | "growth") => {
+        if (plan === "free" && user) {
+            router.push(`/dashboard`)
+            return
+        }
+
+        if (plan === "free" && !user) {
+            router.push(`/sign-in`)
+            return
+        }
+
         if (user) {
-            createCheckoutSession(plan)
+            createCheckoutSession(plan as "core" | "premium" | "growth")
         } else {
             router.push(`/sign-in?intent=upgrade&plan=${plan}`)
         }
@@ -89,7 +99,7 @@ export default function PricingPage() {
                 <div className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4 mt-6">
                     {
                         PLANS.map((plan) => (
-                            <div className={cn(`px-10 py-15 bg-white rounded-md ring-1 ring-inset ring-gray-100 shadow-sm hover:shadow-md `, plan.name === "Growth" ? "border-t-16 border-orange-400" : "border-t-16 border-brand-700")}>
+                            <div key={plan.name} className={cn(`px-10 py-15 bg-white rounded-md ring-1 ring-inset ring-gray-100 shadow-sm hover:shadow-md `, plan.name === "Growth" ? "border-t-16 border-orange-400" : "border-t-16 border-brand-700")}>
                                 <Heading className="pb-2 sm:text-2xl">
                                     {plan.name}
                                 </Heading>
@@ -114,7 +124,7 @@ export default function PricingPage() {
                                     }
                                 </ul>
 
-                                <Button className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)} onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium")}>
+                                <Button className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)} onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium" | "free")}>
                                     Get started
                                 </Button>
 
