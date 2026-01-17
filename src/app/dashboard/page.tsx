@@ -37,11 +37,13 @@ export default async function DashboardPage({
     }
 
     const intent = (await searchParams).intent
+    const plan = (await searchParams).plan as "core" | "growth" | "premium"
 
     if (intent && intent === "upgrade") {
         const session = await createCheckoutSession({
             userEmail: dbUser.email,
-            userId: dbUser.id
+            userId: dbUser.id,
+            plan: plan
         })
 
         if (session.url) {

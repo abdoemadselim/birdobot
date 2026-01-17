@@ -72,7 +72,7 @@ export default function PricingPage() {
         if (user) {
             createCheckoutSession(plan)
         } else {
-            router.push("/sign-in?intent=upgrade")
+            router.push(`/sign-in?intent=upgrade&plan=${plan}`)
         }
     }
 
