@@ -17,6 +17,8 @@ export const POST = async (request: NextRequest) => {
 
         const token = messageText.split(" ")[1];
 
+        console.log(token)
+
         const validatedToken = TELEGRAM_TOKEN_VALIDATOR.safeParse(token)
 
         if (!validatedToken.success) {
