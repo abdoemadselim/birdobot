@@ -24,8 +24,8 @@ export const userTable = pgTable(
 
     email: varchar("email", { length: 255 }).unique().notNull(),
 
-    discordId: varchar("discordId", { length: 255 }),
-    telegramId: integer("telegramId"),
+    discordId: varchar("discordId", { length: 30 }),
+    telegramId: varchar("telegramId", { length: 30 }),
 
     telegramToken: uuid("telegramToken").defaultRandom(),
 

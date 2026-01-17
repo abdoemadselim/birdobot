@@ -33,7 +33,7 @@ export const POST = async (request: NextRequest) => {
         await db
             .update(userTable)
             .set({
-                telegramId: body.message.chat.id
+                telegramId: String(body.message.chat.id)
             }).where(eq(userTable.id, user.id))
 
         return NextResponse.json({ message: "User telegram channel has been set" })

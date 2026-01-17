@@ -43,5 +43,16 @@ export const userRouter = j.router({
         }).where(eq(userTable.id, user.id))
 
         return c.json({ success: true })
+    }),
+
+    updateTelegramId: privateProcedure.input(z.object({ telegramId: z.string().min(1).max(40) })).mutation(async ({ ctx, c, input }) => {
+        const { db, user } = ctx;
+        const { telegramId } = input
+
+        await db.update(userTable).set({
+            telegramId: telegramId
+        }).where(eq(userTable.id, user.id))
+
+        return c.json({ success: true })
     })
 })

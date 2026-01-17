@@ -50,6 +50,13 @@
       "when": 1768648286499,
       "tag": "0006_glamorous_grim_reaper",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1768659379077,
+      "tag": "0007_red_quentin_quire",
+      "breakpoints": true
     }
   ]
 }

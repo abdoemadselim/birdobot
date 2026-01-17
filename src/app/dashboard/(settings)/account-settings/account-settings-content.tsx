@@ -17,14 +17,15 @@ import Toaster from "@/components/ui/toaser";
 
 interface AccountSettingsContentProps {
     discordId: string | null,
-    telegramId: number | null,
+    telegramId: string | null,
     telegramToken: string
 }
 
-export default function AccountSettingsContent({ discordId: initialDiscordId, telegramId, telegramToken }: AccountSettingsContentProps) {
+export default function AccountSettingsContent({ discordId: initialDiscordId, telegramId: initialTelegramId, telegramToken }: AccountSettingsContentProps) {
     const [discordId, setDiscordId] = useState(initialDiscordId)
+    const [telegramId, setTelegramId] = useState(initialTelegramId)
 
-    const { mutate: updateDiscordId, isPending } = useMutation({
+    const { mutate: updateDiscordId, isPending: isPendingDiscord } = useMutation({
         mutationFn: async (discordId: string) => {
             await client.user.updateDiscordId.$post({ discordId })
         },
@@ -44,6 +45,32 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                 <Toaster type="success" t={t} title="Account settings" children={
                     <div className="text-green-700 text-sm">
                         <p>Discord ID updated successfully.</p>
+                    </div>
+                } />
+            )
+        }
+    })
+
+    const { mutate: updateTelegramId, isPending: isPendingTelegram } = useMutation({
+        mutationFn: async (telegramId: string) => {
+            await client.user.updateTelegramId.$post({ telegramId })
+        },
+        onError: () => {
+            toast.custom((t) =>
+                <Toaster type="error" t={t} title="Account settings" children={
+                    <div className="text-red-500 text-sm">
+                        <p>Something went wrong while updating the telegram ID.</p>
+                        <br />
+                        <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us</Link></p>
+                    </div>
+                } />
+            )
+        },
+        onSuccess: () => {
+            toast.custom((t) =>
+                <Toaster type="success" t={t} title="Account settings" children={
+                    <div className="text-green-700 text-sm">
+                        <p>Telegram ID updated successfully.</p>
                     </div>
                 } />
             )
@@ -71,20 +98,20 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                         />
                     </div>
 
-                    <Button className="mt-2" onClick={() => updateDiscordId(discordId ?? "")} disabled={isPending}>
+                    <Button className="mt-2" onClick={() => updateDiscordId(discordId ?? "")} disabled={isPendingDiscord}>
                         {
-                            isPending ? "Saving..." : "Save changes"
+                            isPendingDiscord ? "Saving..." : "Save changes"
                         }
                     </Button>
 
-                    <p className="text-sm/5 text-gray-700 mt-6 mb-2">
-                        Don't know how to find your Discord channel ID? {" "}
-                        <a href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
+                    <p className="text-sm/5 text-gray-700 mb-2 mt-6 ">
+                        Haven't invited BirdoBot to your discord server yet? {" "}
+                        <a href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
                     </p>
 
                     <p className="text-sm/5 text-gray-700 mb-2">
-                        Haven't invited BirdoBot to your discord server yet? {" "}
-                        <a href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
+                        Don't know how to find your Discord channel ID? {" "}
+                        <a href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
                     </p>
                 </div>
             </section>
@@ -98,13 +125,38 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                 <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[700px] p-8">
                     {
                         telegramId ? (
-                            <p className="text-sm/6 text-gray-700 mb-2">
-                                Want to receive BirdBot insights on another telegram account? {" "}
+                            <>
+                                <div className="space-y-2 mb-2">
+                                    <Label htmlFor="telegramId">Telegram ID</Label>
+                                    <Input
+                                        id="telegramId"
+                                        onChange={(e) => setTelegramId(e.target.value)} value={telegramId ?? ""}
+                                        className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                    />
 
-                                <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
-                                    Click here to allow BirdoBot to send you insights on it
-                                </a>
-                            </p>
+                                    <Button className="mt-2" onClick={() => updateTelegramId(telegramId)} disabled={isPendingTelegram}>
+                                        {
+                                            isPendingTelegram ? "Saving..." : "Save changes"
+                                        }
+                                    </Button>
+                                </div>
+                                <p className="text-sm/6 text-gray-700 mb-2 pt-4">
+                                    Haven't started a chat with BirdoBot yet? {" "}
+
+                                    <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
+                                        Click here to allow BirdoBot to send you insights
+                                    </a>
+                                </p>
+
+                                <p className="text-sm/6 text-gray-700 mb-2">
+                                    Don't know how to find the telegram chat ID? {" "}
+                                    <ol>
+                                        <li>1. go to your chat with <strong>BirdoBotChat</strong>.</li>
+                                        <li>2. type <strong>@getidsbot</strong>.</li>
+                                        <li>3. copy the <strong>id</strong></li>
+                                    </ol>
+                                </p>
+                            </>
                         ) : (
                             <p className="text-sm/6 text-gray-700 mb-2">
                                 You have no telegram account linked to BirdoBot yet. {" "}
