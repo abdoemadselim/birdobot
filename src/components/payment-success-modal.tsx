@@ -19,7 +19,7 @@ export default function PaymentSuccessModal() {
     }
 
     return (
-        <Modal open={isOpen} handleModalOpen={(isOpen) => setIsOpen(isOpen)} >
+        <Modal open={isOpen} handleModalOpen={(isOpen) => setIsOpen(isOpen)} preventDefaultClose={true}>
             <div>
                 <div className="flex flex-col justify-center items-center">
                     <Image

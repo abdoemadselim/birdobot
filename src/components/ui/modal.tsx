@@ -18,10 +18,11 @@ interface ModalProps {
     trigger?: ReactNode,
     open: boolean,
     handleModalOpen: (open: boolean) => void,
-    title?: string
+    title?: string,
+    preventDefaultClose?: boolean
 }
 
-export default function Modal({ open, title, handleModalOpen, trigger, children }: ModalProps) {
+export default function Modal({ open, title, handleModalOpen, trigger, children, preventDefaultClose = false }: ModalProps) {
     const { isMobile } = useMediaQuery()
 
     return (
@@ -51,7 +52,7 @@ export default function Modal({ open, title, handleModalOpen, trigger, children 
                 <DialogTrigger asChild >
                     {trigger}
                 </DialogTrigger>
-                <DialogContent >
+                <DialogContent showCloseButton={!preventDefaultClose}>
                     <DialogTitle className="opacity-0">
                         {title}
                     </DialogTitle>
