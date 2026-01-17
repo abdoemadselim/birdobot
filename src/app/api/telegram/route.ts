@@ -11,11 +11,9 @@ export const POST = async (request: NextRequest) => {
     try {
         const body = await request.json() as { message: TelegramBot.Message, chat: TelegramBot.Chat }
 
-        console.log(body)
-
         //1- Check Token From The Body
         const messageText = body.message.text
-        if (!messageText) return NextResponse.json({ message: "invalid token" }, { status: 401 })
+        if (!messageText || !messageText.startsWith("/start")) return NextResponse.json({ message: "invalid token" }, { status: 401 })
 
         const token = messageText.split(" ")[1]?.trim();
 
