@@ -12,7 +12,8 @@ export default function UpgradePageContent() {
         queryFn: async () => {
             const res = await client.user.getUserUsage.$get();
             return await res.json()
-        }
+        },
+        refetchOnWindowFocus: false
     })
 
     return (

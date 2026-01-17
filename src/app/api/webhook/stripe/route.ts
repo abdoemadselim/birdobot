@@ -37,7 +37,7 @@ export const POST = async (request: NextRequest) => {
         }).onConflictDoUpdate({
             target: [userCreditsTable.userId, userCreditsTable.featureKey],
             set: {
-                balance: sql`userCreditsTable.balance + ${eventCredits}`,
+                balance: sql`${userCreditsTable.balance} + ${eventCredits}`,
             }
         })
 
@@ -48,7 +48,7 @@ export const POST = async (request: NextRequest) => {
         }).onConflictDoUpdate({
             target: [userCreditsTable.userId, userCreditsTable.featureKey],
             set: {
-                balance: sql`userCreditsTable.balance + ${categoriesCredits}`,
+                balance: sql`${userCreditsTable.balance} + ${categoriesCredits}`,
             }
         })
     }
