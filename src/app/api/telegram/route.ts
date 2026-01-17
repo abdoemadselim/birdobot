@@ -3,6 +3,9 @@ import { userTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import TelegramBot from "node-telegram-bot-api";
+import { z } from "zod";
+
+const TELEGRAM_TOKEN_VALIDATOR = z.string().uuid()
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -14,11 +17,13 @@ export const POST = async (request: NextRequest) => {
 
         const token = messageText.split(" ")[1];
 
-        if (!token) {
+        const validatedToken = TELEGRAM_TOKEN_VALIDATOR.parse(token)
+
+        if (!validatedToken) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
-        const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, token)))[0]
+        const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, validatedToken)))[0]
 
         if (!user || !body.message.chat?.id) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
