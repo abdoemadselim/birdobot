@@ -117,6 +117,8 @@ export default function PricingPage() {
                                 <Button className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)} onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium")}>
                                     Get started
                                 </Button>
+
+                                <p className="text-muted-foreground pt-4 text-center text-sm">One-time purchase</p>
                             </div>
                         ))
                     }
