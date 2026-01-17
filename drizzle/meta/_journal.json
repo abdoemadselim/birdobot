@@ -22,6 +22,34 @@
       "when": 1768583305811,
       "tag": "0002_cold_eternity",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1768642613693,
+      "tag": "0003_solid_screwball",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1768645449838,
+      "tag": "0004_bouncy_madame_hydra",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1768645660212,
+      "tag": "0005_adorable_maestro",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1768648286499,
+      "tag": "0006_glamorous_grim_reaper",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 // Libs
-import { and, eq, InferSelectModel, sql } from "drizzle-orm";
-import { eventCategoryTable, userTable } from "@/server/db/schema";
+import { and, eq, gte, InferSelectModel, sql } from "drizzle-orm";
+import { eventCategoryTable, userCreditsTable, userTable } from "@/server/db/schema";
 import { j, privateProcedure } from "../jstack";
 import z from "zod";
 
@@ -115,6 +115,12 @@ export const eventCategoryRouter = j.router({
                     ))
                 .returning({ deletedId: eventCategoryTable.id })
 
+            await db
+                .update(userCreditsTable)
+                .set({
+                    balance: sql`${userCreditsTable.balance} + 1`
+                }).where(and(eq(userCreditsTable.userId, user.id), eq(userCreditsTable.featureKey, "EVENTS_CATEGORIES")))
+
             return c.json({ success: true })
         }),
 
@@ -124,7 +130,17 @@ export const eventCategoryRouter = j.router({
             const { user, db } = ctx
             const { name, color, emoji, channels } = input
 
-            // TODO: HANDLE PAID PLANS
+            const categoriesCreditsLeft = (await db.select({
+                balance: userCreditsTable.balance
+            }).from(userCreditsTable).where(
+                and(
+                    eq(userCreditsTable.userId, user.id),
+                    eq(userCreditsTable.featureKey, "EVENTS_CATEGORIES"),
+                )))[0];
+
+            if (categoriesCreditsLeft?.balance === 0) {
+                return c.json({ success: false, message: "No event categories credits left." }, { status: 402 })
+            }
 
             const eventCategory = await db
                 .insert(eventCategoryTable)
@@ -142,6 +158,12 @@ export const eventCategoryRouter = j.router({
                     color: eventCategoryTable.color,
                     channels: eventCategoryTable.channels
                 })
+
+            await db
+                .update(userCreditsTable)
+                .set({
+                    balance: sql`${userCreditsTable.balance} - 1`
+                }).where(and(eq(userCreditsTable.userId, user.id), eq(userCreditsTable.featureKey, "EVENTS_CATEGORIES")))
 
             return c.json({ success: true, eventCategory: eventCategory[0] })
         }),
@@ -174,6 +196,13 @@ export const eventCategoryRouter = j.router({
                     channels: ["discord"]
                 }
             ])
+
+
+        await db
+            .update(userCreditsTable)
+            .set({
+                balance: sql`${userCreditsTable.balance} - 3`
+            }).where(and(eq(userCreditsTable.userId, user.id), eq(userCreditsTable.featureKey, "EVENTS_CATEGORIES"), gte(userCreditsTable.balance, 3)))
 
         return c.json({ _success: true })
     })

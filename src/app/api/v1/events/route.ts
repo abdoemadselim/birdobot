@@ -1,17 +1,14 @@
 // Libs
 import { DiscordClient } from "@/lib/discord-client";
 import { db } from "@/server/db";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, gte, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { escapeMarkdownV2 } from "@/lib/utils";
 import { telegramBot } from "@/lib/telegram-client";
 
-// Config
-import { FREE_QUOTA, PRO_QUOTA } from "@/config";
-
 // Schemas
-import { eventCategoryTable, eventTable, quotaTable, userTable } from "@/server/db/schema";
+import { eventCategoryTable, eventTable, userCreditsTable, userTable } from "@/server/db/schema";
 import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
 
 const REQUEST_VALIDATOR = z.object({
@@ -46,42 +43,16 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "Invalid API Key" }, { status: 401 })
         }
 
-        // 3- VALIDATE USER QUOTA LIMIT
-        const currentDate = new Date()
-        const month = currentDate.getMonth() + 1
-        const year = currentDate.getFullYear()
+        // 3- VALIDATE USER CREDITS
+        const eventsCreditsLeft = (await db.select({ balance: userCreditsTable.balance }).from(userCreditsTable).where(
+            and(
+                eq(userCreditsTable.userId, user.id),
+                eq(userCreditsTable.featureKey, "EVENTS")
+            )))[0]
 
-        let userQuota = (await db
-            .select({
-                count: quotaTable.count,
-            })
-            .from(quotaTable)
-            .where(
-                and(
-                    eq(quotaTable.userId, user.id),
-                    eq(quotaTable.month, month),
-                    eq(quotaTable.year, year)
-                )
-            ))[0]
 
-        if (!userQuota) {
-            userQuota = (await db
-                .insert(quotaTable)
-                .values({
-                    count: 1,
-                    userId: user.id,
-                    month: month,
-                    year: year
-                }).returning({ count: quotaTable.count }))[0]
-        }
-
-        const quotaLimit =
-            user.plan === "FREE" ?
-                FREE_QUOTA.maxEventsPerMonth :
-                PRO_QUOTA.maxEventsPerMonth
-
-        if (userQuota && userQuota?.count > quotaLimit) {
-            return NextResponse.json({ message: "Monthly quota reacted. Please upgrade your plan for more events" }, { status: 429 })
+        if (!eventsCreditsLeft?.balance || eventsCreditsLeft.balance <= 0) {
+            return NextResponse.json({ message: "You're out of credits. Please buy some credits for more events" }, { status: 429 })
         }
 
         // 4- VALIDATE BODY DATA
@@ -150,14 +121,6 @@ export const POST = async (request: NextRequest) => {
                         deliveryStatus: "DELIVERED"
                     })
 
-                    await db
-                        .update(quotaTable)
-                        .set({
-                            count: sql`${quotaTable.count} + 1`,
-                            userId: user.id,
-                            month: month,
-                            year: year,
-                        })
                 } catch (error) {
                     await db.update(eventTable).set({
                         deliveryStatus: "FAILED"
@@ -204,6 +167,12 @@ ${fieldsText}
             }
         })
 
+        await db
+            .update(userCreditsTable)
+            .set({
+                featureKey: "EVENTS",
+                balance: sql`${userCreditsTable.balance} - 1`,
+            }).where(and(eq(userCreditsTable.userId, user.id), eq(userCreditsTable.featureKey, "EVENTS"), gte(userCreditsTable.balance, 0)))
 
         return NextResponse.json({
             message: "Event processed successfully",

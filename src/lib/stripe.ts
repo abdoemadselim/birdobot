@@ -7,12 +7,19 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 export const createCheckoutSession = async ({
     userEmail,
-    userId
-}: { userEmail: string, userId: number }) => {
+    userId,
+    plan
+}: { userEmail: string, userId: number, plan: "core" | "growth" | "premium" }) => {
+    const PRICE_PLAN =
+        plan === "core" ?
+            process.env.CORE_PRODUCT_PRICE_ID :
+            plan === "growth" ? process.env.GROWTH_PRODUCT_PRICE_ID : process.env.PREMIUM_PRODUCT_PRICE_ID
+
+
     const session = await stripe.checkout.sessions.create({
         line_items: [
             {
-                price: process.env.PRO_PRODUCT_PRICE_ID,
+                price: PRICE_PLAN,
                 quantity: 1
             }
         ],
@@ -21,7 +28,8 @@ export const createCheckoutSession = async ({
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
         customer_email: userEmail,
         metadata: {
-            userId
+            userId,
+            plan: plan
         }
     })
 

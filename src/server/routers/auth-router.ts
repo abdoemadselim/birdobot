@@ -1,6 +1,7 @@
-import { userTable } from "@/server/db/schema"
+import { featureEnum, userCreditsTable, userTable } from "@/server/db/schema"
 import { j, privateProcedure, publicProcedure } from "../jstack"
 import { currentUser } from "@clerk/nextjs/server"
+import { eq } from "drizzle-orm"
 
 export const authRouter = j.router({
   // Procedure
@@ -15,18 +16,35 @@ export const authRouter = j.router({
       return c.json({ isSync: false })
     }
 
-    const [users] = await db
+    const dbUser = (await db
       .select()
       .from(userTable)
-      .limit(1)
+      .where(eq(userTable.externalId, user.id)))[0]
 
-    if (!users) {
-      await db
+    if (!dbUser) {
+      const newUser = (await db
         .insert(userTable).values({
           externalId: user.id,
           email: user.emailAddresses[0]?.emailAddress!,
-          quotaLimit: 100
-        })
+        }).returning({
+          id: userTable.id,
+        }))[0]
+
+      if (!newUser) {
+        return c.json({ isSync: false })
+      }
+
+      await db.insert(userCreditsTable).values({
+        featureKey: "EVENTS",
+        balance: 100,
+        userId: newUser?.id
+      })
+
+      await db.insert(userCreditsTable).values({
+        featureKey: "EVENTS_CATEGORIES",
+        balance: 3,
+        userId: newUser?.id
+      })
 
       return c.json({ isSync: true })
     }

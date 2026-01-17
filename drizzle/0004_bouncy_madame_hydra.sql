@@ -1,0 +1,1 @@
+ALTER TABLE "userCredits" ADD CONSTRAINT "user_feature_key" UNIQUE("userId","featureKey");

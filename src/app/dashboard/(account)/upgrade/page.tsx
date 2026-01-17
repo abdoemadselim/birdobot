@@ -29,7 +29,7 @@ export default async function UpgradePlan() {
 
     return (
         <DashboardLayout title="Plan Details" >
-            <UpgradePageContent plan={dbUser.plan} />
+            <UpgradePageContent />
         </DashboardLayout>
     )
 }

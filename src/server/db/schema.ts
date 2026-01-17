@@ -12,7 +12,7 @@ import {
   jsonb
 } from "drizzle-orm/pg-core"
 
-export const planEnum = pgEnum("plan", ["FREE", "PRO"])
+export const featureEnum = pgEnum("feature", ["EVENTS", "EVENTS_CATEGORIES"])
 export const deliveryStatusEnum = pgEnum("deliveryStatusEnum", ["PENDING", "FAILED", "DELIVERED"])
 export const channelEnum = pgEnum("discord", ["discord", "telegram", "slack"])
 
@@ -31,12 +31,8 @@ export const userTable = pgTable(
 
     apiKey: uuid("apiKey").defaultRandom(),
 
-    plan: planEnum("plan").default("FREE").notNull(),
-
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-
-    quotaLimit: integer("quotaLimit")
   },
   (table) => [
     index("apiKey_idx").on(table.apiKey),
@@ -86,17 +82,15 @@ export const eventTable = pgTable(
   ]
 )
 
-export const quotaTable = pgTable(
-  "quota",
+export const userCreditsTable = pgTable(
+  "userCredits",
   {
     id: serial("id").primaryKey(),
     userId: integer("userId").references(() => userTable.id),
-
-    count: integer("count").default(0).notNull(),
-    month: integer("month"),
-    year: integer("year"),
-
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-  }
+    featureKey: featureEnum("featureKey").notNull(),
+    balance: integer("balance").default(0).notNull(),
+  },
+  (table) => [
+    unique("user_feature_key").on(table.userId, table.featureKey)
+  ]
 )
