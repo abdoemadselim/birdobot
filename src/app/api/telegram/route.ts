@@ -17,13 +17,13 @@ export const POST = async (request: NextRequest) => {
 
         const token = messageText.split(" ")[1];
 
-        const validatedToken = TELEGRAM_TOKEN_VALIDATOR.parse(token)
+        const validatedToken = TELEGRAM_TOKEN_VALIDATOR.safeParse(token)
 
-        if (!validatedToken) {
+        if (!validatedToken.success) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
         }
 
-        const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, validatedToken)))[0]
+        const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.telegramToken, validatedToken.data)))[0]
 
         if (!user || !body.message.chat?.id) {
             return NextResponse.json({ message: "invalid token" }, { status: 401 })
