@@ -101,7 +101,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                             <p className="text-sm/6 text-gray-700 mb-2">
                                 Want to receive BirdBot insights on another telegram account? {" "}
 
-                                <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChannelBot?start=${telegramToken}`}>
+                                <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
                                     Click here to allow BirdoBot to send you insights on it
                                 </a>
                             </p>
@@ -109,7 +109,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                             <p className="text-sm/6 text-gray-700 mb-2">
                                 You have no telegram account linked to BirdoBot yet. {" "}
 
-                                <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChannelBot?start=${telegramToken}`}>
+                                <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
                                     Click here to start receiving insights from BirdoBot on your telegram
                                 </a>
                             </p>
