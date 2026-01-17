@@ -6,7 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation"
 
 export default function SignInPage() {
     const searchParams = useSearchParams()
+
     const intent = searchParams.get("intent")
+    const plan = searchParams.get("plan")
 
     const router = useRouter()
     const { user, isLoaded } = useUser()
@@ -21,7 +23,7 @@ export default function SignInPage() {
                 !isLoaded ? (
                     <LoadingSpinner />
                 ) : (
-                    <SignIn forceRedirectUrl={intent ? `/dashboard/?intent=${intent}` : "/dashboard"} />
+                    <SignIn forceRedirectUrl={intent ? `/dashboard/?intent=${intent}&plan=${plan}` : "/dashboard"} />
                 )
             }
         </div>
