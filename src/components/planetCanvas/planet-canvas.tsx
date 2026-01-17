@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/Addons.js"
 const createPlanet = () => {
     const sphereGeometry = new THREE.SphereGeometry(6, 30, 30)
     const textureLoader = new THREE.TextureLoader()
-    const texture = textureLoader.load("/textures/earth.jpg")
+    const texture = textureLoader.load("/textures/earth.webp")
     texture.colorSpace = THREE.SRGBColorSpace
 
     const sphereMat = new THREE.MeshStandardMaterial({
