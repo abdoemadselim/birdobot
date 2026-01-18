@@ -15,7 +15,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
 
             return hasEvents
         },
-        refetchInterval: (query) => query.state.data?.hasEvents ? false : 2000
+        refetchInterval: (query) => query.state.data ? false : 2000
     })
 
 
