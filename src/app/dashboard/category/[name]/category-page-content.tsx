@@ -120,7 +120,7 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
     })
 
     const { data: categoryEvents, isFetching: isFetchingCategoryEvents } = useQuery({
-        queryKey: ["events", category.id, activePeriod],
+        queryKey: ["events", category.id, pageSize, pageIndex, activePeriod],
         queryFn: async () => {
             const res = await client.event.getCategoryEvents.$get({
                 categoryId: category.id,
@@ -171,6 +171,10 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
         <div>
             <Tabs value={activePeriod} onValueChange={(value) => {
                 setActivePeriod(value as "today" | "this week" | "this month")
+                setPagination((prev) => ({
+                    ...prev,
+                    pageIndex: 0
+                }))
             }}>
                 <TabsList className="space-x-1">
                     <TabsTrigger value="today" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "today" && "text-gray-700")}>Today</TabsTrigger>

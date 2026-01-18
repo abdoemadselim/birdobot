@@ -49,6 +49,8 @@ export const eventRouter = j.router({
                 createdAt: eventTable.createdAt
             }).from(eventTable).where(and(eq(eventTable.eventCategoryId, categoryId), eq(eventTable.userId, user.id), gt(eventTable.createdAt, startDate))).limit(pageSize).offset(pageSize * (pageIndex - 1))
 
+            console.log(events)
+
             return c.superjson({ events: events, eventsCount })
         })
 })
