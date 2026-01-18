@@ -171,7 +171,7 @@ export default function DashboardPageContent() {
                                 <Modal
                                     open={deleteTarget === category.info.name}
                                     handleModalOpen={(open) => {
-                                        if (!open) setDeleteTarget(null)
+                                        if (!open) setDeleteTarget(category.info.name)
                                     }}
                                     trigger={
                                         <Button variant="ghost" size="sm" className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center">
