@@ -2,7 +2,7 @@
 
 // Libs
 import { InferSelectModel } from "drizzle-orm";
-import { BarChart } from "lucide-react";
+import { ArrowUpDown, BarChart } from "lucide-react";
 import { client } from "@/lib/client";
 import {
     flexRender,
@@ -113,7 +113,17 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
         },
         {
             accessorKey: "createdAt",
-            header: "Date",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Date
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
             cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleString()
         },
         {
@@ -141,7 +151,7 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
                 cell: ({ row }: { row: any }) => {
                     return (
                         <div className="font-semibold text-sm text-gray-600">
-                            {row.original.fields[field[0]]}
+                            {row.original.fields[field[0]] || "-"}
                         </div>
                     )
                 },
