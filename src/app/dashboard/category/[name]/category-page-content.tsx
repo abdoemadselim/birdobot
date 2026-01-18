@@ -232,7 +232,7 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
                 </TabsContent>
             </Tabs>
             <div className="pt-12">
-                <p className="text-xl mb-2">
+                <p className="text-2xl font-medium text-gray-600 mb-2">
                     Events overview
                 </p>
 
