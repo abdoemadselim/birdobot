@@ -7,7 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
-  title: "JStack App",
+  title: "BirdoBot - Fast & Pretty",
   description: "Created using JStack",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
