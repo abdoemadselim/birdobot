@@ -44,19 +44,17 @@ export default function DashboardPageContent() {
         onMutate: async (categoryName, context) => {
             // Cancel any outgoing refetches
             // (so they don't overwrite our optimistic update)
-            await context.client.cancelQueries({ queryKey: ['event-categories'] })
+            await queryClient.cancelQueries({ queryKey: ['event-categories'] })
 
             // Snapshot the previous value
-            const previousEventCategories = context.client.getQueryData(['event-categories'])
+            const previousEventCategories = queryClient.getQueryData(['event-categories'])
 
             // Optimistically update to the new value
-            context.client.setQueryData(['event-categories'], (old: {
+            queryClient.setQueryData(['event-categories'], (old: {
                 info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
                 events_count: number,
                 unique_field_count: number
-            }[]) => {
-                return old.filter((category) => category.info.name !== categoryName)
-            })
+            }[]) => old.filter((category) => category.info.name !== categoryName))
 
             setOpenDeleteModal(false)
 
@@ -64,7 +62,7 @@ export default function DashboardPageContent() {
             return { previousEventCategories }
         },
         onError: (err, categoryName, onMutateResult, context) => {
-            context.client.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
+            queryClient.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Delete Event Category" children={
                     <div className="text-red-500 text-sm">
