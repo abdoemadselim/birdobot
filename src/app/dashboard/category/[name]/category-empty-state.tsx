@@ -71,7 +71,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
                 <p className='text-zinc-600'>Listening to incoming events...</p>
             </div>
 
-            <p className='text-zinc-600 pt-2'>Need help? Check out our <Link href="" className='text-brand-700 hover:underline'>documentation</Link> or <a href="" className='text-brand-700 hover:underline'>contact support</a></p>
+            {/* <p className='text-zinc-600 pt-2'>Need help? Check out our <Link href="" className='text-brand-700 hover:underline'>documentation</Link> or <a href="" className='text-brand-700 hover:underline'>contact support</a></p> */}
         </div>
     )
 }
