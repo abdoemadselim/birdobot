@@ -1,15 +1,16 @@
 // Libs
-import { and, eq, gte, InferSelectModel, sql } from "drizzle-orm";
-import { eventCategoryTable, userCreditsTable, userTable } from "@/server/db/schema";
+import { and, eq, gt, gte, InferSelectModel, sql } from "drizzle-orm";
+import { eventCategoryTable, eventTable, userCreditsTable, userTable } from "@/server/db/schema";
 import { j, privateProcedure } from "../jstack";
 import z from "zod";
 
 // Schemas
-import { EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
+import { EVENT_CATEGORY_NAME_VALIDATOR, EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
 
 // Utils
 import { parseColor } from "@/lib/utils";
 import { _success } from "zod/v4/core";
+import { endOfDay, endOfMonth, startOfDay, startOfMonth, startOfWeek } from "date-fns";
 
 export const eventCategoryRouter = j.router({
     getEventCategories: privateProcedure.query(async ({ c, ctx }) => {
@@ -204,6 +205,51 @@ export const eventCategoryRouter = j.router({
                 balance: sql`${userCreditsTable.balance} - 3`
             }).where(and(eq(userCreditsTable.userId, user.id), eq(userCreditsTable.featureKey, "EVENTS_CATEGORIES"), gte(userCreditsTable.balance, 3)))
 
-        return c.json({ _success: true })
+        return c.json({ success: true })
+    }),
+
+    getCategoryDetails: privateProcedure.input(z.object({ categoryId: z.number(), period: z.enum(["today", "this month", "this week"]) })).query(async ({ c, ctx, input }) => {
+        const { user, db } = ctx;
+
+        const { categoryId, period } = input;
+
+        const date = new Date()
+        let startDate = startOfDay(date)
+
+        switch (period) {
+            case "this month":
+                startDate = startOfMonth(date);
+                break
+            case "this week":
+                startDate = startOfWeek(date)
+                break
+        }
+
+        // Count of events for the category
+        const totalEventsQuery = db.$count(eventTable, and(eq(eventTable.userId, user.id), eq(eventTable.eventCategoryId, categoryId), gt(eventTable.createdAt, startDate)))
+
+        // All unique fields
+        const categoryUniqueFields = db.select({
+            fields: eventTable.fields
+        }).from(eventTable).where(and(eq(eventTable.userId, user.id), eq(eventTable.eventCategoryId, categoryId), gt(eventTable.createdAt, startDate)))
+
+        const [totalEvents, uniqueFields] = await Promise.all([totalEventsQuery, categoryUniqueFields])
+
+        const fieldsMap: Record<string, number> = {}
+        uniqueFields.forEach((event: { fields: any }) => {
+            Object.entries(event.fields).forEach(([key, value]) => {
+                if (typeof value !== "number") {
+                    return
+                }
+
+                if (!fieldsMap[key]) {
+                    fieldsMap[key] = 0
+                }
+
+                fieldsMap[key] += value
+            })
+        })
+
+        return c.json({ totalEvents: totalEvents, uniqueFields: fieldsMap })
     })
 })

@@ -7,13 +7,13 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function CategoryEmptyState({ categoryName, categoryId }: { categoryName: string, categoryId: number }) {
-    const { data } = useQuery({
-        queryKey: [categoryName, "hasEvents"],
+    useQuery({
+        queryKey: ["category", categoryName, "hasEvents"],
         queryFn: async () => {
             const res = await client.event.pullEvents.$get({ id: categoryId })
-            const events = res.json()
+            const hasEvents = await res.json()
 
-            return events
+            return hasEvents
         },
         refetchInterval: (query) => query.state.data?.hasEvents ? false : 2000
     })

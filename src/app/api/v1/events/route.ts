@@ -88,7 +88,6 @@ export const POST = async (request: NextRequest) => {
             formattedMessage: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
         }).returning({ id: eventTable.id });
 
-
         // 7- Send the even to each channel 
         category.channels.forEach(async (channel: "discord" | "telegram" | "slack") => {
             if (channel === "discord") {
@@ -117,14 +116,11 @@ export const POST = async (request: NextRequest) => {
 
                 try {
                     await discordClient.sendEmbed(user.discordId as string, eventData)
-                    await db.update(eventTable).set({
-                        deliveryStatus: "DELIVERED"
-                    })
-
                 } catch (error) {
                     await db.update(eventTable).set({
                         deliveryStatus: "FAILED"
-                    })
+                    }).where(eq(eventTable.id, event[0]?.id as number))
+
                     console.error(error)
                     return NextResponse.json({ message: "Internal server error" }, { status: 500 })
                 }
@@ -132,7 +128,7 @@ export const POST = async (request: NextRequest) => {
                 if (!user.telegramId) {
                     await db.update(eventTable).set({
                         deliveryStatus: "FAILED"
-                    })
+                    }).where(eq(eventTable.id, event[0]?.id as number))
 
                     return;
                 }
@@ -173,6 +169,10 @@ ${fieldsText}
                 featureKey: "EVENTS",
                 balance: sql`${userCreditsTable.balance} - 1`,
             }).where(and(eq(userCreditsTable.userId, user.id), eq(userCreditsTable.featureKey, "EVENTS"), gte(userCreditsTable.balance, 0)))
+
+        await db.update(eventTable).set({
+            deliveryStatus: "DELIVERED"
+        }).where(eq(eventTable.id, event[0]?.id as number))
 
         return NextResponse.json({
             message: "Event processed successfully",

@@ -123,7 +123,7 @@ export default function DashboardPageContent() {
                                         {
                                             category.info.channels.map((channel) => {
                                                 return (
-                                                    <div className="rounded-md w-6 h-6">
+                                                    <div className="rounded-md w-6 h-6" key={channel}>
                                                         {
                                                             {
                                                                 slack: <Icons.slack className="w-[15px] h-[15px]" />,
