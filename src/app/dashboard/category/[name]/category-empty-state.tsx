@@ -19,7 +19,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
     })
 
 
-    const codeSnippet = `await fetch('http://localhost:3000/api/events', {
+    const codeSnippet = `await fetch('https://ring-rang.vercel.app/api/events', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY'

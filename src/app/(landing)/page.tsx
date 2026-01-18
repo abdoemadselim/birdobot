@@ -12,11 +12,10 @@ import { Icons } from "@/components/icons";
 import BackgroundPattern from "@/components/background-pattern";
 import BirdsPattern from "@/components/birds-pattern";
 import PlanetCanvasContainer from "@/components/planetCanvas/planet-canvas-container";
-import ServicePreview from "./service-preview";
 import MockApps from "./mock-apps";
 
 export default async function HomePage() {
-  const codeSnippet = `await fetch("http://localhost:3000/api/v1/events", {
+  const codeSnippet = `await fetch("https://ring-rang.vercel.app/api/v1/events", {
   method: "POST",
   body: JSON.stringify({
     category: "sale",
