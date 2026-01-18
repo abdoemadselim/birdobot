@@ -151,7 +151,7 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
                 cell: ({ row }: { row: any }) => {
                     return (
                         <div className="font-semibold text-sm text-gray-600">
-                            {row.original.fields[field[0]] || "-"}
+                            {row.original.fields[field[0]] === undefined ? "-" : String(row.original.fields[field[0]])}
                         </div>
                     )
                 },
