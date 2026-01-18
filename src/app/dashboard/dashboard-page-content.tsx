@@ -23,7 +23,7 @@ import { Icons } from "@/components/icons";
 import { eventCategoryTable } from "@/server/db/schema";
 
 export default function DashboardPageContent() {
-    const [openDeleteModal, setOpenDeleteModal] = useState(false)
+    const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
 
     const queryClient = useQueryClient()
 
@@ -56,7 +56,7 @@ export default function DashboardPageContent() {
                 unique_field_count: number
             }[]) => old.filter((category) => category.info.name !== categoryName))
 
-            setOpenDeleteModal(false)
+            setDeleteTarget(null)
 
             // Return a result with the snapshotted value
             return { previousEventCategories }
@@ -74,7 +74,7 @@ export default function DashboardPageContent() {
             )
         },
         onSettled: () => {
-            setOpenDeleteModal(false)
+            setDeleteTarget(null)
             queryClient.invalidateQueries({ queryKey: ["event-categories"] })
         }
     })
@@ -169,9 +169,9 @@ export default function DashboardPageContent() {
                                     <ArrowRight className="group-hover:translate-x-[5px] transition-transform duration-200 ml-1" />
                                 </Link>
                                 <Modal
-                                    open={openDeleteModal}
+                                    open={deleteTarget === category.info.name}
                                     handleModalOpen={(open) => {
-                                        setOpenDeleteModal(open)
+                                        if (!open) setDeleteTarget(null)
                                     }}
                                     trigger={
                                         <Button variant="ghost" size="sm" className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center">
@@ -203,7 +203,7 @@ export default function DashboardPageContent() {
                                             <Button
                                                 className="cursor-pointer"
                                                 variant="outline"
-                                                onClick={() => setOpenDeleteModal(false)}
+                                                onClick={() => setDeleteTarget(null)}
                                             >
                                                 Cancel
                                             </Button>
