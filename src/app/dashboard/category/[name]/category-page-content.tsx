@@ -67,12 +67,6 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
 
     const { data: hasEvents } = useQuery({
         queryKey: ["category", category.id, "hasEvents"],
-        queryFn: async () => {
-            const res = await client.event.pullEvents.$get({ id: category.id })
-            const hasEvents = res.json()
-
-            return hasEvents
-        },
         initialData: initialHasEvents
     })
 
