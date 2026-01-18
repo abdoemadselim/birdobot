@@ -2,13 +2,12 @@
 
 import { client } from '@/lib/client';
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function CategoryEmptyState({ categoryName, categoryId }: { categoryName: string, categoryId: number }) {
     useQuery({
-        queryKey: ["category", categoryName, "hasEvents"],
+        queryKey: ["category", categoryId, "hasEvents"],
         queryFn: async () => {
             const res = await client.event.pullEvents.$get({ id: categoryId })
             const hasEvents = await res.json()
