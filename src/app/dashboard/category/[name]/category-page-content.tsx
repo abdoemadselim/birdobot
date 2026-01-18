@@ -16,7 +16,7 @@ import {
     type SortingState,
 } from "@tanstack/react-table"
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -47,40 +47,6 @@ interface CategoryPageContentProps {
     hasEvents: boolean
 }
 
-const columns: ColumnDef<Pick<InferSelectModel<typeof eventTable>, "name" | "createdAt" | "deliveryStatus">>[] = [
-    {
-        accessorKey: "name",
-        header: "Category",
-        cell: ({ row }) => (
-            <div className="font-semibold text-sm text-gray-600">
-                {String(row.getValue("name")).charAt(0).toUpperCase()}{String(row.getValue("name")).slice(1)}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "createdAt",
-        header: "Date",
-        cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleString()
-    },
-    {
-        accessorKey: "deliveryStatus",
-        header: "Status",
-        cell: ({ row }) => (
-            <div className={
-                cn(
-                    "rounded-lg w-fit font-semibold px-2 text-sm",
-                    {
-                        "bg-green-100 text-green-800": row.getValue("deliveryStatus") === "DELIVERED",
-                        "bg-red-100 text-red-800": row.getValue("deliveryStatus") === "FAILED",
-                        "bg-yellow-100 text-yellow-800": row.getValue("deliveryStatus") === "PENDING",
-                    }
-                )
-            }>
-                {row.getValue("deliveryStatus")}
-            </div>
-        ),
-    },
-]
 
 export default function CategoryPageContent({ category, hasEvents: initialHasEvents }: CategoryPageContentProps) {
     const [activePeriod, setActivePeriod] = useState<"today" | "this month" | "this week">("today")
@@ -116,7 +82,8 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
             const res = await client.eventCategory.getCategoryDetails.$get({ categoryId: category.id, period: activePeriod })
             return await res.json()
         },
-        enabled: hasEvents
+        enabled: hasEvents,
+        refetchOnWindowFocus: false
     })
 
     const { data: categoryEvents, isFetching: isFetchingCategoryEvents } = useQuery({
@@ -130,8 +97,57 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
             })
             return await res.json()
         },
-        enabled: hasEvents
+        enabled: hasEvents,
+        refetchOnWindowFocus: false
     })
+
+    const columns: ColumnDef<Pick<InferSelectModel<typeof eventTable>, "name" | "createdAt" | "deliveryStatus">>[] = useMemo(() => [
+        {
+            accessorKey: "name",
+            header: "Category",
+            cell: ({ row }) => (
+                <div className="font-semibold text-sm text-gray-600">
+                    {String(row.getValue("name")).charAt(0).toUpperCase()}{String(row.getValue("name")).slice(1)}
+                </div>
+            ),
+        },
+        {
+            accessorKey: "createdAt",
+            header: "Date",
+            cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleString()
+        },
+        {
+            accessorKey: "deliveryStatus",
+            header: "Status",
+            cell: ({ row }) => (
+                <div className={
+                    cn(
+                        "rounded-lg w-fit font-semibold px-2 text-sm",
+                        {
+                            "bg-green-100 text-green-800": row.getValue("deliveryStatus") === "DELIVERED",
+                            "bg-red-100 text-red-800": row.getValue("deliveryStatus") === "FAILED",
+                            "bg-yellow-100 text-yellow-800": row.getValue("deliveryStatus") === "PENDING",
+                        }
+                    )
+                }>
+                    {row.getValue("deliveryStatus")}
+                </div>
+            ),
+        },
+        ...(() => {
+            return Object.entries(categoryEvents?.events[0]?.fields || {}).map((field) => ({
+                accessorKey: field[0],
+                header: field[0],
+                cell: ({ row }: { row: any }) => {
+                    return (
+                        <div className="font-semibold text-sm text-gray-600">
+                            {row.original.fields[field[0]]}
+                        </div>
+                    )
+                },
+            }))
+        })()
+    ], [categoryEvents])
 
     const table = useReactTable({
         data: categoryEvents?.events || [],

@@ -1,5 +1,5 @@
 // Libs
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, desc, eq, gt, sql } from "drizzle-orm";
 import { eventCategoryTable, eventTable, userTable } from "@/server/db/schema";
 import { j, privateProcedure } from "../jstack";
 import z from "zod";
@@ -46,11 +46,24 @@ export const eventRouter = j.router({
             const events = await db.select({
                 name: eventTable.name,
                 deliveryStatus: eventTable.deliveryStatus,
-                createdAt: eventTable.createdAt
-            }).from(eventTable).where(and(eq(eventTable.eventCategoryId, categoryId), eq(eventTable.userId, user.id), gt(eventTable.createdAt, startDate))).limit(pageSize).offset(pageSize * (pageIndex - 1))
+                createdAt: eventTable.createdAt,
+                fields: eventTable.fields
+            }).from(eventTable)
+                .where(and(eq(eventTable.eventCategoryId, categoryId), eq(eventTable.userId, user.id), gt(eventTable.createdAt, startDate))).limit(pageSize).offset(pageSize * (pageIndex - 1))
+                .orderBy(desc(eventTable.createdAt))
 
-            console.log(events)
+            const eventsData = events.map((event) => {
+                const fieldsMap = Object.entries(event.fields as Record<string, number | string | boolean>[]).map((field) => {
+                    return [field[0], field[1]]
+                })
 
-            return c.superjson({ events: events, eventsCount })
+                const fieldsData = Object.fromEntries(fieldsMap)
+
+                return {
+                    ...event,
+                    fields: fieldsData
+                }
+            })
+            return c.superjson({ events: eventsData, eventsCount, })
         })
 })
