@@ -54,5 +54,16 @@ export const userRouter = j.router({
         }).where(eq(userTable.id, user.id))
 
         return c.json({ success: true })
+    }),
+
+    updateSlackId: privateProcedure.input(z.object({ slackId: z.string().min(1).max(40) })).mutation(async ({ ctx, c, input }) => {
+        const { db, user } = ctx;
+        const { slackId } = input
+
+        await db.update(userTable).set({
+            slackId: slackId
+        }).where(eq(userTable.id, user.id))
+
+        return c.json({ success: true })
     })
 })

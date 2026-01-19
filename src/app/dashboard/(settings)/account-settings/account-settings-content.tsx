@@ -18,12 +18,14 @@ import Toaster from "@/components/ui/toaser";
 interface AccountSettingsContentProps {
     discordId: string | null,
     telegramId: string | null,
-    telegramToken: string
+    telegramToken: string,
+    slackId: string | null
 }
 
-export default function AccountSettingsContent({ discordId: initialDiscordId, telegramId: initialTelegramId, telegramToken }: AccountSettingsContentProps) {
+export default function AccountSettingsContent({ discordId: initialDiscordId, telegramId: initialTelegramId, slackId: initialSlackId, telegramToken }: AccountSettingsContentProps) {
     const [discordId, setDiscordId] = useState(initialDiscordId)
     const [telegramId, setTelegramId] = useState(initialTelegramId)
+    const [slackId, setSlackId] = useState(initialSlackId)
 
     const { mutate: updateDiscordId, isPending: isPendingDiscord } = useMutation({
         mutationFn: async (discordId: string) => {
@@ -71,6 +73,32 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                 <Toaster type="success" t={t} title="Account settings" children={
                     <div className="text-green-700 text-sm">
                         <p>Telegram ID updated successfully.</p>
+                    </div>
+                } />
+            )
+        }
+    })
+
+    const { mutate: updateSlackId, isPending: isPendingSlack } = useMutation({
+        mutationFn: async (slackId: string) => {
+            await client.user.updateSlackId.$post({ slackId })
+        },
+        onError: () => {
+            toast.custom((t) =>
+                <Toaster type="error" t={t} title="Account settings" children={
+                    <div className="text-red-500 text-sm">
+                        <p>Something went wrong while updating the slack Channel ID.</p>
+                        <br />
+                        <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us</Link></p>
+                    </div>
+                } />
+            )
+        },
+        onSuccess: () => {
+            toast.custom((t) =>
+                <Toaster type="success" t={t} title="Account settings" children={
+                    <div className="text-green-700 text-sm">
+                        <p>Slack ID updated successfully.</p>
                     </div>
                 } />
             )
@@ -152,6 +180,38 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                             <li>2. type <strong>@getidsbot</strong>.</li>
                             <li>3. copy the <strong>id</strong></li>
                         </ol>
+                    </p>
+                </div>
+            </section>
+
+            {/* SLACK */}
+            <section className="pt-10">
+                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2">
+                    <Icons.slack className="size-5" />
+                    <span className="text-gray-600">Slack</span>
+                </Heading>
+                <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[700px] p-8">
+                    <div className="space-y-2 mb-2">
+                        <Label htmlFor="slackId">Slack ID</Label>
+                        <Input
+                            id="slackId"
+                            onChange={(e) => setSlackId(e.target.value)} value={slackId ?? ""}
+                            className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                        />
+
+                        <Button className="mt-2" onClick={() => updateSlackId(slackId ?? "")} disabled={isPendingSlack}>
+                            {
+                                isPendingSlack ? "Saving..." : "Save changes"
+                            }
+                        </Button>
+                    </div>
+
+
+                    <p className="text-sm/5 text-gray-700 mb-2 mt-6">
+                        Haven't added BirdoBot to your workspace yet? {" "}
+                        <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
+                            Click here to add BirdoBot to your workspace
+                        </a>
                     </p>
                 </div>
             </section>

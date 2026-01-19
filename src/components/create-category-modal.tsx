@@ -60,9 +60,9 @@ const CHANNELS = [
     {
         name: "discord", icon: <Icons.discord className="w-5 h-5" />
     },
-    // {
-    //     name: "slack", icon: <Icons.slack className="w-4 h-4" />
-    // },
+    {
+        name: "slack", icon: <Icons.slack className="w-4 h-4" />
+    },
     {
         name: "telegram", icon: <Icons.telegram className="w-4 h-4" />
     }
