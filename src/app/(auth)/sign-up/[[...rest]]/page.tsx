@@ -3,7 +3,7 @@
 // Libs
 import { SignUp, useUser } from "@clerk/nextjs"
 import { useSearchParams } from "next/navigation"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 // Components
 import LoadingSpinner from "@/components/loading-spinner"
