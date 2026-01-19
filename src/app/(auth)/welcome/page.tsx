@@ -4,7 +4,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
 import { useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 // Components
 import Heading from "@/components/heading"
@@ -12,6 +12,11 @@ import LoadingSpinner from "@/components/loading-spinner"
 import BackgroundPattern from "@/components/background-pattern"
 
 export default function WelcomePage() {
+    const searchParams = useSearchParams()
+
+    const intent = searchParams.get("intent")
+    const plan = searchParams.get("plan")
+
     const router = useRouter()
     const { data } = useQuery({
         queryFn: async () => {
@@ -23,7 +28,7 @@ export default function WelcomePage() {
 
     useEffect(() => {
         if (data?.isSync) {
-            router.replace("/dashboard")
+            router.replace(intent && plan ? `/dashboard?intent=${intent}&plan=${plan}` : "/dashboard")
         }
     }, [data])
 

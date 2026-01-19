@@ -23,7 +23,10 @@ export default function SignInPage() {
                 !isLoaded ? (
                     <LoadingSpinner />
                 ) : (
-                    <SignIn forceRedirectUrl={intent ? `/dashboard/?intent=${intent}&plan=${plan}` : "/dashboard"} />
+                    <SignIn
+                        signUpFallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
+                        forceRedirectUrl={intent ? `/dashboard/?intent=${intent}&plan=${plan}` : "/dashboard"}
+                    />
                 )
             }
         </div>
