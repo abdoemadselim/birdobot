@@ -1,12 +1,19 @@
-import { SignUp } from "@clerk/nextjs"
-import { currentUser } from "@clerk/nextjs/server"
-import { redirect, useSearchParams } from "next/navigation"
+'use client'
 
-export default async function SignUpPage() {
-    const user = await currentUser()
+// Libs
+import { SignUp, useUser } from "@clerk/nextjs"
+import { useSearchParams } from "next/navigation"
+import { useRouter } from "next/router"
+
+// Components
+import LoadingSpinner from "@/components/loading-spinner"
+
+export default function SignUpPage() {
+    const router = useRouter()
+    const { user, isLoaded } = useUser()
 
     if (user) {
-        redirect("/dashboard")
+        router.push("/dashboard")
     }
 
     const searchParams = useSearchParams()
@@ -16,7 +23,13 @@ export default async function SignUpPage() {
 
     return (
         <div className="flex flex-col flex-1 justify-center items-center">
-            <SignUp fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/dashboard"} />
+            {
+                !isLoaded ? (
+                    <LoadingSpinner />
+                ) : (
+                    <SignUp fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/dashboard"} />
+                )
+            }
         </div>
     )
 }
