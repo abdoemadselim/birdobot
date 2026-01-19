@@ -33,6 +33,11 @@ export default function PlanetCanvas() {
             height: window.innerHeight / 2
         }
 
+        if (window.innerWidth < 700) {
+            sizes.width = window.innerWidth
+            sizes.height = window.innerHeight / 2
+        }
+
         // Lights
         const ambientLight = new THREE.AmbientLight(0xffffff)
         scene.add(ambientLight)
@@ -43,7 +48,8 @@ export default function PlanetCanvas() {
 
         // Camera
         const camera = new THREE.PerspectiveCamera(85, sizes.width / sizes.height, 0.1, 1000)
-        camera.position.z = 10
+        camera.position.z = 11
+
         scene.add(camera)
 
         // Orbit
@@ -71,6 +77,11 @@ export default function PlanetCanvas() {
             // Update sizes
             sizes.width = window.innerWidth / 2
             sizes.height = window.innerHeight / 2
+
+            if (window.innerWidth < 700) {
+                sizes.width = window.innerWidth
+                sizes.height = window.innerHeight / 2
+            }
 
             // Update camera
             camera.aspect = sizes.width / sizes.height

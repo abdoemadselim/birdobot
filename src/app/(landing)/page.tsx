@@ -33,11 +33,12 @@ export default async function HomePage() {
   return (
     <>
       <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
-        <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
-        <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-1/3 -translate-1/2 z-0" />
-        <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-2/3 -translate-1/2 z-0" />
-
-        <div className="opacity-5 z-0 absolute top-[400px] left-1/2 -translate-1/2 max-h-[400px] overflow-hidden">
+        <div className="overflow-hidden max-w-full h-[500px] absolute w-full">
+          <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
+          <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-1/3 -translate-1/2 z-0" />
+          <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-2/3 -translate-1/2 z-0" />
+        </div>
+        <div className="opacity-5 z-0 absolute top-[400px] left-1/2 -translate-1/2 max-h-[400px] overflow-hidden max-w-full">
           <BirdsPattern />
         </div>
 
