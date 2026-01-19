@@ -28,6 +28,8 @@ export const userTable = pgTable(
     telegramId: varchar("telegramId", { length: 30 }),
     slackId: varchar("slackId", { length: 30 }),
 
+    slackBotToken: text("slackBotToken"),
+
     telegramToken: uuid("telegramToken").defaultRandom(),
 
     apiKey: uuid("apiKey").defaultRandom(),

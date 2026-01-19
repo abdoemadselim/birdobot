@@ -10,7 +10,7 @@ import { telegramBot } from "@/lib/telegram-client";
 // Schemas
 import { eventCategoryTable, eventTable, userCreditsTable, userTable } from "@/server/db/schema";
 import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
-import { slackClient } from "@/lib/slack-client";
+import { SlackClient } from "@/lib/slack-client";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,
@@ -162,6 +162,14 @@ ${fieldsText}
 
                 await telegramBot.sendMessage(user.telegramId, message)
             } else if (channel === "slack") {
+                if (!user.slackBotToken || !user.slackId) {
+                    await db.update(eventTable).set({
+                        deliveryStatus: "FAILED"
+                    }).where(eq(eventTable.id, event[0]?.id as number))
+
+                    return;
+                }
+
                 const eventData = {
                     title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
                     color: `#${category.color.toString(16)}`,
@@ -175,7 +183,8 @@ ${fieldsText}
                 }
 
                 try {
-                    await slackClient.sendEmbed("#birdo", eventData);
+                    const slackClient = new SlackClient(user.slackBotToken as string);
+                    await slackClient.sendEmbed(user.slackId || "", eventData);
                 } catch (error) {
                     await db.update(eventTable).set({
                         deliveryStatus: "FAILED"

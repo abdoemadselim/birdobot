@@ -71,8 +71,6 @@ const CHANNELS = [
 export default function CreateCategoryModal({ trigger }: { trigger: ReactNode }) {
     const [open, setOpen] = useState(false)
 
-    const queryClient = useQueryClient()
-
     const { mutate: createEventCategory, isPending } = useMutation({
         mutationFn: async (data: EVENT_CATEGORY_TYPE) => {
             await client.eventCategory.createEventCategory.$post(data)

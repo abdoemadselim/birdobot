@@ -1,6 +1,6 @@
 import { WebClient } from '@slack/web-api';
 
-class SlackClient {
+export class SlackClient {
     private client: WebClient;
 
     constructor(token: string) {
@@ -72,5 +72,3 @@ class SlackClient {
         });
     }
 }
-
-export const slackClient = new SlackClient(process.env.SLACK_BOT_USER_TOKEN as string);
