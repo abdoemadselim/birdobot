@@ -130,7 +130,9 @@ export default function PricingPage() {
                                     onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium" | "free")}
                                     disabled={isPendingUserInfo}
                                 >
-                                    Get started
+                                    {
+                                        isPendingUserInfo ? "Preparing.." : "Get started"
+                                    }
                                 </Button>
 
                                 <p className="text-muted-foreground pt-4 text-center text-sm">One-time purchase</p>
