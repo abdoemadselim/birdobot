@@ -12,7 +12,6 @@ import BackgroundPattern from "@/components/background-pattern";
 import BirdsPattern from "@/components/birds-pattern";
 import PlanetCanvasContainer from "@/components/planetCanvas/planet-canvas-container";
 import MockApps from "../mock-apps";
-import Footer from "@/components/footer";
 import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 
 export default async function HomePage() {
@@ -237,7 +236,6 @@ export default async function HomePage() {
           </div>
         </MaxWidthWrapper>
       </section>
-      <Footer />
     </>
   )
 }

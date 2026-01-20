@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -14,6 +15,12 @@ export default function Footer() {
             <p className="pb-4  pt-0 text-sm">Fast & pretty</p>
 
             <p className="text-muted-foreground text-sm pt-8"> @2026 BirdoBot</p>
+
+            <div className="flex gap-2 items-center">
+                <Link href="/terms" className="text-sm underline pt-4">Terms of service</Link>
+
+                <Link href="/privacy" className="text-sm underline pt-4">Privacy Notice</Link>
+            </div>
         </footer>
     )
 }
