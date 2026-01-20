@@ -33,7 +33,7 @@ export const PLANS = [
             "1000 real-time events per month",
             "5 event categories per month",
         ],
-        price: "$10",
+        price: "$20",
         name: "Core",
         className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
     },
@@ -42,7 +42,7 @@ export const PLANS = [
             "10000 real-time events per month",
             "7 event categories per month",
         ],
-        price: "$20",
+        price: "$49",
         name: "Growth",
     },
     {
@@ -50,7 +50,7 @@ export const PLANS = [
             "100000 real-time events per month",
             "10 event categories per month",
         ],
-        price: "$40",
+        price: "$149",
         name: "Premium",
         className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
     }
