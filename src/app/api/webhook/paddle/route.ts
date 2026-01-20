@@ -17,7 +17,7 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Verify signature
-    const webhookPublicKey = process.env.PADDLE_TRANSACTION_COMPLETE_WEBHOOK_SECRET_SANDBOX || ""
+    const webhookPublicKey = process.env.PADDLE_TRANSACTION_COMPLETE_WEBHOOK_SECRET || ""
     const eventData = (await paddle.webhooks.unmarshal(body, webhookPublicKey, paddleSignature)) as TransactionCompletedEvent
 
     const { data } = eventData

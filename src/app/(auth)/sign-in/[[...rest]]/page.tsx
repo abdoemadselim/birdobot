@@ -1,8 +1,10 @@
 'use client'
 
-import LoadingSpinner from "@/components/loading-spinner"
 import { SignIn, useUser } from "@clerk/nextjs"
 import { useRouter, useSearchParams } from "next/navigation"
+
+// Components
+import LoadingSpinner from "@/components/loading-spinner"
 
 export default function SignInPage() {
     const searchParams = useSearchParams()

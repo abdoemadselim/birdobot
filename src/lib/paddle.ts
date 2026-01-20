@@ -1,8 +1,8 @@
 import { initializePaddle } from '@paddle/paddle-js';
 
 const paddle = await initializePaddle({
-    token: process.env.NEXT_PUBLIC_PADDLE_SANDBOX_CLIENT_TOKEN!,
-    environment: 'sandbox'
+    token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN!,
+    environment: 'production'
 });
 
 export const createCheckoutOverlay = ({
@@ -12,8 +12,8 @@ export const createCheckoutOverlay = ({
 }: { userId: number, userEmail: string, plan: "core" | "growth" | "premium" }) => {
     const PRICE_PLAN =
         plan === "core" ?
-            process.env.NEXT_PUBLIC_CORE_PRODUCT_PRICE_ID_SANDBOX :
-            plan === "growth" ? process.env.NEXT_PUBLIC_GROWTH_PRODUCT_PRICE_ID_SANDBOX : process.env.NEXT_PUBLIC_PREMIUM_PRODUCT_PRICE_ID_SANDBOX
+            process.env.NEXT_PUBLIC_CORE_PRODUCT_PRICE_ID :
+            plan === "growth" ? process.env.NEXT_PUBLIC_GROWTH_PRODUCT_PRICE_ID : process.env.NEXT_PUBLIC_PREMIUM_PRODUCT_PRICE_ID
 
     const openCheckout = () => {
         paddle?.Checkout.open({
