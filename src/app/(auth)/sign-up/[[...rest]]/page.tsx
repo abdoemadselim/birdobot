@@ -3,7 +3,6 @@
 // Libs
 import { SignUp, useUser } from "@clerk/nextjs"
 import { useSearchParams } from "next/navigation"
-import { useRouter } from "next/navigation"
 
 // Components
 import LoadingSpinner from "@/components/loading-spinner"
@@ -22,7 +21,9 @@ export default function SignUpPage() {
                 !isLoaded ? (
                     <LoadingSpinner />
                 ) : (
-                    <SignUp fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"} />
+                    <SignUp
+                        fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/dashboard"}
+                    />
                 )
             }
         </div>

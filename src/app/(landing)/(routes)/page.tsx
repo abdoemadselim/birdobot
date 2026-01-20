@@ -94,7 +94,7 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section >
 
-      <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
+      <section className="py-12 sm:py-18 sm:pb-42 bg-brand-25">
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-2 items-center">
             <div>
@@ -110,7 +110,7 @@ export default async function HomePage() {
       </section>
       <MockApps />
 
-      <section className="bg-brand-25 py-24 sm:pt-42 sm:pb-70">
+      <section className="bg-brand-25 py-24 sm:pt-62 sm:pb-70">
         <MaxWidthWrapper className="flex justify-center items-center flex-col">
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Easy Integration</h2>
@@ -128,7 +128,7 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section>
 
-      <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
+      <section className="py-24 sm:py-22 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper>
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Intuitive Monitoring</h2>

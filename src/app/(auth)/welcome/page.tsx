@@ -13,7 +13,7 @@ import BackgroundPattern from "@/components/background-pattern"
 
 export default function WelcomePage() {
     const searchParams = useSearchParams()
-
+    console.log("page page page")
     const intent = searchParams.get("intent")
     const plan = searchParams.get("plan")
 
@@ -23,7 +23,8 @@ export default function WelcomePage() {
             const res = await client.auth.getDatabaseSyncStatus.$get()
             return res.json()
         },
-        queryKey: ["get-database-sync-status"]
+        queryKey: ["get-database-sync-status"],
+        refetchInterval: (query) => query.state.data?.isSync ? false : 2000
     })
 
     useEffect(() => {
@@ -31,6 +32,7 @@ export default function WelcomePage() {
             router.replace(intent && plan ? `/pricing?intent=${intent}&plan=${plan}` : "/dashboard")
         }
     }, [data])
+
 
     return (
         <div className="flex flex-1 flex-col items-center justify-center overflow-hidden bg-brand-25 w-full relative">
