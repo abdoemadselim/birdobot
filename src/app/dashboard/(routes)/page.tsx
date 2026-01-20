@@ -22,14 +22,10 @@ export default async function DashboardPage({
 
     const user = await currentUser()
 
-    if (!user) {
-        redirect("/sign-in")
-    }
-
     const dbUser = (await db.select({
         id: userTable.id,
         email: userTable.email
-    }).from(userTable).where(eq(userTable.externalId, user.id)))[0]
+    }).from(userTable).where(eq(userTable.externalId, user?.id!)))[0]
 
     if (!dbUser) {
         redirect("/sign-in")

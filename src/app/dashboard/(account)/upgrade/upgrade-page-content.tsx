@@ -56,7 +56,7 @@ export default function UpgradePageContent() {
             {
                 usage?.events.left < 50 ? (
                     <p className="pt-8 text-muted-foreground">
-                        <span>You're running out of credits! {" "}</span>
+                        <span className="text-red-400">You're running out of credits! {" "}</span>
                         <Link href="/pricing" className="text-brand-700 underline">Buy more credits now</Link>
                     </p>
                 ) : (

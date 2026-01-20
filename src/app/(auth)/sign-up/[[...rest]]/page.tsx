@@ -9,12 +9,7 @@ import { useRouter } from "next/navigation"
 import LoadingSpinner from "@/components/loading-spinner"
 
 export default function SignUpPage() {
-    const router = useRouter()
-    const { user, isLoaded } = useUser()
-
-    if (user) {
-        router.push("/dashboard")
-    }
+    const { isLoaded } = useUser()
 
     const searchParams = useSearchParams()
 
@@ -27,7 +22,7 @@ export default function SignUpPage() {
                 !isLoaded ? (
                     <LoadingSpinner />
                 ) : (
-                    <SignUp fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/dashboard"} />
+                    <SignUp fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"} />
                 )
             }
         </div>
