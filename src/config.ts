@@ -17,3 +17,41 @@ export const PREMIUM_QUOTA = {
     maxEventsPerMonth: 100000,
     maxEventsCategories: 10
 } as const
+
+export const PLANS = [
+    {
+        features: [
+            "100 real-time events per month",
+            "3 event categories per month",
+        ],
+        price: "$0",
+        name: "Free",
+        className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
+    },
+    {
+        features: [
+            "1000 real-time events per month",
+            "5 event categories per month",
+        ],
+        price: "$10",
+        name: "Core",
+        className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
+    },
+    {
+        features: [
+            "10000 real-time events per month",
+            "7 event categories per month",
+        ],
+        price: "$20",
+        name: "Growth",
+    },
+    {
+        features: [
+            "100000 real-time events per month",
+            "10 event categories per month",
+        ],
+        price: "$40",
+        name: "Premium",
+        className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
+    }
+]

@@ -34,6 +34,15 @@ export const userRouter = j.router({
         })
     }),
 
+    getUserInfo: privateProcedure.query(async ({ ctx, c }) => {
+        const { db, user } = ctx
+
+        return c.json({
+            email: user.email,
+            id: user.id
+        })
+    }),
+
     updateDiscordId: privateProcedure.input(z.object({ discordId: z.string().min(1).max(40) })).mutation(async ({ ctx, c, input }) => {
         const { db, user } = ctx;
         const { discordId } = input

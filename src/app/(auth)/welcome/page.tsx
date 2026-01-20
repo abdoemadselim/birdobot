@@ -28,7 +28,7 @@ export default function WelcomePage() {
 
     useEffect(() => {
         if (data?.isSync) {
-            router.replace(intent && plan ? `/dashboard?intent=${intent}&plan=${plan}` : "/dashboard")
+            router.replace(intent && plan ? `/pricing?intent=${intent}&plan=${plan}` : "/dashboard")
         }
     }, [data])
 

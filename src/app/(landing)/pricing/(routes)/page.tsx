@@ -1,74 +1,39 @@
 'use client'
 
 // Libs
-import { Check, CheckCircle } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+import { CheckCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { createCheckoutOverlay } from "@/lib/paddle";
+import { useEffect, useState } from "react";
 
 // Components
 import Heading from "@/components/heading";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Button } from "@/components/ui/button";
+import LoadingSpinner from "@/components/loading-spinner";
 
+// Config
+import { PLANS } from "@/config";
 
 export default function PricingPage() {
-    const PLANS = [
-        {
-            features: [
-                "100 real-time events per month",
-                "3 event categories per month",
-            ],
-            price: "$0",
-            name: "Free",
-            className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
-        },
-        {
-            features: [
-                "1000 real-time events per month",
-                "5 event categories per month",
-            ],
-            price: "$10",
-            name: "Core",
-            className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
-        },
-        {
-            features: [
-                "10000 real-time events per month",
-                "7 event categories per month",
-            ],
-            price: "$20",
-            name: "Growth",
-        },
-        {
-            features: [
-                "100000 real-time events per month",
-                "10 event categories per month",
-            ],
-            price: "$40",
-            name: "Premium",
-            className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
-        }
-    ]
-
     const router = useRouter()
     const { user } = useUser()
+    const [showOverlay, setShowOverlay] = useState(false)
 
-    const { mutate: createCheckoutSession } = useMutation({
-        mutationFn: async (plan: "core" | "premium" | "growth") => {
-            const res = await client.payment.createCheckoutSession.$post({ plan })
-            return await res.json()
+    const { data: userInfo, isPending: isPendingUserInfo, isSuccess } = useQuery({
+        queryKey: ["userInfo"],
+        queryFn: async () => {
+            const res = await client.user.getUserInfo.$get()
+            return res.json()
         },
-        onSuccess: ({ url }) => {
-            if (url) {
-                router.push(url)
-            }
-        }
+        refetchOnWindowFocus: false,
     })
 
-    const handleCreateCheckout = (plan: "free" | "core" | "premium" | "growth") => {
+    const handleCreateCheckout = async (plan: "free" | "core" | "premium" | "growth") => {
         if (plan === "free" && user) {
             router.push(`/dashboard`)
             return
@@ -80,14 +45,50 @@ export default function PricingPage() {
         }
 
         if (user) {
-            createCheckoutSession(plan as "core" | "premium" | "growth")
+            const openCheckout = createCheckoutOverlay({
+                userId: userInfo?.id!,
+                userEmail: userInfo?.email!,
+                plan: plan as "core" | "growth" | "premium"
+            })
+
+            openCheckout()
         } else {
             router.push(`/sign-in?intent=upgrade&plan=${plan}`)
         }
     }
 
+    const params = useSearchParams()
+    const plan = params.get("plan")
+
+    useEffect(() => {
+        if (plan && ["core", "growth", "premium"].includes(plan)) {
+            setShowOverlay(true)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!isSuccess) return;
+        if (!plan || !["core", "growth", "premium"].includes(plan)) return
+
+        if (!user) router.push(`/sign-in?intent=upgrade&plan=${plan}`)
+
+        const openCheckout = createCheckoutOverlay({
+            userId: userInfo?.id!,
+            userEmail: userInfo?.email!,
+            plan: plan as "core" | "growth" | "premium"
+        })
+
+        openCheckout()
+
+    }, [isSuccess])
+
     return (
-        <div className="flex flex-col flex-1 pt-28 bg-brand-25">
+        <div className="flex flex-col flex-1 pt-28 bg-brand-25 pb-20">
+            {showOverlay &&
+                <div className="absolute inset-0 w-full h-full bg-gray-500/50 z-100 flex justify-center items-center" >
+                    <LoadingSpinner className="size-8" />
+                </div>
+            }
             <MaxWidthWrapper className="flex justify-center items-center flex-col max-w-3/4">
                 <div className="text-center">
                     <p className="text-4xl font-medium">Simple no-tricks pricing</p>
@@ -124,7 +125,11 @@ export default function PricingPage() {
                                     }
                                 </ul>
 
-                                <Button className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)} onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium" | "free")}>
+                                <Button
+                                    className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)}
+                                    onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium" | "free")}
+                                    disabled={isPendingUserInfo}
+                                >
                                     Get started
                                 </Button>
 

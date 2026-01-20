@@ -25,7 +25,7 @@ export default function SignInPage() {
                 ) : (
                     <SignIn
                         signUpFallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
-                        forceRedirectUrl={intent ? `/dashboard/?intent=${intent}&plan=${plan}` : "/dashboard"}
+                        forceRedirectUrl={intent ? `/pricing/?intent=${intent}&plan=${plan}` : "/dashboard"}
                     />
                 )
             }

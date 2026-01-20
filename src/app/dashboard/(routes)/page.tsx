@@ -3,7 +3,6 @@ import { db } from "@/server/db"
 import { userTable } from "@/server/db/schema"
 import { eq } from "drizzle-orm"
 import { Plus } from "lucide-react"
-import { createCheckoutSession } from "@/lib/stripe"
 
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
@@ -34,21 +33,6 @@ export default async function DashboardPage({
 
     if (!dbUser) {
         redirect("/sign-in")
-    }
-
-    const intent = (await searchParams).intent
-    const plan = (await searchParams).plan as "core" | "growth" | "premium"
-
-    if (intent && intent === "upgrade") {
-        const session = await createCheckoutSession({
-            userEmail: dbUser.email,
-            userId: dbUser.id,
-            plan: plan
-        })
-
-        if (session.url) {
-            redirect(session.url)
-        }
     }
 
     const success = (await searchParams).success
