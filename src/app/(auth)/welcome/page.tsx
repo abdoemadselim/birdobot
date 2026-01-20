@@ -13,7 +13,6 @@ import BackgroundPattern from "@/components/background-pattern"
 
 export default function WelcomePage() {
     const searchParams = useSearchParams()
-    console.log("page page page")
     const intent = searchParams.get("intent")
     const plan = searchParams.get("plan")
 
@@ -31,8 +30,7 @@ export default function WelcomePage() {
         if (data?.isSync) {
             router.replace(intent && plan ? `/pricing?intent=${intent}&plan=${plan}` : "/dashboard")
         }
-    }, [data])
-
+    }, [data, intent, plan, router])
 
     return (
         <div className="flex flex-1 flex-col items-center justify-center overflow-hidden bg-brand-25 w-full relative">

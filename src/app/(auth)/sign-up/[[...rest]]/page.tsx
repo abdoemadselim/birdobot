@@ -22,7 +22,8 @@ export default function SignUpPage() {
                     <LoadingSpinner />
                 ) : (
                     <SignUp
-                        fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/dashboard"}
+                        forceRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
+                        fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
                     />
                 )
             }

@@ -21,8 +21,8 @@ export default function SignInPage() {
                     <LoadingSpinner />
                 ) : (
                     <SignIn
-                        signUpFallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
                         forceRedirectUrl={intent ? `/pricing/?intent=${intent}&plan=${plan}` : "/dashboard"}
+                        signUpForceRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
                     />
                 )
             }
