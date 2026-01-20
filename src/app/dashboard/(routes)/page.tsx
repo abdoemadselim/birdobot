@@ -12,7 +12,7 @@ import { redirect } from "next/navigation"
 import DashboardLayout from "@/components/dashboard-layout"
 import CreateCategoryModal from "@/components/create-category-modal"
 import { Button } from "@/components/ui/button"
-import DashboardPageContent from "./dashboard-page-content"
+import DashboardPageContent from "../dashboard-page-content"
 import PaymentSuccessModal from "@/components/payment-success-modal"
 
 export default async function DashboardPage({

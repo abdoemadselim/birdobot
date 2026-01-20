@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 // Components
 import DashboardLayout from "@/components/dashboard-layout";
-import ApiKeyContent from "./api-key-content";
+import ApiKeyContent from "../api-key-content";
 
 // Schema
 import { userTable } from "@/server/db/schema";

@@ -6,12 +6,12 @@ import { useMutation } from "@tanstack/react-query";
 import { client } from "@/lib/client";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
 
 // Components
 import Heading from "@/components/heading";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 
 export default function PricingPage() {

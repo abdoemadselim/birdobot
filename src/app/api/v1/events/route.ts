@@ -1,22 +1,28 @@
 // Libs
-import { DiscordClient } from "@/lib/discord-client";
 import { db } from "@/server/db";
-import { and, eq, gte, sql } from "drizzle-orm";
+import { and, eq, gte, InferSelectModel, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { escapeMarkdownV2 } from "@/lib/utils";
+
+// Channels Clients
+import { SlackClient } from "@/lib/slack-client";
+import { DiscordClient } from "@/lib/discord-client";
 import { telegramBot } from "@/lib/telegram-client";
 
-// Schemas
+// DB
 import { eventCategoryTable, eventTable, userCreditsTable, userTable } from "@/server/db/schema";
+
+// Schemas
 import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
-import { SlackClient } from "@/lib/slack-client";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,
     fields: z.record(z.number().or(z.string()).or(z.boolean())).optional(),
     description: z.string().optional()
 }).strict()
+
+type RequestDataType = z.infer<typeof REQUEST_VALIDATOR>
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -89,113 +95,20 @@ export const POST = async (request: NextRequest) => {
             formattedMessage: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
         }).returning({ id: eventTable.id });
 
-        // 7- Send the even to each channel 
+        // 7- Send the event to each defined channel on its category
         category.channels.forEach(async (channel: "discord" | "telegram" | "slack") => {
-            if (channel === "discord") {
-                if (!user.discordId) {
-                    await db.update(eventTable).set({
-                        deliveryStatus: "FAILED"
-                    })
-
-                    return
+            return await sendChannel({
+                channel,
+                category,
+                user,
+                data: {
+                    eventId: event[0]?.id as number,
+                    ...validatedData
                 }
-
-                const eventData = {
-                    title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
-                    color: category.color,
-                    fields: Object.entries(validatedData.fields || {}).map((field) => ({
-                        name: field[0],
-                        value: String(field[1]),
-                        inline: true
-                    })),
-                    description: validatedData.description || `A new ${category.name} event has occurred`,
-                    timestamp: new Date().toISOString(),
-                }
-
-                // 7.1- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
-                const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
-
-                try {
-                    await discordClient.sendEmbed(user.discordId as string, eventData)
-                } catch (error) {
-                    await db.update(eventTable).set({
-                        deliveryStatus: "FAILED"
-                    }).where(eq(eventTable.id, event[0]?.id as number))
-
-                    console.error(error)
-                    return NextResponse.json({ message: "Internal server error" }, { status: 500 })
-                }
-            } else if (channel === "telegram") {
-                if (!user.telegramId) {
-                    await db.update(eventTable).set({
-                        deliveryStatus: "FAILED"
-                    }).where(eq(eventTable.id, event[0]?.id as number))
-
-                    return;
-                }
-
-                const titleText = `${category.emoji || "🔔"} ${category.name.toUpperCase()}`;
-
-                const description =
-                    validatedData.description ||
-                    `A new ${category.name} event has occurred`;
-
-                const fieldsText = Object.entries(validatedData.fields || {})
-                    .map(([key, value]) =>
-                        `▸ *${escapeMarkdownV2(key)}*: ${escapeMarkdownV2(String(value))}`
-                    )
-                    .join("\n");
-
-                const divider = escapeMarkdownV2("━━━━━━━━━━━━━━━━━━");
-
-                const message = `
-${divider}
-*${escapeMarkdownV2(titleText)}*
-${divider}
-
-_${escapeMarkdownV2(description)}_
-
-${fieldsText}
-
-🕒 ${escapeMarkdownV2(new Date().toLocaleString())}
-`.trim();
-
-                await telegramBot.sendMessage(user.telegramId, message)
-            } else if (channel === "slack") {
-                if (!user.slackBotToken || !user.slackId) {
-                    await db.update(eventTable).set({
-                        deliveryStatus: "FAILED"
-                    }).where(eq(eventTable.id, event[0]?.id as number))
-
-                    return;
-                }
-
-                const eventData = {
-                    title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
-                    color: `#${category.color.toString(16)}`,
-                    fields: Object.entries(validatedData.fields || {}).map((field) => ({
-                        name: field[0],
-                        value: String(field[1]),
-                        inline: true
-                    })),
-                    description: validatedData.description || `A new ${category.name} event has occurred`,
-                    timestamp: new Date().toISOString(),
-                }
-
-                try {
-                    const slackClient = new SlackClient(user.slackBotToken as string);
-                    await slackClient.sendEmbed(user.slackId || "", eventData);
-                } catch (error) {
-                    await db.update(eventTable).set({
-                        deliveryStatus: "FAILED"
-                    }).where(eq(eventTable.id, event[0]?.id as number))
-
-                    console.error(error);
-                }
-
-            }
-
+            })
         })
+
+        // 8- Update user credits
         await db
             .update(userCreditsTable)
             .set({
@@ -219,5 +132,140 @@ ${fieldsText}
         }
 
         return NextResponse.json({ message: "Internal server error" }, { status: 500 })
+    }
+}
+
+interface SendChannelParams {
+    user: InferSelectModel<typeof userTable>,
+    category: Pick<InferSelectModel<typeof eventCategoryTable>, "id" | "emoji" | "name" | "color" | "channels">,
+    data: RequestDataType & { eventId: number }
+}
+
+async function sendChannel({
+    channel,
+    user,
+    category,
+    data
+}: SendChannelParams & { channel: "discord" | "slack" | "telegram" }) {
+    switch (channel) {
+        case "discord":
+            sendDiscord({ user, category, data })
+            break;
+        case "telegram":
+            sendTelegram({ user, category, data })
+            break
+        case "slack":
+            sendSlack({ user, category, data })
+    }
+}
+
+async function sendDiscord({
+    user,
+    category,
+    data
+}: SendChannelParams) {
+    if (!user.discordId) {
+        await db.update(eventTable).set({
+            deliveryStatus: "FAILED"
+        })
+
+        return
+    }
+
+    const eventData = {
+        title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
+        color: category.color,
+        fields: Object.entries(data.fields || {}).map((field) => ({
+            name: field[0],
+            value: String(field[1]),
+            inline: true
+        })),
+        description: data.description || `A new ${category.name} event has occurred`,
+        timestamp: new Date().toISOString(),
+    }
+
+    // 7.1- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
+    const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
+
+    try {
+        await discordClient.sendEmbed(user.discordId as string, eventData)
+    } catch (error) {
+        await db.update(eventTable).set({
+            deliveryStatus: "FAILED"
+        }).where(eq(eventTable.id, data.eventId as number))
+
+        console.error(error)
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 })
+    }
+}
+
+async function sendTelegram({ user, category, data }: SendChannelParams) {
+    if (!user.telegramId) {
+        await db.update(eventTable).set({
+            deliveryStatus: "FAILED"
+        }).where(eq(eventTable.id, data.eventId as number))
+
+        return;
+    }
+
+    const titleText = `${category.emoji || "🔔"} ${category.name.toUpperCase()}`;
+
+    const description =
+        data.description ||
+        `A new ${category.name} event has occurred`;
+
+    const fieldsText = Object.entries(data.fields || {})
+        .map(([key, value]) =>
+            `▸ *${escapeMarkdownV2(key)}*: ${escapeMarkdownV2(String(value))}`
+        )
+        .join("\n");
+
+    const divider = escapeMarkdownV2("━━━━━━━━━━━━━━━━━━");
+
+    const message = `
+${divider}
+*${escapeMarkdownV2(titleText)}*
+${divider}
+
+_${escapeMarkdownV2(description)}_
+
+${fieldsText}
+
+🕒 ${escapeMarkdownV2(new Date().toLocaleString())}
+`.trim();
+
+    await telegramBot.sendMessage(user.telegramId, message)
+}
+
+async function sendSlack({ user, category, data }: SendChannelParams) {
+    if (!user.slackBotToken || !user.slackId) {
+        await db.update(eventTable).set({
+            deliveryStatus: "FAILED"
+        }).where(eq(eventTable.id, data?.eventId as number))
+
+        return;
+    }
+
+    const eventData = {
+        title: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
+        color: `#${category.color.toString(16)}`,
+        fields: Object.entries(data.fields || {}).map((field) => ({
+            name: field[0],
+            value: String(field[1]),
+            inline: true
+        })),
+        description: data.description || `A new ${category.name} event has occurred`,
+        timestamp: new Date().toLocaleString(),
+    }
+
+    try {
+        const slackClient = new SlackClient(user.slackBotToken as string);
+        await slackClient.sendEmbed(user.slackId || "", eventData);
+    } catch (error) {
+        await db.update(eventTable).set({
+            deliveryStatus: "FAILED"
+        }).where(eq(eventTable.id, data.eventId as number))
+
+        console.error(error);
     }
 }

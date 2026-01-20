@@ -165,7 +165,7 @@ export default function DashboardPageContent() {
 
                             <div className="flex mt-5 items-center justify-between">
                                 <Link href={`/dashboard/category/${category.info.name}`} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "group")}>
-                                    View all
+                                    View details
                                     <ArrowRight className="group-hover:translate-x-[5px] transition-transform duration-200 ml-1" />
                                 </Link>
                                 <Modal

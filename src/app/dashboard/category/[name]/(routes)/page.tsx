@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 
 // Component
 import DashboardLayout from "@/components/dashboard-layout"
-import CategoryPageContent from "./category-page-content";
+import CategoryPageContent from "../category-page-content";
 
 // Schema
 import { eventCategoryTable, eventTable, userTable } from "@/server/db/schema";
@@ -29,7 +29,6 @@ export default async function CategoryEventPage({ params }: { params: Promise<Ca
     }
 
     const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.externalId, clerkUser.id)))[0]
-
     if (!user) {
         return notFound()
     }

@@ -6,12 +6,12 @@ import { redirect } from "next/navigation";
 
 // Components
 import DashboardLayout from "@/components/dashboard-layout";
-import UpgradePageContent from "./upgrade-page-content";
+import AccountSettingsContent from "../account-settings-content";
 
 // Schema
 import { userTable } from "@/server/db/schema";
 
-export default async function UpgradePlan() {
+export default async function AccountSettings() {
     const user = await currentUser()
 
     if (!user) {
@@ -28,8 +28,8 @@ export default async function UpgradePlan() {
     }
 
     return (
-        <DashboardLayout title="Plan Details" >
-            <UpgradePageContent />
+        <DashboardLayout title="Account Settings" >
+            <AccountSettingsContent discordId={dbUser.discordId} telegramId={dbUser.telegramId} telegramToken={dbUser.telegramToken ?? ""} slackId={dbUser.slackId} />
         </DashboardLayout>
     )
 }

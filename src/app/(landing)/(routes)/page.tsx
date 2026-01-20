@@ -1,5 +1,5 @@
 // Libs
-import { Check, Star } from "lucide-react"
+import { Check } from "lucide-react"
 import Image from "next/image"
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -8,11 +8,12 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import MaxWidthWrapper from "@/components/max-width-wrapper"
 import Heading from "@/components/heading"
 import ShinyButton from "@/components/shiny-button"
-import { Icons } from "@/components/icons";
 import BackgroundPattern from "@/components/background-pattern";
 import BirdsPattern from "@/components/birds-pattern";
 import PlanetCanvasContainer from "@/components/planetCanvas/planet-canvas-container";
-import MockApps from "./mock-apps";
+import MockApps from "../mock-apps";
+import Footer from "@/components/footer";
+import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 
 export default async function HomePage() {
   const codeSnippet = `await fetch("https://ring-rang.vercel.app/api/v1/events", {
@@ -32,7 +33,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
+      <section className="py-24 sm:py-32 sm:pb-90 bg-brand-25">
         <div className="overflow-hidden max-w-full h-[500px] absolute w-full">
           <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
           <BackgroundPattern className="max-w-full opacity-75 absolute top-1/3 left-1/3 -translate-1/2 z-0" />
@@ -46,17 +47,14 @@ export default async function HomePage() {
           <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
             <div>
               <Heading>
-                <span className="leading-12">Real-Time Insights</span>
-                <br />
-
                 {
                   /*
                     bg-clip-text: make the background given to the task as a mask
                     text-transparent: required to remove the original text color to take the mask
                   */
                 }
-                <p className="bg-linear-to-r block leading-14 text-transparent bg-clip-text from-brand-700 to-brand-800">
-                  Delivered to You wherever you are
+                <p className="bg-linear-to-r block leading-14 text-transparent bg-clip-text from-brand-700 to-brand-800 sm:text-6xl">
+                  Never miss what matters
                 </p>
               </Heading>
             </div>
@@ -74,7 +72,7 @@ export default async function HomePage() {
             <p className="text-base/7 max-w-prose text-gray-600 text-pretty text-center">
               Get instant notifications for {" "}
               <span className="font-semibold text-gray-700">sales, new users, or any other event</span> {" "}
-              send directly to your discord, slack or telegram
+              delivered instantly to Discord, Slack, or Telegram.
             </p>
 
             <ul className="flex flex-col space-y-2 text-base/7 text-gray-600 text-left items-start">
@@ -97,9 +95,9 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section >
 
-      <section className="py-24 sm:py-10 sm:pb-50 bg-brand-25">
+      <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper className="text-center">
-          <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
+          <div className="mx-auto w-full flex flex-col text-center gap-2 items-center">
             <div>
               <Heading className="text-brand-600 text-5xl">
                 Anywhere, anytime
@@ -112,7 +110,26 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section>
       <MockApps />
-      <section className="sm:py-32 py-24 max-xl:py-48 bg-brand-25">
+
+      <section className="bg-brand-25 py-24 sm:py-32 sm:pb-70">
+        <MaxWidthWrapper className="flex justify-center items-center flex-col">
+          <div className="pb-20">
+            <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Easy Integration</h2>
+            <Heading className="text-center">Enjoy the easiest integration on the planet</Heading>
+          </div>
+          <div className="rounded-lg border-2 border-gray-400">
+            <HeroVideoDialog
+              className="block dark:hidden"
+              animationStyle="from-center"
+              videoSrc="https://www.example.com/dummy-video"
+              thumbnailSrc="/video-thumbnail.png"
+              thumbnailAlt="Dashboard"
+            />
+          </div>
+        </MaxWidthWrapper>
+      </section>
+
+      <section className="py-24 sm:py-32 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper>
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Intuitive Monitoring</h2>
@@ -220,72 +237,7 @@ export default async function HomePage() {
           </div>
         </MaxWidthWrapper>
       </section>
-
-      <section className="sm:py-32 py-24">
-        <MaxWidthWrapper>
-          <div className="pb-20">
-            <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Real-World Experiences</h2>
-            <Heading className="text-center">What our customers say</Heading>
-          </div>
-
-          <div className="grid max-w-2xl mx-auto lg:max-w-none lg:grid-cols-2 grid-cols-1 lg:divide-x max-lg:divide-y divide-gray-200">
-            <div className="bg-brand-25 sm:px-8 lg:p-10 px-6 p-6 rounded-tl-xl lg:rounded-bl-xl">
-              <div className="flex gap-2 items-center justify-center">
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-              </div>
-
-              <p className="text-pretty sm:pt-8 pt-6 lg:max-w-2xl max-w-xl mx-auto font-medium text-center sm:text-lg/8 text-base text-brand-950 tracking-tight">
-                BirdoBot has been a game-changer for me. I've been using it for
-                two months now and seeing sales pop up in real-time is super
-                satisfying.
-              </p>
-
-              <div className="flex flex-col justify-center items-center mt-6">
-                <Image src="/user-1.png" alt="User 1" width={48} height={48} className="rounded-full object-cover" />
-                <div className="flex flex-row gap-2 items-center pt-4">
-                  <p className="font-medium">Pieter Mark</p>
-                  <Icons.verificationBadge className="size-4" />
-                </div>
-                <p className="text-gray-500 text-sm">@pietermk</p>
-              </div>
-
-            </div>
-            <div className="bg-brand-25 sm:px-8 lg:p-10 px-6 p-6 rounded-br-xl lg:rounded-tr-xl">
-              <div className="flex gap-2 items-center justify-center">
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-                <Star className="size-5 fill-brand-600 text-brand-600" />
-              </div>
-
-              <p className="text-pretty sm:pt-8 pt-6 lg:max-w-2xl max-w-xl mx-auto font-medium text-center sm:text-lg/8 text-base text-brand-950 tracking-tight">
-                BirdoBot been paying off for our SaaS. Nice to have simple
-                way to see how we're doing day-to-day. Definitely makes our
-                lives easier.
-              </p>
-
-              <div className="flex flex-col justify-center items-center mt-6">
-                <Image src="/user-1.png" alt="User 1" width={48} height={48} className="rounded-full object-cover" />
-                <div className="flex flex-row gap-2 items-center pt-4">
-                  <p className="font-medium">Pieter Mark</p>
-                  <Icons.verificationBadge className="size-4" />
-                </div>
-                <p className="text-gray-500 text-sm">@pietermk</p>
-              </div>
-
-            </div>
-          </div>
-
-          <ShinyButton href="/sign-up" className="py-6 px-12 text-base shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-80 mt-10 mx-auto w-full">
-            Start For Free Today
-          </ShinyButton>
-        </MaxWidthWrapper>
-      </section>
+      <Footer />
     </>
   )
 }
