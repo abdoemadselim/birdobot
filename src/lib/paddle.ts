@@ -6,10 +6,9 @@ const paddle = await initializePaddle({
 });
 
 export const createCheckoutOverlay = ({
-    userId,
     userEmail,
     plan
-}: { userId: number, userEmail: string, plan: "core" | "growth" | "premium" }) => {
+}: { userEmail: string, plan: "core" | "growth" | "premium" }) => {
     const PRICE_PLAN =
         plan === "core" ?
             process.env.NEXT_PUBLIC_CORE_PRODUCT_PRICE_ID :
@@ -31,7 +30,7 @@ export const createCheckoutOverlay = ({
                 email: userEmail
             },
             customData: {
-                userId: userId
+                userEmail
             }
         });
     }

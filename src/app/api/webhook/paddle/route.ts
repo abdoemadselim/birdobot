@@ -1,7 +1,7 @@
 import { CORE_QUOTA, GROWTH_QUOTA, PREMIUM_QUOTA } from "@/config";
 import { db } from "@/server/db/";
-import { userCreditsTable } from "@/server/db/schema";
-import { sql } from "drizzle-orm";
+import { userCreditsTable, userTable } from "@/server/db/schema";
+import { eq, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { Paddle, TransactionCompletedEvent } from '@paddle/paddle-node-sdk'
 
@@ -22,13 +22,19 @@ export const POST = async (request: NextRequest) => {
 
     const { data } = eventData
 
-    if (!data.customData || !data.customData.userId) {
+    if (!data.customData || !data.customData.userEmail) {
         return NextResponse.json({ message: "Invalid request" }, { status: 400 })
     }
 
     const plan = data.items[0]?.price?.customData?.plan || "fre"
     if (plan === "free") {
         return NextResponse.json({ message: "Upgraded user plan successfully" })
+    }
+
+    const dbUser = (await db.select().from(userTable).where(eq(userTable.externalId, data.customData.userEmail)))[0]
+
+    if (!dbUser) {
+        return NextResponse.json({ message: "Invalid request" }, { status: 400 })
     }
 
     // Update credits
@@ -38,7 +44,7 @@ export const POST = async (request: NextRequest) => {
     await db.insert(userCreditsTable).values({
         balance: eventCredits,
         featureKey: 'EVENTS',
-        userId: Number(data.customData.userId)
+        userId: dbUser.id
     }).onConflictDoUpdate({
         target: [userCreditsTable.userId, userCreditsTable.featureKey],
         set: {
@@ -49,7 +55,7 @@ export const POST = async (request: NextRequest) => {
     await db.insert(userCreditsTable).values({
         balance: categoriesCredits,
         featureKey: 'EVENTS_CATEGORIES',
-        userId: Number(data.customData.userId)
+        userId: dbUser.id
     }).onConflictDoUpdate({
         target: [userCreditsTable.userId, userCreditsTable.featureKey],
         set: {

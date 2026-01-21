@@ -24,15 +24,6 @@ export default function PricingPage() {
     const { user } = useUser()
     const [showOverlay, setShowOverlay] = useState(false)
 
-    const { data: userInfo, isPending: isPendingUserInfo, isSuccess } = useQuery({
-        queryKey: ["userInfo"],
-        queryFn: async () => {
-            const res = await client.user.getUserInfo.$get()
-            return res.json()
-        },
-        refetchOnWindowFocus: false,
-    })
-
     const handleCreateCheckout = async (plan: "free" | "core" | "premium" | "growth") => {
         if (plan === "free" && user) {
             router.push(`/dashboard`)
@@ -46,8 +37,7 @@ export default function PricingPage() {
 
         if (user) {
             const openCheckout = createCheckoutOverlay({
-                userId: userInfo?.id!,
-                userEmail: userInfo?.email!,
+                userEmail: user?.emailAddresses[0]?.emailAddress!,
                 plan: plan as "core" | "growth" | "premium"
             })
 
@@ -65,22 +55,6 @@ export default function PricingPage() {
             setShowOverlay(true)
         }
     }, [])
-
-    useEffect(() => {
-        if (!isSuccess) return;
-        if (!plan || !["core", "growth", "premium"].includes(plan)) return
-
-        if (!user) router.push(`/sign-in?intent=upgrade&plan=${plan}`)
-
-        const openCheckout = createCheckoutOverlay({
-            userId: userInfo?.id!,
-            userEmail: userInfo?.email!,
-            plan: plan as "core" | "growth" | "premium"
-        })
-
-        openCheckout()
-
-    }, [isSuccess])
 
     return (
         <div className="flex flex-col flex-1 pt-28 bg-brand-25 pb-20">
@@ -128,11 +102,8 @@ export default function PricingPage() {
                                 <Button
                                     className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)}
                                     onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium" | "free")}
-                                    disabled={isPendingUserInfo}
                                 >
-                                    {
-                                        isPendingUserInfo ? "Preparing.." : "Get started"
-                                    }
+                                    Buy now
                                 </Button>
 
                                 <p className="text-muted-foreground pt-4 text-center text-sm">One-time purchase</p>
