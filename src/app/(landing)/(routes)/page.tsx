@@ -15,7 +15,7 @@ import MockApps from "../mock-apps";
 import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 
 export default async function HomePage() {
-  const codeSnippet = `await fetch("https://ring-rang.vercel.app/api/v1/events", {
+  const codeSnippet = `await fetch("https://birdobot.site/api/v1/events", {
   method: "POST",
   body: JSON.stringify({
     category: "sale",
