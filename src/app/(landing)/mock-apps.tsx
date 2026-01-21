@@ -107,9 +107,9 @@ export default function MockApps() {
                         </MockSlackUI>
                     </div>
 
-                    <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:ring-gray-900/10 max-lg:min-w-[94%] mx-auto
-                     max-xl:top-170 peer-hover/b:ring-gray-900/10 peer-hover/b:-translate-y-[50%] peer-hover/a:-translate-y-[50%]  max-xl:left-1/2 max-xl:-translate-x-1/2 
-                      lg:rounded-2xl lg:p-4 peer-hover/a:opacity-60 peer-hover/b:opacity-60 lg:-m-4 p-2 -m-2 absolute
+                    <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:xl:ring-gray-900/10 max-lg:min-w-[94%] mx-auto
+                     max-xl:top-170 peer-hover/b:ring-gray-900/10 peer-hover/b:xl:-translate-y-[50%] peer-hover/a:xl:-translate-y-[50%]  max-xl:left-1/2 max-xl:-translate-x-1/2 
+                      lg:rounded-2xl lg:p-4 peer-hover/a:xl:opacity-60 peer-hover/b:xl:opacity-60 lg:-m-4 p-2 -m-2 absolute
                       2xl:left-[35%] xl:left-[25%] opacity-100 hover:opacity-100  -translate-y-[calc(50%+60px)] transition-all
                       duration-400 hover:z-50 z-30 top-1/2 -translate-y-1/2 w-fit
                       "
