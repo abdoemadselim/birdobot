@@ -21,7 +21,7 @@ export default function Footer() {
 
                 <Link href="/privacy" className="text-sm underline pt-4">Privacy Notice</Link>
 
-                <Link href="/privacy" className="text-sm underline pt-4">Refund policy</Link>
+                <Link href="/refund" className="text-sm underline pt-4">Refund policy</Link>
             </div>
         </footer>
     )
