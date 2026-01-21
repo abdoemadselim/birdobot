@@ -6,6 +6,7 @@ import { authRouter } from "./routers/auth-router"
 import { eventCategoryRouter } from "./routers/event-category-router"
 import { eventRouter } from "./routers/event-router"
 import { userRouter } from "./routers/user-router"
+import { paymentRouter } from "./routers/payment-router"
 
 /**
  * This is your base API.
@@ -38,6 +39,7 @@ const appRouter = j.mergeRouters(api, {
   eventCategory: eventCategoryRouter,
   event: eventRouter,
   user: userRouter,
+  payment: paymentRouter
 })
 
 export type AppRouter = typeof appRouter

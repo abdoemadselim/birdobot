@@ -1,0 +1,1 @@
+ALTER TABLE "payment" ADD COLUMN "updatedAt" timestamp DEFAULT now() NOT NULL;

@@ -14,7 +14,7 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
     return (
         <SidebarProvider>
             <Sidebar />
-            <main className="flex flex-col flex-1">
+            <main className="flex flex-col flex-1 h-screen">
                 <AppSidebarTrigger />
                 {children}
             </main>

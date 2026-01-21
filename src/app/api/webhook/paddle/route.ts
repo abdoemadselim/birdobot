@@ -1,6 +1,6 @@
 import { CORE_QUOTA, GROWTH_QUOTA, PREMIUM_QUOTA } from "@/config";
 import { db } from "@/server/db/";
-import { userCreditsTable, userTable } from "@/server/db/schema";
+import { paymentTable, userCreditsTable, userTable } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { Paddle, TransactionCompletedEvent } from '@paddle/paddle-node-sdk'
@@ -22,16 +22,18 @@ export const POST = async (request: NextRequest) => {
 
     const { data } = eventData
 
+    console.log(data)
+
     if (!data.customData || !data.customData.userEmail) {
         return NextResponse.json({ message: "Invalid request" }, { status: 400 })
     }
 
-    const plan = data.items[0]?.price?.customData?.plan || "fre"
+    const plan = data.items[0]?.price?.customData?.plan || "free"
     if (plan === "free") {
         return NextResponse.json({ message: "Upgraded user plan successfully" })
     }
 
-    const dbUser = (await db.select().from(userTable).where(eq(userTable.externalId, data.customData.userEmail)))[0]
+    const dbUser = (await db.select().from(userTable).where(eq(userTable.email, data.customData.userEmail)))[0]
 
     if (!dbUser) {
         return NextResponse.json({ message: "Invalid request" }, { status: 400 })
@@ -62,5 +64,15 @@ export const POST = async (request: NextRequest) => {
             balance: sql`${userCreditsTable.balance} + ${categoriesCredits}`,
         }
     })
+
+    // Create the payment record (for Refund)
+    await db.insert(paymentTable).values({
+        transactionId: data.id,
+        userId: dbUser.id,
+        total: Number(data.details?.totals?.total),
+        status: "COMPLETED",
+        package: plan
+    })
+
     return NextResponse.json({ message: "Upgraded user plan successfully" })
 }

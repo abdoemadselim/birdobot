@@ -7,7 +7,7 @@ import { BarChart } from "lucide-react";
 import Link from "next/link";
 
 export default function UpgradePageContent() {
-    const { data: usage = { events: { left: 0, used: 0 }, categories: { left: 0, used: 0 } }, isFetching } = useQuery({
+    const { data: usage, isFetching } = useQuery({
         queryKey: ["usage"],
         queryFn: async () => {
             const res = await client.user.getUserUsage.$get();
@@ -21,7 +21,7 @@ export default function UpgradePageContent() {
             <div className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4">
                 <div className="rounded-lg border-brand-400 border-2 p-8 mt-6 flex gap-2 flex-col">
                     <div className="flex items-center justify-between w-full">
-                        <p>Total Events Sent : {usage.events.used}</p>
+                        <p>Total Events Sent : {usage?.events?.used}</p>
                         <BarChart className="size-4 text-gray-500" />
                     </div>
 
@@ -37,7 +37,7 @@ export default function UpgradePageContent() {
                 </div>
                 <div className="rounded-lg ring ring-inset ring-gray-200 bg-white p-8 mt-6 flex gap-2 flex-col">
                     <div className="flex items-center justify-between w-full">
-                        <p>Total Categories Created: {usage.categories.used}</p>
+                        <p>Total Categories Created: {usage?.categories.used}</p>
                         <BarChart className="size-4 text-gray-500" />
                     </div>
 
@@ -54,7 +54,7 @@ export default function UpgradePageContent() {
             </div>
 
             {
-                usage?.events.left < 50 ? (
+                usage?.events && (usage?.events?.left < 50) ? (
                     <p className="pt-8 text-muted-foreground">
                         <span className="text-red-400">You're running out of credits! {" "}</span>
                         <Link href="/pricing" className="text-brand-700 underline">Buy more credits now</Link>

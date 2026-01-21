@@ -1,0 +1,1 @@
+ALTER TABLE "payment" ADD COLUMN "package" varchar NOT NULL;

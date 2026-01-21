@@ -2,7 +2,7 @@ import { initializePaddle } from '@paddle/paddle-js';
 
 const paddle = await initializePaddle({
     token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN!,
-    environment: 'production'
+    environment: 'sandbox'
 });
 
 export const createCheckoutOverlay = ({
@@ -30,7 +30,8 @@ export const createCheckoutOverlay = ({
                 email: userEmail
             },
             customData: {
-                userEmail
+                userEmail,
+                plan
             }
         });
     }

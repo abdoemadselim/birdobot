@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="antialiased min-h-[calc(100vh-1px)] flex flex-col" >
+        <body className="antialiased min-h-[calc(100vh-1px)] flex flex-col">
           <Providers>
             {children}
             <Toaster richColors />

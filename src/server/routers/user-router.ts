@@ -29,8 +29,8 @@ export const userRouter = j.router({
         const [eventsCreditsLeft, categoriesCreditsLeft, totalEvents, totalCategories] = await Promise.all([eventsCreditsLeftQuery, categoriesCreditsLeftQuery, totalEventsQuery, totalCategoriesQuery])
 
         return c.json({
-            events: { left: eventsCreditsLeft[0]?.balance || 0, used: totalEvents },
-            categories: { left: categoriesCreditsLeft[0]?.balance || 0, used: totalCategories },
+            events: { left: eventsCreditsLeft[0]?.balance || 0, used: totalEvents || 0 },
+            categories: { left: categoriesCreditsLeft[0]?.balance || 0, used: totalCategories || 0 },
         })
     }),
 

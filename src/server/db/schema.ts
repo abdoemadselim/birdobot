@@ -15,6 +15,7 @@ import {
 export const featureEnum = pgEnum("feature", ["EVENTS", "EVENTS_CATEGORIES"])
 export const deliveryStatusEnum = pgEnum("deliveryStatusEnum", ["PENDING", "FAILED", "DELIVERED"])
 export const channelEnum = pgEnum("discord", ["discord", "telegram", "slack"])
+export const paymentStatusEnum = pgEnum("paymentStatus", ["PENDING", "COMPLETED", "CANCELLED"])
 
 export const userTable = pgTable(
   "user",
@@ -96,4 +97,18 @@ export const userCreditsTable = pgTable(
   (table) => [
     unique("user_feature_key").on(table.userId, table.featureKey)
   ]
+)
+
+export const paymentTable = pgTable(
+  "payment",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").references(() => userTable.id),
+    status: paymentStatusEnum("status").default("PENDING"),
+    transactionId: varchar("transactionId", { length: 100 }).unique(),
+    total: integer("total"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+    package: varchar("package").notNull()
+  },
 )
