@@ -20,6 +20,8 @@ export default function Footer() {
                 <Link href="/terms" className="text-sm underline pt-4">Terms of service</Link>
 
                 <Link href="/privacy" className="text-sm underline pt-4">Privacy Notice</Link>
+
+                <Link href="/privacy" className="text-sm underline pt-4">Refund policy</Link>
             </div>
         </footer>
     )
