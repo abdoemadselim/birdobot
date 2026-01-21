@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "BirdoBot - Fast & Pretty",
-  description: "Created using JStack",
+  description: "Never miss what matters on your platform or store",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
 
@@ -18,15 +18,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className="antialiased min-h-[calc(100vh-1px)] flex flex-col">
+
+    <html lang="en">
+      <body className="antialiased min-h-[calc(100vh-1px)] flex flex-col">
+        <ClerkProvider>
           <Providers>
             {children}
             <Toaster richColors />
           </Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   )
 }

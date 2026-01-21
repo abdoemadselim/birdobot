@@ -3,14 +3,14 @@ import { ReactNode } from "react";
 
 // Components
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
-export default function LandingLayout({ children }: { children: ReactNode }) {
+export default function AuthLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="relative flex-1 flex flex-col">
+        <div className="flex flex-col flex-1 h-screen">
             <Navbar />
-            <main className="flex-1 flex flex-col items-center justify-center">
-                {children}
-            </main>
+            {children}
+            <Footer />
         </div>
     )
 }

@@ -9,7 +9,8 @@ import {
   pgEnum,
   integer,
   unique,
-  jsonb
+  jsonb,
+  boolean
 } from "drizzle-orm/pg-core"
 
 export const featureEnum = pgEnum("feature", ["EVENTS", "EVENTS_CATEGORIES"])
@@ -48,12 +49,14 @@ export const eventCategoryTable = pgTable(
   "eventCategory",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").references(() => userTable.id),
+    userId: integer("userId").references(() => userTable.id, { onDelete: "cascade" }),
 
     name: varchar("name", { length: 100 }).notNull(),
     emoji: varchar("emoji", { length: 32 }),
     color: integer("color").notNull(),
     channels: channelEnum("channels").array().notNull().default(["discord"]),
+
+    enabled: boolean().default(true),
 
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
@@ -67,7 +70,7 @@ export const eventTable = pgTable(
   "event",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").references(() => userTable.id),
+    userId: integer("userId").references(() => userTable.id, { onDelete: "cascade" }),
 
     name: varchar("name", { length: 255 }),
     formattedMessage: text("formattedMessage"),
@@ -90,7 +93,7 @@ export const userCreditsTable = pgTable(
   "userCredits",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").references(() => userTable.id),
+    userId: integer("userId").references(() => userTable.id, { onDelete: "cascade" }),
     featureKey: featureEnum("featureKey").notNull(),
     balance: integer("balance").default(0).notNull(),
   },
@@ -103,7 +106,7 @@ export const paymentTable = pgTable(
   "payment",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").references(() => userTable.id),
+    userId: integer("userId").references(() => userTable.id, { onDelete: "cascade" }),
     status: paymentStatusEnum("status").default("PENDING"),
     transactionId: varchar("transactionId", { length: 100 }).unique(),
     total: integer("total"),
