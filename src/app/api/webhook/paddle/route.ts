@@ -22,12 +22,11 @@ export const POST = async (request: NextRequest) => {
 
     const { data } = eventData
 
-    console.log(data)
-
     if (!data.customData || !data.customData.userEmail) {
         return NextResponse.json({ message: "Invalid request" }, { status: 400 })
     }
 
+    // Check the transaction plan/package
     const plan = data.items[0]?.price?.customData?.plan || "free"
     if (plan === "free") {
         return NextResponse.json({ message: "Upgraded user plan successfully" })
@@ -39,7 +38,7 @@ export const POST = async (request: NextRequest) => {
         return NextResponse.json({ message: "Invalid request" }, { status: 400 })
     }
 
-    // Update credits
+    // Update user credits
     const eventCredits = plan === "core" ? CORE_QUOTA.maxEventsPerMonth : plan === "growth" ? GROWTH_QUOTA.maxEventsPerMonth : PREMIUM_QUOTA.maxEventsPerMonth
     const categoriesCredits = plan === "core" ? CORE_QUOTA.maxEventsCategories : plan === "growth" ? GROWTH_QUOTA.maxEventsCategories : PREMIUM_QUOTA.maxEventsCategories
 
@@ -65,7 +64,7 @@ export const POST = async (request: NextRequest) => {
         }
     })
 
-    // Create the payment record (for Refund)
+    // Create the payment record (for Refund, and payments page)
     await db.insert(paymentTable).values({
         transactionId: data.id,
         userId: dbUser.id,
