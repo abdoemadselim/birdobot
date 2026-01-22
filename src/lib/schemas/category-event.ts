@@ -11,3 +11,5 @@ export const EVENT_CATEGORY_VALIDATOR = z.object({
     emoji: z.string().emoji("Invalid emoji.").optional(),
     channels: z.array(z.enum(["discord", "telegram", "slack"])).min(1, "At least one channel is required")
 })
+
+export const UPDATE_EVENT_CATEGORY_VALIDATOR = EVENT_CATEGORY_VALIDATOR.extend({ id: z.number() })

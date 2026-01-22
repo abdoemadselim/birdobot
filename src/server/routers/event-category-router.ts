@@ -5,7 +5,7 @@ import { j, privateProcedure } from "../jstack";
 import z from "zod";
 
 // Schemas
-import { EVENT_CATEGORY_NAME_VALIDATOR, EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
+import { EVENT_CATEGORY_NAME_VALIDATOR, EVENT_CATEGORY_VALIDATOR, UPDATE_EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
 
 // Utils
 import { parseColor } from "@/lib/utils";
@@ -25,6 +25,7 @@ export const eventCategoryRouter = j.router({
                 ec.emoji,
                 ec.color, 
                 ec.channels,
+                ec.enabled,
                 ec."createdAt"
                 FROM (
                 SELECT *
@@ -125,7 +126,7 @@ export const eventCategoryRouter = j.router({
             return c.json({ success: true })
         }),
 
-    createEventCategory: privateProcedure
+    createCategory: privateProcedure
         .input(EVENT_CATEGORY_VALIDATOR)
         .mutation(async ({ c, ctx, input }) => {
             const { user, db } = ctx
@@ -251,5 +252,38 @@ export const eventCategoryRouter = j.router({
         })
 
         return c.json({ totalEvents: totalEvents, uniqueFields: fieldsMap })
+    }),
+
+    updateCategoryStatus: privateProcedure.input(z.object({ categoryId: z.number(), status: z.boolean() })).mutation(async ({ c, ctx, input }) => {
+        const { user, db } = ctx;
+        const { categoryId, status } = input;
+
+        await db.update(eventCategoryTable).set({
+            enabled: status
+        }).where(eq(eventCategoryTable.id, categoryId))
+
+        c.json({ success: true })
+    }),
+
+    updateCategory: privateProcedure.input(UPDATE_EVENT_CATEGORY_VALIDATOR).mutation(async ({ c, ctx, input }) => {
+        const { user, db } = ctx
+        const { color, emoji, channels, id } = input
+
+        const eventCategory = await db
+            .update(eventCategoryTable)
+            .set({
+                color: parseColor(color),
+                emoji: emoji,
+                channels: channels,
+            })
+            .where(and(eq(eventCategoryTable.userId, user.id), eq(eventCategoryTable.id, id)))
+            .returning({
+                id: eventCategoryTable.id,
+                emoji: eventCategoryTable.emoji,
+                color: eventCategoryTable.color,
+                channels: eventCategoryTable.channels
+            })
+
+        return c.json({ success: true, eventCategory: eventCategory[0] })
     })
 })

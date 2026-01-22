@@ -5,8 +5,8 @@ import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod";
-import { cn } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { cn, parseColor } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { InferSelectModel } from "drizzle-orm";
 
@@ -20,14 +20,13 @@ import { toast } from "sonner";
 import { Icons } from "./icons";
 
 // Schemas
-import { EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
+import { UPDATE_EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
 import { eventCategoryTable } from "@/server/db/schema";
 
 // Client
 import { client } from "@/lib/client";
 
-
-type EVENT_CATEGORY_TYPE = z.infer<typeof EVENT_CATEGORY_VALIDATOR>
+type UPDATE_EVENT_CATEGORY_TYPE = z.infer<typeof UPDATE_EVENT_CATEGORY_VALIDATOR>
 
 // The purpose of comments here is to make tailwind parse them and create css rules for them
 const COLOR_OPTIONS = [
@@ -68,15 +67,26 @@ const CHANNELS = [
     }
 ] as const
 
-export default function CreateCategoryModal({ trigger }: { trigger: ReactNode }) {
+interface UpdateCategoryModalProps {
+    trigger: ReactNode,
+    category: {
+        id: number,
+        name: string,
+        color: number,
+        emoji: string,
+        channels: ("discord" | "slack" | "telegram")[]
+    }
+}
+
+export default function UpdateCategoryModal({ trigger, category }: UpdateCategoryModalProps) {
     const [open, setOpen] = useState(false)
 
     const { mutate: createEventCategory, isPending } = useMutation({
-        mutationFn: async (data: EVENT_CATEGORY_TYPE) => {
-            await client.eventCategory.createCategory.$post(data)
+        mutationFn: async (data: UPDATE_EVENT_CATEGORY_TYPE) => {
+            await client.eventCategory.updateCategory.$post(data)
         },
 
-        onMutate: async (newEventCategory, context) => {
+        onMutate: async (updatedEventCategory, context) => {
             // Cancel any outgoing refetches
             // (so they don't overwrite our optimistic update)
             await context.client.cancelQueries({ queryKey: ['event-categories'] })
@@ -89,13 +99,16 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                 info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
                 events_count: number,
                 unique_field_count: number
-            }[]) => [...old, {
-                info: {
-                    ...newEventCategory,
-                    createdAt: new Date(),
-                    color: "f3f4f6"
-                }
-            }])
+            }[]) => old.map((oldCategory) => {
+                return oldCategory.info.id === category.id ? {
+                    ...oldCategory,
+                    info: {
+                        ...oldCategory.info,
+                        ...updatedEventCategory,
+                        color: parseColor(updatedEventCategory.color.slice(1))
+                    }
+                } : oldCategory
+            }))
 
             setOpen(false)
 
@@ -107,9 +120,9 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
             context.client.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
 
             toast.custom((t) =>
-                <Toaster type="error" t={t} title="Create Event Category" children={
+                <Toaster type="error" t={t} title="Update Event Category" children={
                     <div className="text-red-500 text-sm">
-                        <p>Something went wrong while adding the category.</p>
+                        <p>Something went wrong while updating the category.</p>
                         <br />
                         <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us</Link></p>
                     </div>
@@ -131,18 +144,25 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
         formState: { errors },
         watch,
         reset
-    } = useForm<EVENT_CATEGORY_TYPE>({
-        resolver: zodResolver(EVENT_CATEGORY_VALIDATOR),
+    } = useForm<UPDATE_EVENT_CATEGORY_TYPE>({
+        resolver: zodResolver(UPDATE_EVENT_CATEGORY_VALIDATOR),
         mode: "onChange",
         defaultValues: {
-            color: "",
-            emoji: "",
-            name: "",
-            channels: ["discord"]
+            color: "#" + category.color.toString(16).padStart(6, "0"),
+            emoji: category.emoji,
+            name: category.name,
+            channels: category.channels
+        },
+        values: {
+            id: category.id,
+            color: "#" + category.color.toString(16).padStart(6, "0").toUpperCase(),
+            emoji: category.emoji,
+            name: category.name,
+            channels: category.channels
         }
     })
 
-    const onSubmit = (data: EVENT_CATEGORY_TYPE) => {
+    const onSubmit = (data: UPDATE_EVENT_CATEGORY_TYPE) => {
         createEventCategory(data)
     }
 
@@ -156,13 +176,12 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
             handleModalOpen={(open) => setOpen(open)}
             trigger={trigger}>
             <div>
-                <h3 className="font-medium ">New Event Category</h3>
-                <p className="text-sm text-gray-700">Create a new category to organize your events</p>
+                <h3 className="">Update <span className="font-medium">{category.name}</span> category</h3>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="pt-6 space-y-[5px]">
                     <div className="space-y-2">
                         <Label htmlFor="name">Name</Label>
-                        <Input {...register("name")} id="name" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none" />
+                        <Input readOnly disabled {...register("name")} id="name" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none" />
 
                         <p className="text-red-400 min-h-[20px]" aria-live="assertive">
                             {errors.name?.message}
@@ -178,7 +197,9 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                                         cn(
                                             `bg-[${premadeColor}]`,
                                             "rounded-full w-10 h-10 hover:ring-brand-700 hover:ring-2 ring-offset-2 cursor-pointer",
-                                            premadeColor == selectedColor && "ring-brand-700 ring-2"
+                                            {
+                                                "ring-brand-700 ring-2": premadeColor == selectedColor
+                                            }
                                         )
                                     } />
                                 ))
@@ -238,7 +259,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
 
                     <div className="justify-end flex gap-4 border-t py-2">
                         <Button type="submit" className="cursor-pointer" >
-                            Create
+                            Update
                         </Button>
                         <Button
                             type="button"
