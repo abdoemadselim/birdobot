@@ -15,7 +15,7 @@ export default function SignInPage() {
     const { isLoaded } = useUser()
 
     return (
-        <div className="flex flex-col flex-1 justify-center items-center">
+        <div className="flex flex-col flex-1 justify-center items-center py-32">
             {
                 !isLoaded ? (
                     <LoadingSpinner />

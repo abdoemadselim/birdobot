@@ -16,14 +16,13 @@ export default function SignUpPage() {
     const plan = searchParams.get("plan")
 
     return (
-        <div className="flex flex-col flex-1 justify-center items-center">
+        <div className="flex flex-col flex-1 justify-center items-center py-32">
             {
                 !isLoaded ? (
                     <LoadingSpinner />
                 ) : (
                     <SignUp
                         forceRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
-                        fallbackRedirectUrl={intent ? `/welcome/?intent=${intent}&plan=${plan}` : "/welcome"}
                         signInForceRedirectUrl={intent ? `/pricing/?intent=${intent}&plan=${plan}` : "/dashboard"}
                     />
                 )
