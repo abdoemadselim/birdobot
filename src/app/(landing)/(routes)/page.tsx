@@ -110,7 +110,7 @@ export default async function HomePage() {
       </section>
       <MockApps />
 
-      <section className="bg-brand-25 pt-62 sm:pb-70">
+      {/* <section className="bg-brand-25 pt-62 sm:pb-70">
         <MaxWidthWrapper className="flex justify-center items-center flex-col">
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Easy Integration</h2>
@@ -126,7 +126,7 @@ export default async function HomePage() {
             />
           </div>
         </MaxWidthWrapper>
-      </section>
+      </section> */}
 
       <section className="py-24 sm:py-22 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper>
