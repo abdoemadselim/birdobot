@@ -128,7 +128,7 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section> */}
 
-      <section className="py-24 sm:py-22 sm:pb-70 bg-brand-25">
+      <section className="py-44 sm:py-22 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper>
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Intuitive Monitoring</h2>
