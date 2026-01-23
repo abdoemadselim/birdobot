@@ -254,7 +254,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                     <div className="flex flex-col gap-8">
                         {
                             controlledFields.map((fieldRule, index) => (
-                                <div className="flex gap-6 border-b-2 pb-2 items-end" key={fieldRule.id}>
+                                <div className="flex gap-6 border-b-2 pb-2 items-end flex-wrap relative max-w-[1050px]" key={fieldRule.id}>
                                     {
                                         index > 0 && (
                                             <Controller
@@ -343,7 +343,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                                         variant="ghost"
                                         size="sm"
                                         type="button"
-                                        className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
+                                        className="absolute left-full top-0 translate-y-1/2 py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
                                         onClick={() => remove(index)}
                                     >
                                         <Trash2 className="size-5" />
