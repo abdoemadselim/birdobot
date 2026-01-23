@@ -29,7 +29,7 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
         return notFound()
     }
 
-    const user = (await db.select({ id: userTable.id }).from(userTable).where(eq(userTable.externalId, clerkUser.id)))[0]
+    const user = (await db.select().from(userTable).where(eq(userTable.externalId, clerkUser.id)))[0]
     if (!user) {
         return notFound()
     }
@@ -42,7 +42,10 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
             channels: eventCategoryTable.channels,
             enabled: eventCategoryTable.enabled,
             color: eventCategoryTable.color,
-            fieldRules: eventCategoryTable.fieldRules
+            fieldRules: eventCategoryTable.fieldRules,
+            slackId: eventCategoryTable.slackId,
+            telegramId: eventCategoryTable.telegramId,
+            discordId: eventCategoryTable.discordId
         })
         .from(eventCategoryTable)
         .where(and(eq(eventCategoryTable.name, categoryName), eq(eventCategoryTable.userId, user.id))))[0]
@@ -53,14 +56,23 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
 
     return (
         <DashboardLayout title={`Update ${category.name} Category ${category.emoji} `}>
-            <UpdateCategoryContent category={category as {
-                id: number,
-                name: string,
-                color: number,
-                emoji: string,
-                channels: ("discord" | "telegram" | "slack")[],
-                fieldRules: FIELD_RULES_TYPE[]
-            }} />
+            <UpdateCategoryContent
+                defaultChannels={{
+                    telegramId: user.telegramId ?? "",
+                    discordId: user.discordId ?? "",
+                    slackId: user.slackId ?? ""
+                }}
+                category={category as {
+                    id: number,
+                    name: string,
+                    color: number,
+                    emoji: string,
+                    channels: ("discord" | "telegram" | "slack")[],
+                    fieldRules: FIELD_RULES_TYPE[],
+                    slackId: string,
+                    telegramId: string,
+                    discordId: string,
+                }} />
         </DashboardLayout>
     )
 }

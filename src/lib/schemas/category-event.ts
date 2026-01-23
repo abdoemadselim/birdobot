@@ -22,7 +22,10 @@ export const FIELD_RULES_VALIDATOR = z.object({
 
 export const UPDATE_EVENT_CATEGORY_VALIDATOR = EVENT_CATEGORY_VALIDATOR.extend({
     id: z.number(),
-    fieldRules: z.array(FIELD_RULES_VALIDATOR)
+    fieldRules: z.array(FIELD_RULES_VALIDATOR),
+    telegramId: z.string().optional(),
+    discordId: z.string().optional(),
+    slackId: z.string().optional()
 })
 
 export type UPDATE_EVENT_CATEGORY_TYPE = z.infer<typeof UPDATE_EVENT_CATEGORY_VALIDATOR>

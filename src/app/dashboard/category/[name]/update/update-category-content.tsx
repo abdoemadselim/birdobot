@@ -74,11 +74,19 @@ interface UpdateCategoryContentProps {
         color: number,
         emoji: string,
         channels: ("discord" | "telegram" | "slack")[],
-        fieldRules: FIELD_RULES_TYPE[]
+        fieldRules: FIELD_RULES_TYPE[],
+        telegramId: string,
+        discordId: string,
+        slackId: string
+    },
+    defaultChannels: {
+        slackId: string,
+        telegramId: string,
+        discordId: string
     }
 }
 
-export default function UpdateCategoryContent({ category }: UpdateCategoryContentProps) {
+export default function UpdateCategoryContent({ category, defaultChannels }: UpdateCategoryContentProps) {
     const router = useRouter()
     const queryClient = useQueryClient()
 
@@ -120,7 +128,10 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
             emoji: category.emoji,
             name: category.name,
             channels: category.channels,
-            fieldRules: category.fieldRules
+            fieldRules: category.fieldRules,
+            telegramId: category.telegramId || defaultChannels.telegramId,
+            discordId: category.discordId || defaultChannels.discordId,
+            slackId: category.slackId || defaultChannels.slackId
         },
         values: {
             id: category.id,
@@ -128,7 +139,10 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
             emoji: category.emoji,
             name: category.name,
             channels: category.channels,
-            fieldRules: category.fieldRules
+            fieldRules: category.fieldRules,
+            telegramId: category.telegramId || defaultChannels.telegramId,
+            discordId: category.discordId || defaultChannels.discordId,
+            slackId: category.slackId || defaultChannels.slackId
         }
     })
 
@@ -152,6 +166,8 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
             ...watchFieldArray[index]
         };
     });
+
+    console.log(errors)
 
     return (
         <div>
@@ -260,7 +276,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                                             <Controller
                                                 name={`fieldRules.${index}.relevance`}
                                                 control={control}
-                                                render={({ field, fieldState }) => (
+                                                render={({ field }) => (
                                                     <Field className="max-w-fit gap-2">
                                                         <Label>Field Relevance</Label>
                                                         <Select
@@ -334,7 +350,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                                         <Input
                                             type={controlledFields[index]?.type === "number" ? "number" : "text"}
                                             {...register(`fieldRules.${index}.value`)}
-                                            placeholder="200"
+                                            placeholder={controlledFields[index]?.type === "number" ? "200" : "John"}
                                             className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[200px]"
                                         />
                                     </div>
@@ -354,7 +370,63 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                     </div>
                 </section>
 
-                <div className="justify-end flex gap-4 py-2 mt-20">
+                <section className="px-4 flex flex-col mt-8">
+                    <p className="text-muted-foreground text-base">Channels: </p>
+
+                    <div>
+                        <div className="flex gap-2 mt-4">
+                            <Icons.telegram className="size-5" />
+                            <span className="text-gray-600">Telegram</span>
+                        </div>
+
+                        <div className="space-y-2 mb-2 mt-4">
+                            <Label htmlFor="telegramId">Telegram ID</Label>
+                            <Input  {...register("telegramId")} id="telegramId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
+                        </div>
+
+                        <p className="text-red-400 min-h-[10px]" aria-live="assertive">
+                            {errors.telegramId?.message}
+                        </p>
+                    </div>
+
+                    <div>
+                        <div className="flex gap-2 mt-6">
+                            <div className="rounded-full text-white bg-brand-700 p-1">
+                                <Icons.discord className="size-4" />
+                            </div>
+                            <span className="text-gray-600">
+                                Discord
+                            </span>
+                        </div>
+
+                        <div className="space-y-2 mb-2 mt-4">
+                            <Label htmlFor="discordId">Discord Channel ID</Label>
+                            <Input  {...register("discordId")} id="discordId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
+                        </div>
+
+                        <p className="text-red-400 min-h-[10px]" aria-live="assertive">
+                            {errors.discordId?.message}
+                        </p>
+                    </div>
+
+                    <div>
+                        <div className="flex gap-2 mt-6">
+                            <Icons.slack className="size-5" />
+                            <span className="text-gray-600">Slack</span>
+                        </div>
+
+                        <div className="space-y-2 mb-2 mt-4">
+                            <Label htmlFor="slackId">Slack Channel ID</Label>
+                            <Input  {...register("slackId")} id="slackId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
+                        </div>
+
+                        <p className="text-red-400 min-h-[10px]" aria-live="assertive">
+                            {errors.slackId?.message}
+                        </p>
+                    </div>
+                </section>
+
+                <div className="justify-end flex gap-4 py-2 mt-10">
                     <Button type="submit" className="cursor-pointer" disabled={isPending}>
                         {
                             isPending ? "Updating..." : "Update"
