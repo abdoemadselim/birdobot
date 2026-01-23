@@ -21,8 +21,8 @@ export const PREMIUM_QUOTA = {
 export const PLANS = [
     {
         features: [
-            "100 real-time events per month",
-            "3 event categories per month",
+            "100 real-time events",
+            "3 event categories",
         ],
         price: "$0",
         name: "Free",
@@ -30,8 +30,8 @@ export const PLANS = [
     },
     {
         features: [
-            "1000 real-time events per month",
-            "5 event categories per month",
+            "1000 real-time events",
+            "5 event categories",
         ],
         price: "$20",
         name: "Core",
@@ -39,16 +39,16 @@ export const PLANS = [
     },
     {
         features: [
-            "10000 real-time events per month",
-            "7 event categories per month",
+            "10000 real-time events",
+            "7 event categories",
         ],
         price: "$49",
         name: "Growth",
     },
     {
         features: [
-            "100000 real-time events per month",
-            "10 event categories per month",
+            "100000 real-time events",
+            "10 event categories",
         ],
         price: "$149",
         name: "Premium",

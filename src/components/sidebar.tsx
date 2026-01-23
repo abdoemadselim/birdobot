@@ -1,7 +1,7 @@
 'use client'
 
 // Libs
-import { Banknote, Gem, Home, Key, ListOrdered, LucideIcon, Menu, Settings } from "lucide-react"
+import { Banknote, Gem, Home, Key, ListOrdered, LucideIcon, Menu, Settings, StickyNote } from "lucide-react"
 import Link from "next/link"
 import { UserButton } from "@clerk/nextjs"
 
@@ -59,6 +59,7 @@ const SIDEBAR_GROUPS: SIDEBAR_CROUP[] = [
                 icon: Settings,
                 text: "Account Settings",
             },
+            // { href: "/dashboard/doc", icon: StickyNote, text: "Documentation" },
         ]
     }
 ]

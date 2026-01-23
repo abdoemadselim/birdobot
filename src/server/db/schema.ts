@@ -52,7 +52,7 @@ export const eventCategoryTable = pgTable(
     userId: integer("userId").references(() => userTable.id, { onDelete: "cascade" }),
 
     name: varchar("name", { length: 100 }).notNull(),
-    emoji: varchar("emoji", { length: 32 }),
+    emoji: varchar("emoji", { length: 32 }).notNull(),
     color: integer("color").notNull(),
     channels: channelEnum("channels").array().notNull().default(["discord"]),
 

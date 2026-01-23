@@ -2,16 +2,11 @@
 
 // Libs
 import { client } from "@/lib/client"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import Link from "next/link";
-import { useState } from "react";
-import { InferSelectModel } from "drizzle-orm";
+import { useQuery } from "@tanstack/react-query"
 
 // Components
 import LoadingSpinner from "@/components/loading-spinner";
-import Toaster from "@/components/ui/toaser";
 import DashboardEmptyState from "./dashboard-empty-state";
-import { toast } from "sonner";
 import CategoryCard from "@/components/category-card";
 
 export default function DashboardPageContent() {
@@ -41,7 +36,7 @@ export default function DashboardPageContent() {
 
     return (
         <section>
-            <div className="grid xl:grid-cols-3 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 items-center gap-10">
+            <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 items-center gap-10">
                 {
                     eventCategories?.map((category) => (
                         <CategoryCard category={category} key={category.info.name} />

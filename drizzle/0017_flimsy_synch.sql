@@ -1,0 +1,1 @@
+ALTER TABLE "eventCategory" ALTER COLUMN "emoji" SET NOT NULL;

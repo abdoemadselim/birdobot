@@ -1,32 +1,30 @@
 'use client'
 
 // Libs
-import { ReactNode, useState } from "react";
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod";
-import { cn, parseColor } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { InferSelectModel } from "drizzle-orm";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 // Components
-import Modal from "./ui/modal";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import Toaster from "./ui/toaser";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import Toaster from "@/components/ui/toaser";
 import { toast } from "sonner";
-import { Icons } from "./icons";
+import { Icons } from "@/components/icons";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // Schemas
 import { UPDATE_EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
-import { eventCategoryTable } from "@/server/db/schema";
 
 // Client
 import { client } from "@/lib/client";
-
-type UPDATE_EVENT_CATEGORY_TYPE = z.infer<typeof UPDATE_EVENT_CATEGORY_VALIDATOR>
+import { Trash2 } from "lucide-react";
 
 // The purpose of comments here is to make tailwind parse them and create css rules for them
 const COLOR_OPTIONS = [
@@ -67,58 +65,28 @@ const CHANNELS = [
     }
 ] as const
 
-interface UpdateCategoryModalProps {
-    trigger: ReactNode,
+type UPDATE_EVENT_CATEGORY_TYPE = z.infer<typeof UPDATE_EVENT_CATEGORY_VALIDATOR>
+
+interface UpdateCategoryContentProps {
     category: {
         id: number,
         name: string,
         color: number,
         emoji: string,
-        channels: ("discord" | "slack" | "telegram")[]
+        channels: ("discord" | "telegram" | "slack")[]
     }
 }
 
-export default function UpdateCategoryModal({ trigger, category }: UpdateCategoryModalProps) {
-    const [open, setOpen] = useState(false)
+export default function UpdateCategoryContent({ category }: UpdateCategoryContentProps) {
+    const router = useRouter()
+    const queryClient = useQueryClient()
 
     const { mutate: createEventCategory, isPending } = useMutation({
         mutationFn: async (data: UPDATE_EVENT_CATEGORY_TYPE) => {
             await client.eventCategory.updateCategory.$post(data)
         },
 
-        onMutate: async (updatedEventCategory, context) => {
-            // Cancel any outgoing refetches
-            // (so they don't overwrite our optimistic update)
-            await context.client.cancelQueries({ queryKey: ['event-categories'] })
-
-            // Snapshot the previous value
-            const previousEventCategories = context.client.getQueryData(['event-categories'])
-
-            // Optimistically update to the new value
-            context.client.setQueryData(['event-categories'], (old: {
-                info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
-                events_count: number,
-                unique_field_count: number
-            }[]) => old.map((oldCategory) => {
-                return oldCategory.info.id === category.id ? {
-                    ...oldCategory,
-                    info: {
-                        ...oldCategory.info,
-                        ...updatedEventCategory,
-                        color: parseColor(updatedEventCategory.color.slice(1))
-                    }
-                } : oldCategory
-            }))
-
-            setOpen(false)
-
-            // Return a result with the snapshotted value
-            return { previousEventCategories }
-        },
-
-        onError: (err, newTodo, onMutateResult, context) => {
-            context.client.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
-
+        onError: () => {
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Update Event Category" children={
                     <div className="text-red-500 text-sm">
@@ -130,10 +98,9 @@ export default function UpdateCategoryModal({ trigger, category }: UpdateCategor
             )
         },
 
-        onSettled: (data, error, variables, onMutateResult, context) => {
-            setOpen(false)
-            context.client.invalidateQueries({ queryKey: ['event-categories'] })
-            reset()
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["event-categories"] })
+            router.push("/dashboard")
         }
     })
 
@@ -143,7 +110,7 @@ export default function UpdateCategoryModal({ trigger, category }: UpdateCategor
         setValue,
         formState: { errors },
         watch,
-        reset
+        control
     } = useForm<UPDATE_EVENT_CATEGORY_TYPE>({
         resolver: zodResolver(UPDATE_EVENT_CATEGORY_VALIDATOR),
         mode: "onChange",
@@ -151,16 +118,23 @@ export default function UpdateCategoryModal({ trigger, category }: UpdateCategor
             color: "#" + category.color.toString(16).padStart(6, "0"),
             emoji: category.emoji,
             name: category.name,
-            channels: category.channels
+            channels: category.channels,
+            fieldRules: []
         },
         values: {
             id: category.id,
             color: "#" + category.color.toString(16).padStart(6, "0").toUpperCase(),
             emoji: category.emoji,
             name: category.name,
-            channels: category.channels
+            channels: category.channels,
+            fieldRules: []
         }
     })
+
+    const { fields: fieldRules, append, remove } = useFieldArray({
+        control,
+        name: "fieldRules",
+    });
 
     const onSubmit = (data: UPDATE_EVENT_CATEGORY_TYPE) => {
         createEventCategory(data)
@@ -170,18 +144,23 @@ export default function UpdateCategoryModal({ trigger, category }: UpdateCategor
     const selectedEmoji = watch("emoji")
     const selectedChannel = watch("channels")
 
-    return (
-        <Modal
-            open={open}
-            handleModalOpen={(open) => setOpen(open)}
-            trigger={trigger}>
-            <div>
-                <h3 className="">Update <span className="font-medium">{category.name}</span> category</h3>
+    const handleAddFieldRule = ({ name, type }: { name: string, type: "boolean" | "text" | "number" }) => {
+        append({
+            name,
+            type
+        })
+    }
 
-                <form onSubmit={handleSubmit(onSubmit)} className="pt-6 space-y-[5px]">
+    console.log(fieldRules)
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <h2 className="border-b py-2 mb-4 text-gray-600">General</h2>
+                <section className="px-4">
                     <div className="space-y-2">
                         <Label htmlFor="name">Name</Label>
-                        <Input readOnly disabled {...register("name")} id="name" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none" />
+                        <Input readOnly disabled {...register("name")} id="name" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
 
                         <p className="text-red-400 min-h-[20px]" aria-live="assertive">
                             {errors.name?.message}
@@ -233,7 +212,7 @@ export default function UpdateCategoryModal({ trigger, category }: UpdateCategor
                         </p>
                     </div>
 
-                    <div>
+                    <div className="pt-2">
                         <Label>Channel</Label>
                         <span className="text-[14px] text-zinc-400 block pb-3 pt-1">Where to receive the notification</span>
                         <div className="flex flex-wrap gap-4">
@@ -256,25 +235,85 @@ export default function UpdateCategoryModal({ trigger, category }: UpdateCategor
                             {errors.channels?.message}
                         </p>
                     </div>
+                </section>
 
-                    <div className="justify-end flex gap-4 border-t py-2">
-                        <Button type="submit" className="cursor-pointer" >
-                            Update
-                        </Button>
-                        <Button
-                            type="button"
-                            className="cursor-pointer"
-                            variant="outline"
-                            onClick={() => {
-                                setOpen(false)
-                                reset()
-                            }}
-                        >
-                            Close
-                        </Button>
+                <h2 className="border-b py-2 mb-4 text-gray-600 mt-8">Advanced</h2>
+                <section className="px-4 flex flex-col">
+                    <Button
+                        variant="outline"
+                        className="self-end"
+                        type="button"
+                        onClick={() => append({ name: "", type: "text" })}
+                    >
+                        Add field rule
+                    </Button>
+
+                    {/* Fields */}
+                    <div className="flex flex-col gap-8">
+                        {
+                            fieldRules.map((fieldRule, index) => (
+                                <div className="flex gap-6 border-b-2 items-center" key={fieldRule.id}>
+                                    <div className="space-y-2">
+                                        <Label>Field name</Label>
+                                        <Input {...register(`fieldRules.${index}.name`)} placeholder="sale" name="field1" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[200px]" />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label>Field type</Label>
+                                        <Select>
+                                            <SelectTrigger className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none">
+                                                <SelectValue placeholder="Select a type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="apple">Text</SelectItem>
+                                                    <SelectItem value="banana">Boolean</SelectItem>
+                                                    <SelectItem value="blueberry">Number</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label>Field type</Label>
+                                        <Select>
+                                            <SelectTrigger className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none">
+                                                <SelectValue placeholder="Select a rule" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="lower">Lower than</SelectItem>
+                                                    <SelectItem value="higher">Higher than</SelectItem>
+                                                    <SelectItem value="equal">Equal to</SelectItem>
+                                                    <SelectItem value="lower-or-equal">Lower than or equal to </SelectItem>
+                                                    <SelectItem value="higher-or-equal">Higher than or equal to </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
+                                        onClick={() => remove(index)}
+                                    >
+                                        <Trash2 className="size-5" />
+                                    </Button>
+                                </div>
+                            ))
+                        }
                     </div>
-                </form>
-            </div >
-        </Modal >
+                </section>
+
+                <div className="justify-end flex gap-4 py-2">
+                    <Button type="submit" className="cursor-pointer" disabled={isPending}>
+                        {
+                            isPending ? "Updating..." : "Update"
+                        }
+                    </Button>
+                </div>
+            </form>
+        </div >
     )
 }

@@ -20,7 +20,8 @@ export default function DashboardEmptyState() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["event-categories"] })
         },
-        onError: () => {
+        onError: (error) => {
+            console.log(error)
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Create Event Category" children={
                     <div className="text-red-500 text-sm">

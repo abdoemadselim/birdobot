@@ -9,14 +9,13 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 // Components
-import Modal from "./ui/modal"
-import { Button, buttonVariants } from "./ui/button"
-import { Icons } from "./icons"
+import Modal from "@/components/ui/modal"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 import Toaster from "@/components/ui/toaser";
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner";
-import { Label } from "./ui/label"
-import { Switch } from "./ui/switch"
-import UpdateCategoryModal from "./update-category-modal"
 
 // Schema
 import { eventCategoryTable } from "@/server/db/schema"
@@ -196,7 +195,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                 </div>
             </div>
 
-            <div className="flex mt-5 sm:items-center sm:justify-between sm:flex-row flex-col sm:gap-0 gap-4 ">
+            <div className="flex mt-5 sm:items-center md:lg:items-stretch sm:justify-between md:lg:justify-stretch sm:flex-row  md:lg:flex-col flex-col md:lg:gap-4 sm:gap-0 gap-4 ">
                 <Link href={`/dashboard/category/${category.info.name}`} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "group")}>
                     View details
                     <ArrowRight className="group-hover:translate-x-[5px] transition-transform duration-200 ml-1" />
@@ -207,24 +206,15 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                         <Label htmlFor="enabled" className="text-sm text-muted-foreground font-normal">{category.info.enabled ? "Enabled" : "Disabled"}</Label>
                     </div>
 
-                    <UpdateCategoryModal
-                        category={{
-                            name: category.info.name,
-                            color: category.info.color,
-                            emoji: category.info.emoji!,
-                            channels: category.info.channels,
-                            id: category.info.id
-                        }}
-                        trigger={
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="py-0 text-gray-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
-                            >
-                                <Edit className="size-5" />
-                            </Button>
-                        }
-                    />
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="py-0 text-gray-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
+                    >
+                        <Link href={`/dashboard/category/${category.info.name}/update`}>
+                            <Edit className="size-5" />
+                        </Link>
+                    </Button>
 
                     <Modal
                         open={deleteTarget === category.info.name}

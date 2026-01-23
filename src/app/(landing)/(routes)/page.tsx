@@ -12,7 +12,6 @@ import BackgroundPattern from "@/components/background-pattern";
 import BirdsPattern from "@/components/birds-pattern";
 import PlanetCanvasContainer from "@/components/planetCanvas/planet-canvas-container";
 import MockApps from "../mock-apps";
-import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 
 export default async function HomePage() {
   const codeSnippet = `await fetch("https://birdobot.site/api/v1/events", {
@@ -109,24 +108,6 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section>
       <MockApps />
-
-      {/* <section className="bg-brand-25 pt-62 sm:pb-70">
-        <MaxWidthWrapper className="flex justify-center items-center flex-col">
-          <div className="pb-20">
-            <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Easy Integration</h2>
-            <Heading className="text-center">Enjoy the easiest integration on the planet</Heading>
-          </div>
-          <div className="rounded-lg border-2 border-gray-400">
-            <HeroVideoDialog
-              className="block dark:hidden"
-              animationStyle="from-center"
-              videoSrc="https://www.example.com/dummy-video"
-              thumbnailSrc="/video-thumbnail.png"
-              thumbnailAlt="Dashboard"
-            />
-          </div>
-        </MaxWidthWrapper>
-      </section> */}
 
       <section className="py-44 sm:py-22 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper>

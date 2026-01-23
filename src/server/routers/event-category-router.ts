@@ -149,7 +149,7 @@ export const eventCategoryRouter = j.router({
                 .values({
                     name: name.toLowerCase(),
                     color: parseColor(color),
-                    emoji: emoji,
+                    emoji: emoji || "📁",
                     channels: channels,
                     userId: user?.id
                 })
@@ -285,5 +285,17 @@ export const eventCategoryRouter = j.router({
             })
 
         return c.json({ success: true, eventCategory: eventCategory[0] })
+    }),
+
+    getCategory: privateProcedure.input(z.object({
+        name: EVENT_CATEGORY_NAME_VALIDATOR
+    })).query(async ({ c, ctx, input }) => {
+        const { user, db } = ctx
+        const { name } = input
+
+        const eventCategory = (await db.select().from(eventCategoryTable)
+            .where(and(eq(eventCategoryTable.userId, user.id), eq(eventCategoryTable.name, name))))[0]
+
+        return c.superjson(eventCategory)
     })
 })
