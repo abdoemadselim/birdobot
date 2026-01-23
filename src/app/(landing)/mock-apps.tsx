@@ -43,6 +43,7 @@ export default function MockApps() {
                 }
                 <div className="bg-brand-700 absolute bottom-24 top-24 inset-x-0"></div>
                 <div className="relative min-h-[900px]">
+                    {/* Discord MOCK UI */}
                     <div
                         className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-lg:min-w-[90%] mx-auto
                      ring-gray-900/10 peer/a lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute 2xl:left-[20%] xl:left-[10%] max-xl:left-1/2 max-xl:-translate-x-1/2 max-xl:-translate-y-[calc(50%-20px)]
@@ -96,6 +97,8 @@ export default function MockApps() {
                         </MockDiscordUI>
                     </div>
 
+
+                    {/* SLACK MOCK UI */}
                     <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset hover:ring-gray-900/40 max-lg:min-w-[92%] mx-auto
                     max-xl:top-[calc(50%+80px)] max-xl:shadow-2xl 
                     ring-gray-900/10 peer/b lg:rounded-2xl lg:p-4 lg:-m-4 p-2 -m-2 absolute 2xl:left-[50%] xl:left-[40%] max-xl:left-1/2 max-xl:-translate-x-1/2
@@ -107,6 +110,7 @@ export default function MockApps() {
                         </MockSlackUI>
                     </div>
 
+                    {/* TELEGRAM MOCK UI */}
                     <div className="rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/40 peer-hover/a:xl:ring-gray-900/10 max-lg:min-w-[94%] mx-auto
                      max-xl:top-170 peer-hover/b:ring-gray-900/10 peer-hover/b:xl:-translate-y-[50%] peer-hover/a:xl:-translate-y-[50%]  max-xl:left-1/2 max-xl:-translate-x-1/2 
                       lg:rounded-2xl lg:p-4 peer-hover/a:xl:opacity-60 peer-hover/b:xl:opacity-60 lg:-m-4 p-2 -m-2 absolute

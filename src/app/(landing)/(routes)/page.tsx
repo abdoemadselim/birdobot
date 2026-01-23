@@ -3,6 +3,8 @@ import { Check } from "lucide-react"
 import Image from "next/image"
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 // Components
 import MaxWidthWrapper from "@/components/max-width-wrapper"
@@ -29,8 +31,12 @@ export default async function HomePage() {
   }
 })`
 
+  const user = await currentUser()
+  if (user) redirect("/dashboard")
+
   return (
     <>
+      {/* Hero section */}
       <section className="py-24 sm:py-32 sm:pb-90 bg-brand-25">
         <div className="overflow-hidden max-w-full h-[500px] absolute w-full">
           <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
@@ -93,6 +99,7 @@ export default async function HomePage() {
         </MaxWidthWrapper>
       </section >
 
+      {/* Planet section */}
       <section className="py-12 sm:py-18 sm:pb-42 bg-brand-25">
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-2 items-center">
@@ -107,8 +114,11 @@ export default async function HomePage() {
           </div>
         </MaxWidthWrapper>
       </section>
+
+      {/* Platforms MOCK UI section*/}
       <MockApps />
 
+      {/* Features / Benefits section*/}
       <section className="py-44 sm:py-22 sm:pb-70 bg-brand-25">
         <MaxWidthWrapper>
           <div className="pb-20">

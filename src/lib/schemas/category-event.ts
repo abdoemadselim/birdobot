@@ -12,4 +12,18 @@ export const EVENT_CATEGORY_VALIDATOR = z.object({
     channels: z.array(z.enum(["discord", "telegram", "slack"])).min(1, "At least one channel is required")
 })
 
-export const UPDATE_EVENT_CATEGORY_VALIDATOR = EVENT_CATEGORY_VALIDATOR.extend({ id: z.number(), fieldRules: z.array(z.record(z.string())) })
+export const FIELD_RULES_VALIDATOR = z.object({
+    name: z.string(),
+    type: z.enum(["text", "number"]),
+    rule: z.enum(["eq", "neq", "gt", "gte", "lt", "lte", "contains", "notContain", "startsWith", "endsWith"]),
+    value: z.string().or(z.number()),
+    relevance: z.enum(["and", "or"])
+})
+
+export const UPDATE_EVENT_CATEGORY_VALIDATOR = EVENT_CATEGORY_VALIDATOR.extend({
+    id: z.number(),
+    fieldRules: z.array(FIELD_RULES_VALIDATOR)
+})
+
+export type UPDATE_EVENT_CATEGORY_TYPE = z.infer<typeof UPDATE_EVENT_CATEGORY_VALIDATOR>
+export type FIELD_RULES_TYPE = z.infer<typeof FIELD_RULES_VALIDATOR>

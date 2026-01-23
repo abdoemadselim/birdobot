@@ -127,6 +127,13 @@
       "when": 1769107924189,
       "tag": "0017_flimsy_synch",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1769186151648,
+      "tag": "0018_lush_blindfold",
+      "breakpoints": true
     }
   ]
 }

@@ -6,10 +6,8 @@ import { telegramBot } from "@/lib/telegram-client";
 import Sidebar, { AppSidebarTrigger } from "@/components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
-export default function DashboardLayout({ children }: PropsWithChildren) {
-    telegramBot.bot.setWebHook("https://birdobot.site/api/webhook/telegram", {
-        allowed_updates: ["message", "callback_query", "update"]
-    })
+export default async function DashboardLayout({ children }: PropsWithChildren) {
+    // await telegramBot.bot.setWebHook("https://pleasedly-kempt-mikki.ngrok-free.dev/api/webhook/telegram")
 
     return (
         <SidebarProvider>

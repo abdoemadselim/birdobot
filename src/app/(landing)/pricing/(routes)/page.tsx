@@ -2,8 +2,6 @@
 
 // Libs
 import { CheckCircle } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { client } from "@/lib/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
@@ -58,11 +56,13 @@ export default function PricingPage() {
 
     return (
         <div className="flex flex-col flex-1 pt-28 bg-brand-25 pb-20">
+
             {showOverlay &&
                 <div className="absolute inset-0 w-full h-full bg-gray-500/50 z-100 flex justify-center items-center" >
                     <LoadingSpinner className="size-8" />
                 </div>
             }
+
             <MaxWidthWrapper className="flex justify-center items-center flex-col max-w-3/4">
                 <div className="text-center">
                     <p className="text-4xl font-medium">Simple no-tricks pricing</p>
@@ -72,8 +72,10 @@ export default function PricingPage() {
                 </div>
 
                 <div className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4 mt-6">
+                    {/* Plans */}
                     {
                         PLANS.map((plan) => (
+                            /* Plan */
                             <div key={plan.name} className={cn(`px-10 py-15 bg-white rounded-md ring-1 ring-inset ring-gray-100 shadow-sm hover:shadow-md `, plan.name === "Growth" ? "border-t-16 border-orange-400" : "border-t-16 border-brand-700")}>
                                 <Heading className="pb-2 sm:text-2xl">
                                     {plan.name}
@@ -88,6 +90,7 @@ export default function PricingPage() {
                                     <div className="h-px w-full bg-gray-200" />
                                 </div>
 
+                                {/* Plan Features */}
                                 <ul className="flex flex-wrap gap-x-6 gap-y-4 mt-6">
                                     {
                                         plan.features.map((feature, i) => (
@@ -111,7 +114,7 @@ export default function PricingPage() {
                         ))
                     }
                 </div>
-            </MaxWidthWrapper >
-        </div >
+            </MaxWidthWrapper>
+        </div>
     )
 }

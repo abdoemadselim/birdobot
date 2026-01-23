@@ -10,6 +10,7 @@ import DashboardLayout from "@/components/dashboard-layout";
 
 // Schema
 import { eventCategoryTable, userTable } from "@/server/db/schema";
+import { FIELD_RULES_TYPE } from "@/lib/schemas/category-event.js";
 
 interface UpdateCategoryPageProps {
     name: string | undefined
@@ -40,7 +41,8 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
             name: eventCategoryTable.name,
             channels: eventCategoryTable.channels,
             enabled: eventCategoryTable.enabled,
-            color: eventCategoryTable.color
+            color: eventCategoryTable.color,
+            fieldRules: eventCategoryTable.fieldRules
         })
         .from(eventCategoryTable)
         .where(and(eq(eventCategoryTable.name, categoryName), eq(eventCategoryTable.userId, user.id))))[0]
@@ -51,7 +53,14 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
 
     return (
         <DashboardLayout title={`Update ${category.name} Category ${category.emoji} `}>
-            <UpdateCategoryContent category={category} />
+            <UpdateCategoryContent category={category as {
+                id: number,
+                name: string,
+                color: number,
+                emoji: string,
+                channels: ("discord" | "telegram" | "slack")[],
+                fieldRules: FIELD_RULES_TYPE[]
+            }} />
         </DashboardLayout>
     )
 }

@@ -17,6 +17,8 @@ export default function WelcomePage() {
     const plan = searchParams.get("plan")
 
     const router = useRouter()
+
+    // Periodically check if the user account is already created
     const { data } = useQuery({
         queryFn: async () => {
             const res = await client.auth.getDatabaseSyncStatus.$get()
@@ -26,6 +28,7 @@ export default function WelcomePage() {
         refetchInterval: (query) => query.state.data?.isSync ? false : 2000
     })
 
+    // If the account is created, navigate to dashboard
     useEffect(() => {
         if (data?.isSync) {
             router.replace(intent && plan ? `/pricing?intent=${intent}&plan=${plan}` : "/dashboard")
@@ -35,6 +38,7 @@ export default function WelcomePage() {
     return (
         <div className="flex flex-1 flex-col items-center justify-center overflow-hidden bg-brand-25 w-full relative">
             <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
+
             <div className="relative text-center flex flex-col gap-6 z-10">
                 <LoadingSpinner size="lg" />
                 <Heading className="to-brand-950">Creating your account</Heading>

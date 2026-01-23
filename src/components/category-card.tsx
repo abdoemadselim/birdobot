@@ -201,11 +201,13 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     <ArrowRight className="group-hover:translate-x-[5px] transition-transform duration-200 ml-1" />
                 </Link>
                 <div className="flex items-center gap-2">
+                    {/* Enable / Disable */}
                     <div className="flex items-center space-x-2">
                         <Switch id="enabled" checked={category.info.enabled || false} onCheckedChange={() => updateCategoryStatus(!category.info.enabled)} />
                         <Label htmlFor="enabled" className="text-sm text-muted-foreground font-normal">{category.info.enabled ? "Enabled" : "Disabled"}</Label>
                     </div>
 
+                    {/* Edit */}
                     <Button
                         variant="ghost"
                         size="sm"
@@ -216,6 +218,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                         </Link>
                     </Button>
 
+                    {/* Delete */}
                     <Modal
                         open={deleteTarget === category.info.name}
                         handleModalOpen={(open) => {

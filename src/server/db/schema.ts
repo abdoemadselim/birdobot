@@ -56,6 +56,8 @@ export const eventCategoryTable = pgTable(
     color: integer("color").notNull(),
     channels: channelEnum("channels").array().notNull().default(["discord"]),
 
+    fieldRules: jsonb("fieldRules"),
+
     enabled: boolean().default(true),
 
     createdAt: timestamp("createdAt").defaultNow().notNull(),

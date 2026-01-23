@@ -1,14 +1,14 @@
 'use client'
 
 // Libs
-import { useFieldArray, useForm } from "react-hook-form"
+import { Control, Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Trash2 } from "lucide-react";
 
 // Components
 import { Button } from "@/components/ui/button";
@@ -17,14 +17,14 @@ import { Input } from "@/components/ui/input";
 import Toaster from "@/components/ui/toaser";
 import { toast } from "sonner";
 import { Icons } from "@/components/icons";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
 // Schemas
-import { UPDATE_EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
+import { UPDATE_EVENT_CATEGORY_VALIDATOR, type FIELD_RULES_TYPE } from "@/lib/schemas/category-event";
 
 // Client
 import { client } from "@/lib/client";
-import { Trash2 } from "lucide-react";
 
 // The purpose of comments here is to make tailwind parse them and create css rules for them
 const COLOR_OPTIONS = [
@@ -73,7 +73,8 @@ interface UpdateCategoryContentProps {
         name: string,
         color: number,
         emoji: string,
-        channels: ("discord" | "telegram" | "slack")[]
+        channels: ("discord" | "telegram" | "slack")[],
+        fieldRules: FIELD_RULES_TYPE[]
     }
 }
 
@@ -119,7 +120,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
             emoji: category.emoji,
             name: category.name,
             channels: category.channels,
-            fieldRules: []
+            fieldRules: category.fieldRules
         },
         values: {
             id: category.id,
@@ -127,7 +128,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
             emoji: category.emoji,
             name: category.name,
             channels: category.channels,
-            fieldRules: []
+            fieldRules: category.fieldRules
         }
     })
 
@@ -144,14 +145,13 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
     const selectedEmoji = watch("emoji")
     const selectedChannel = watch("channels")
 
-    const handleAddFieldRule = ({ name, type }: { name: string, type: "boolean" | "text" | "number" }) => {
-        append({
-            name,
-            type
-        })
-    }
-
-    console.log(fieldRules)
+    const watchFieldArray = watch("fieldRules");
+    const controlledFields = fieldRules.map((field, index) => {
+        return {
+            ...field,
+            ...watchFieldArray[index]
+        };
+    });
 
     return (
         <div>
@@ -239,62 +239,110 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
 
                 <h2 className="border-b py-2 mb-4 text-gray-600 mt-8">Advanced</h2>
                 <section className="px-4 flex flex-col">
-                    <Button
-                        variant="outline"
-                        className="self-end"
-                        type="button"
-                        onClick={() => append({ name: "", type: "text" })}
-                    >
-                        Add field rule
-                    </Button>
+                    <div className="flex gap-2 flex-col items-start mb-4">
+                        <p className="text-muted-foreground text-base">Fields rules: </p>
+                        <Button
+                            variant="outline"
+                            type="button"
+                            onClick={() => append({ name: "", type: "text", rule: "contains", value: "", "relevance": "and" })}
+                        >
+                            Add field rule
+                        </Button>
+                    </div>
 
                     {/* Fields */}
                     <div className="flex flex-col gap-8">
                         {
-                            fieldRules.map((fieldRule, index) => (
-                                <div className="flex gap-6 border-b-2 items-center" key={fieldRule.id}>
+                            controlledFields.map((fieldRule, index) => (
+                                <div className="flex gap-6 border-b-2 pb-2 items-end" key={fieldRule.id}>
+                                    {
+                                        index > 0 && (
+                                            <Controller
+                                                name={`fieldRules.${index}.relevance`}
+                                                control={control}
+                                                render={({ field, fieldState }) => (
+                                                    <Field className="max-w-fit gap-2">
+                                                        <Label>Field Relevance</Label>
+                                                        <Select
+                                                            name={field.name}
+                                                            value={field.value}
+                                                            onValueChange={field.onChange}
+                                                        >
+                                                            <SelectTrigger
+                                                                className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                                            >
+                                                                <SelectValue placeholder="Select a type" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                <SelectGroup>
+                                                                    <SelectItem value="and">AND</SelectItem>
+                                                                    <SelectItem value="or">OR</SelectItem>
+                                                                </SelectGroup>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </Field>
+                                                )}
+                                            />
+                                        )}
                                     <div className="space-y-2">
                                         <Label>Field name</Label>
-                                        <Input {...register(`fieldRules.${index}.name`)} placeholder="sale" name="field1" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[200px]" />
+                                        <Input
+                                            {...register(`fieldRules.${index}.name`)}
+                                            placeholder="amount"
+                                            className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[200px]"
+                                        />
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <Label>Field type</Label>
-                                        <Select>
-                                            <SelectTrigger className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none">
-                                                <SelectValue placeholder="Select a type" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    <SelectItem value="apple">Text</SelectItem>
-                                                    <SelectItem value="banana">Boolean</SelectItem>
-                                                    <SelectItem value="blueberry">Number</SelectItem>
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
+                                    <Controller
+                                        name={`fieldRules.${index}.type`}
+                                        control={control}
+                                        render={({ field, fieldState }) => (
+                                            <Field className="max-w-[200px] gap-2">
+                                                <Label>Field type</Label>
+                                                <Select
+                                                    name={field.name}
+                                                    value={field.value}
+                                                    onValueChange={field.onChange}
+                                                >
+                                                    <SelectTrigger
+                                                        className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                                    >
+                                                        <SelectValue placeholder="Select a type" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectItem value="text">Text</SelectItem>
+                                                            <SelectItem value="number">Number</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </Field>
+                                        )}
+                                    />
+
+                                    {/* Field rules */}
+                                    {
+                                        controlledFields[index]?.type === "number" ? (
+                                            <NumberFieldRuleSelect key={fieldRule.id} control={control} index={index} />
+                                        ) : controlledFields[index]?.type === "text" ? (
+                                            <TextFieldRuleSelect key={fieldRule.id} control={control} index={index} />
+                                        ) : null
+                                    }
 
                                     <div className="space-y-2">
-                                        <Label>Field type</Label>
-                                        <Select>
-                                            <SelectTrigger className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none">
-                                                <SelectValue placeholder="Select a rule" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    <SelectItem value="lower">Lower than</SelectItem>
-                                                    <SelectItem value="higher">Higher than</SelectItem>
-                                                    <SelectItem value="equal">Equal to</SelectItem>
-                                                    <SelectItem value="lower-or-equal">Lower than or equal to </SelectItem>
-                                                    <SelectItem value="higher-or-equal">Higher than or equal to </SelectItem>
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
+                                        <Label>Expected value</Label>
+                                        <Input
+                                            type={controlledFields[index]?.type === "number" ? "number" : "text"}
+                                            {...register(`fieldRules.${index}.value`)}
+                                            placeholder="200"
+                                            className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[200px]"
+                                        />
                                     </div>
 
                                     <Button
                                         variant="ghost"
                                         size="sm"
+                                        type="button"
                                         className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
                                         onClick={() => remove(index)}
                                     >
@@ -306,7 +354,7 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                     </div>
                 </section>
 
-                <div className="justify-end flex gap-4 py-2">
+                <div className="justify-end flex gap-4 py-2 mt-20">
                     <Button type="submit" className="cursor-pointer" disabled={isPending}>
                         {
                             isPending ? "Updating..." : "Update"
@@ -315,5 +363,95 @@ export default function UpdateCategoryContent({ category }: UpdateCategoryConten
                 </div>
             </form>
         </div >
+    )
+}
+
+interface FieldRuleSelectProps {
+    control: Control<UPDATE_EVENT_CATEGORY_TYPE>,
+    index: number,
+}
+
+function TextFieldRuleSelect({ control, index }: FieldRuleSelectProps) {
+    useWatch({
+        name: "fieldRules",
+        control
+    })
+
+    return (
+        <Controller
+            name={`fieldRules.${index}.rule`}
+            control={control}
+            render={({ field, fieldState }) => (
+
+                <Field className="max-w-[200px] gap-2">
+                    <FieldLabel>Field rule</FieldLabel>
+                    <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        defaultValue="contains"
+                    >
+                        <SelectTrigger
+                            className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                        >
+                            <SelectValue placeholder="Select a rule" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="contains">contains</SelectItem>
+                                <SelectItem value="notContain">doesn't contain</SelectItem>
+                                <SelectItem value="eq">exactly equal to</SelectItem>
+                                <SelectItem value="startsWith">starts with</SelectItem>
+                                <SelectItem value="endsWith">ends with</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+            )} />
+    )
+}
+
+function NumberFieldRuleSelect({ control, index }: FieldRuleSelectProps) {
+    useWatch({
+        name: "fieldRules",
+        control
+    })
+
+    return (
+        <Controller
+            name={`fieldRules.${index}.rule`}
+            control={control}
+            render={({ field, fieldState }) => (
+
+                <Field className="max-w-[200px] gap-2">
+                    <FieldLabel>Field rule</FieldLabel>
+                    <Select
+                        name={field.name}
+                        value={field.value}
+                        defaultValue="lt"
+                        onValueChange={field.onChange}
+                    >
+                        <SelectTrigger
+                            className="w-full max-w-48 focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                        >
+                            <SelectValue placeholder="Select a rule" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="lt">less than</SelectItem>
+                                <SelectItem value="gt">greater than</SelectItem>
+                                <SelectItem value="eq">equal to</SelectItem>
+                                <SelectItem value="neq">not equal to</SelectItem>
+                                <SelectItem value="lte">less than or equal to </SelectItem>
+                                <SelectItem value="gte">greater than or equal to </SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+            )} />
     )
 }

@@ -14,13 +14,15 @@ import { telegramBot } from "@/lib/telegram-client";
 import { eventCategoryTable, eventTable, userCreditsTable, userTable } from "@/server/db/schema";
 
 // Schemas
-import { EVENT_CATEGORY_NAME_VALIDATOR } from "@/lib/schemas/category-event";
+import { EVENT_CATEGORY_NAME_VALIDATOR, FIELD_RULES_TYPE } from "@/lib/schemas/category-event";
+import { evaluateFieldRule } from "@/lib/field-rules-validator";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,
     fields: z.record(z.number().or(z.string()).or(z.boolean())).optional(),
     description: z.string().optional()
 }).strict()
+
 
 type RequestDataType = z.infer<typeof REQUEST_VALIDATOR>
 
@@ -79,14 +81,20 @@ export const POST = async (request: NextRequest) => {
             emoji: eventCategoryTable.emoji,
             name: eventCategoryTable.name,
             color: eventCategoryTable.color,
-            channels: eventCategoryTable.channels
+            channels: eventCategoryTable.channels,
+            fieldRules: eventCategoryTable.fieldRules
         }).from(eventCategoryTable).where(and(eq(eventCategoryTable.name, validatedData.category), eq(eventCategoryTable.userId, user.id))))[0]
+
+        // 6- Evaluate the fields against category rules
+        if (validatedData.fields && !evaluateFieldRule(category?.fieldRules as FIELD_RULES_TYPE[], validatedData.fields)) {
+            return NextResponse.json({ message: "" }, { status: 400 })
+        }
 
         if (!category) {
             return NextResponse.json({ message: `You don't have a category named ${validatedData.category}` }, { status: 400 })
         }
 
-        // 6-CREATED EVENT DB RECORD
+        // 7-CREATED EVENT DB RECORD
         const event = await db.insert(eventTable).values({
             userId: user.id,
             eventCategoryId: category.id,
@@ -95,7 +103,7 @@ export const POST = async (request: NextRequest) => {
             formattedMessage: `${category.emoji || "🔔"} ${category.name.charAt(0).toUpperCase() + category.name.slice(1)}`,
         }).returning({ id: eventTable.id });
 
-        // 7- Send the event to each defined channel on its category
+        // 8- Send the event to each defined channel on its category
         category.channels.forEach(async (channel: "discord" | "telegram" | "slack") => {
             return await sendChannel({
                 channel,
@@ -108,7 +116,7 @@ export const POST = async (request: NextRequest) => {
             })
         })
 
-        // 8- Update user credits
+        // 9- Update user credits
         await db
             .update(userCreditsTable)
             .set({

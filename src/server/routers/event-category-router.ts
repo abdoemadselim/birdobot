@@ -151,7 +151,8 @@ export const eventCategoryRouter = j.router({
                     color: parseColor(color),
                     emoji: emoji || "📁",
                     channels: channels,
-                    userId: user?.id
+                    userId: user?.id,
+                    fieldRules: ""
                 })
                 .returning({
                     id: eventCategoryTable.id,
@@ -198,7 +199,6 @@ export const eventCategoryRouter = j.router({
                     channels: ["discord"]
                 }
             ])
-
 
         await db
             .update(userCreditsTable)
@@ -267,14 +267,16 @@ export const eventCategoryRouter = j.router({
 
     updateCategory: privateProcedure.input(UPDATE_EVENT_CATEGORY_VALIDATOR).mutation(async ({ c, ctx, input }) => {
         const { user, db } = ctx
-        const { color, emoji, channels, id } = input
+        const { color, emoji, channels, id, fieldRules } = input
 
+        console.log(fieldRules)
         const eventCategory = await db
             .update(eventCategoryTable)
             .set({
                 color: parseColor(color),
                 emoji: emoji,
                 channels: channels,
+                fieldRules: JSON.stringify(fieldRules)
             })
             .where(and(eq(eventCategoryTable.userId, user.id), eq(eventCategoryTable.id, id)))
             .returning({
