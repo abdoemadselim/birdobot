@@ -84,9 +84,10 @@ interface UpdateCategoryContentProps {
         telegramId: string,
         discordId: string
     }
+    telegramToken: string
 }
 
-export default function UpdateCategoryContent({ category, defaultChannels }: UpdateCategoryContentProps) {
+export default function UpdateCategoryContent({ category, defaultChannels, telegramToken }: UpdateCategoryContentProps) {
     const router = useRouter()
     const queryClient = useQueryClient()
 
@@ -379,6 +380,14 @@ export default function UpdateCategoryContent({ category, defaultChannels }: Upd
                             <span className="text-gray-600">Telegram</span>
                         </div>
 
+                        <p className="text-sm/6 text-gray-700 mb-2 pt-2 text-muted-foreground">
+                            Haven't started a chat with BirdoBot yet? {" "}
+
+                            <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
+                                Click here to allow BirdoBot to send you insights
+                            </a>
+                        </p>
+
                         <div className="space-y-2 mb-2 mt-4">
                             <Label htmlFor="telegramId">Telegram ID</Label>
                             <Input  {...register("telegramId")} id="telegramId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
@@ -398,6 +407,15 @@ export default function UpdateCategoryContent({ category, defaultChannels }: Upd
                                 Discord
                             </span>
                         </div>
+                        <p className="text-sm/5 mb-2 mt-4 text-muted-foreground">
+                            Haven't invited BirdoBot to your discord server yet? {" "}
+                            <a href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
+                        </p>
+
+                        <p className="text-sm/5 mb-2 text-muted-foreground">
+                            Don't know how to find your Discord channel ID? {" "}
+                            <a href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
+                        </p>
 
                         <div className="space-y-2 mb-2 mt-4">
                             <Label htmlFor="discordId">Discord Channel ID</Label>
@@ -415,9 +433,23 @@ export default function UpdateCategoryContent({ category, defaultChannels }: Upd
                             <span className="text-gray-600">Slack</span>
                         </div>
 
+                        <p className="text-sm/5 text-gray-700 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
+                            Haven't added BirdoBot to your workspace yet? {" "}
+                            <a
+                                href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write,users:read,channels:read,im:write&user_scope=">
+                                <img
+                                    alt="Add to Slack"
+                                    height="40"
+                                    width="139"
+                                    src="https://platform.slack-edge.com/img/add_to_slack.png"
+                                    srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
+                                />
+                            </a>
+                        </p>
+
                         <div className="space-y-2 mb-2 mt-4">
-                            <Label htmlFor="slackId">Slack Channel ID</Label>
-                            <Input  {...register("slackId")} id="slackId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
+                            <Label htmlFor="slackId">Slack Channel Name</Label>
+                            <Input placeholder="#name"  {...register("slackId")} id="slackId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
                         </div>
 
                         <p className="text-red-400 min-h-[10px]" aria-live="assertive">

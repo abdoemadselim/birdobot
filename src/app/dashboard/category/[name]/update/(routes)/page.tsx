@@ -57,6 +57,7 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
     return (
         <DashboardLayout title={`Update ${category.name} Category ${category.emoji} `}>
             <UpdateCategoryContent
+                telegramToken={user.telegramToken || ""}
                 defaultChannels={{
                     telegramId: user.telegramId ?? "",
                     discordId: user.discordId ?? "",
