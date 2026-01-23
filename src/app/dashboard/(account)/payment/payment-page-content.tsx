@@ -48,27 +48,32 @@ export default function PaymentPageContent() {
                                     />
                                 </TableRow>
                             ))
-                        ) :
-                            payments?.map((payment) => (
-                                <TableRow>
-                                    <TableCell className="font-medium">{payment.transactionId}</TableCell>
-                                    <TableCell>
-                                        <div className={cn(
-                                            "rounded-lg  font-semibold px-4 text-sm text-center w-fit py-2",
-                                            {
-                                                "bg-green-100 text-green-800": payment.status === "COMPLETED",
-                                                "bg-red-100 text-red-800": payment.status === "CANCELLED",
-                                                "bg-yellow-100 text-yellow-800": payment.status === "PENDING",
-                                            }
-                                        )}>
-                                            {payment.status}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="font-bold">{payment.package.charAt(0).toUpperCase()}{payment.package.slice(1)}</TableCell>
-                                    <TableCell>{payment.createdAt.toLocaleString()}</TableCell>
-                                    <TableCell >${payment.total}</TableCell>
-                                </TableRow>
-                            ))
+                        ) : payments && payments.length == 0 ?
+                            <TableRow>
+                                <TableCell className="text-center text-muted-foreground pt-8" colSpan={5}>You have no payments yet</TableCell>
+                            </TableRow> :
+                            (
+                                payments?.map((payment) => (
+                                    <TableRow>
+                                        <TableCell className="font-medium">{payment.transactionId}</TableCell>
+                                        <TableCell>
+                                            <div className={cn(
+                                                "rounded-lg  font-semibold px-4 text-sm text-center w-fit py-2",
+                                                {
+                                                    "bg-green-100 text-green-800": payment.status === "COMPLETED",
+                                                    "bg-red-100 text-red-800": payment.status === "CANCELLED",
+                                                    "bg-yellow-100 text-yellow-800": payment.status === "PENDING",
+                                                }
+                                            )}>
+                                                {payment.status}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="font-bold">{payment.package.charAt(0).toUpperCase()}{payment.package.slice(1)}</TableCell>
+                                        <TableCell>{payment.createdAt.toLocaleString()}</TableCell>
+                                        <TableCell >${payment.total}</TableCell>
+                                    </TableRow>
+                                ))
+                            )
                     }
                 </TableBody>
             </Table>

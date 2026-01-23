@@ -32,32 +32,11 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     const queryClient = useQueryClient()
     const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
 
-    const { mutateAsync: deleteEventCategory } = useMutation({
+    const { mutateAsync: deleteEventCategory, isPending: isPendingDeleteCategory } = useMutation({
         mutationFn: async (categoryName: string) => {
             await client.eventCategory.deleteEventCategory.$post({ categoryName })
         },
-        onMutate: async (categoryName, context) => {
-            // Cancel any outgoing refetches
-            // (so they don't overwrite our optimistic update)
-            await queryClient.cancelQueries({ queryKey: ['event-categories'] })
-
-            // Snapshot the previous value
-            const previousEventCategories = queryClient.getQueryData(['event-categories'])
-
-            // Optimistically update to the new value
-            queryClient.setQueryData(['event-categories'], (old: {
-                info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
-                events_count: number,
-                unique_field_count: number
-            }[]) => old.filter((category) => category.info.name !== categoryName))
-
-            setDeleteTarget(null)
-
-            // Return a result with the snapshotted value
-            return { previousEventCategories }
-        },
-        onError: (err, categoryName, onMutateResult, context) => {
-            queryClient.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
+        onError: (_, categoryName) => {
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Delete Event Category" children={
                     <div className="text-red-500 text-sm">
@@ -115,7 +94,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
         onError: (err, _, onMutateResult, context) => {
             queryClient.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
             toast.custom((t) =>
-                <Toaster type="error" t={t} title="Delete Event Category" children={
+                <Toaster type="error" t={t} title="Update Event Category" children={
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while updating the category named {category.info.name}.</p>
                         <br />
@@ -229,8 +208,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                                 variant="ghost"
                                 size="sm"
                                 className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
-                                onClick={() => setDeleteTarget(category.info.name)
-                                }
+                                onClick={() => setDeleteTarget(category.info.name)}
                             >
                                 <Trash2 className="size-5" />
                             </Button>
@@ -250,11 +228,14 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                                 <Button
                                     className="bg-red-600 hover:bg-red-500 transition-colors duration-200 cursor-pointer px-6"
                                     aria-label="Delete event category"
+                                    disabled={isPendingDeleteCategory}
                                     onClick={() => {
                                         deleteEventCategory(category.info.name as string)
                                     }}
                                 >
-                                    Delete
+                                    {
+                                        isPendingDeleteCategory ? "Deleting..." : "Delete"
+                                    }
                                 </Button>
 
                                 <Button
