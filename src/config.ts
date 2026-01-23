@@ -23,6 +23,7 @@ export const PLANS = [
         features: [
             "100 real-time events",
             "3 event categories",
+            "Unlimited field rules",
         ],
         price: "$0",
         name: "Free",
@@ -32,6 +33,7 @@ export const PLANS = [
         features: [
             "1000 real-time events",
             "5 event categories",
+            "Unlimited field rules",
         ],
         price: "$20",
         name: "Core",
@@ -41,6 +43,7 @@ export const PLANS = [
         features: [
             "10000 real-time events",
             "7 event categories",
+            "Unlimited field rules",
         ],
         price: "$49",
         name: "Growth",
@@ -49,6 +52,7 @@ export const PLANS = [
         features: [
             "100000 real-time events",
             "10 event categories",
+            "Unlimited field rules",
         ],
         price: "$149",
         name: "Premium",
