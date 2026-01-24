@@ -82,7 +82,11 @@ export const POST = async (request: NextRequest) => {
             name: eventCategoryTable.name,
             color: eventCategoryTable.color,
             channels: eventCategoryTable.channels,
-            fieldRules: eventCategoryTable.fieldRules
+            fieldRules: eventCategoryTable.fieldRules,
+            telegramId: eventCategoryTable.telegramId,
+            slackId: eventCategoryTable.slackId,
+            slackBotToken: eventCategoryTable.slackBotToken,
+            discordId: eventCategoryTable.discordId,
         }).from(eventCategoryTable).where(and(eq(eventCategoryTable.name, validatedData.category), eq(eventCategoryTable.userId, user.id))))[0]
 
         // 6- Evaluate the fields against category rules
@@ -145,7 +149,7 @@ export const POST = async (request: NextRequest) => {
 
 interface SendChannelParams {
     user: InferSelectModel<typeof userTable>,
-    category: Pick<InferSelectModel<typeof eventCategoryTable>, "id" | "emoji" | "name" | "color" | "channels">,
+    category: Pick<InferSelectModel<typeof eventCategoryTable>, "id" | "emoji" | "name" | "color" | "channels" | "discordId" | "slackId" | "telegramId" | "slackBotToken">,
     data: RequestDataType & { eventId: number }
 }
 
@@ -172,7 +176,7 @@ async function sendDiscord({
     category,
     data
 }: SendChannelParams) {
-    if (!user.discordId) {
+    if (!user.discordId && !category.discordId) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"
         })
@@ -196,7 +200,8 @@ async function sendDiscord({
     const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
 
     try {
-        await discordClient.sendEmbed(user.discordId as string, eventData)
+        const discordId = category.discordId || user.discordId
+        await discordClient.sendEmbed(discordId as string, eventData)
     } catch (error) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"
@@ -208,7 +213,7 @@ async function sendDiscord({
 }
 
 async function sendTelegram({ user, category, data }: SendChannelParams) {
-    if (!user.telegramId) {
+    if (!user.telegramId && !category.telegramId) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"
         }).where(eq(eventTable.id, data.eventId as number))
@@ -242,11 +247,12 @@ ${fieldsText}
 🕒 ${escapeMarkdownV2(new Date().toLocaleString())}
 `.trim();
 
-    await telegramBot.sendMessage(user.telegramId, message)
+    const telegramId = category.telegramId || user.telegramId
+    await telegramBot.sendMessage(telegramId as string, message)
 }
 
 async function sendSlack({ user, category, data }: SendChannelParams) {
-    if (!user.slackBotToken || !user.slackId) {
+    if ((!category.slackBotToken || !category.slackId) && (!user.slackBotToken || !user.slackId)) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"
         }).where(eq(eventTable.id, data?.eventId as number))
@@ -267,8 +273,11 @@ async function sendSlack({ user, category, data }: SendChannelParams) {
     }
 
     try {
-        const slackClient = new SlackClient(user.slackBotToken as string);
-        await slackClient.sendEmbed(user.slackId || "", eventData);
+        const slackBotToken = category.slackBotToken || user.slackBotToken;
+        const slackId = category.slackId || user.slackId
+
+        const slackClient = new SlackClient(slackBotToken as string);
+        await slackClient.sendEmbed(slackId as string, eventData);
     } catch (error) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"
