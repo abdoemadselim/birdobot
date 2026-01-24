@@ -118,8 +118,10 @@ export const paymentTable = pgTable(
     status: paymentStatusEnum("status").default("PENDING"),
     transactionId: varchar("transactionId", { length: 100 }).unique(),
     total: integer("total"),
+    package: varchar("package").notNull(),
+    refundDate: timestamp("refundDate"),
+
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-    package: varchar("package").notNull()
   },
 )

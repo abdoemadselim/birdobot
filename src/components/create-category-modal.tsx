@@ -8,7 +8,6 @@ import z from "zod";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { InferSelectModel } from "drizzle-orm";
 
 // Components
 import Modal from "./ui/modal";
@@ -21,7 +20,6 @@ import { Icons } from "./icons";
 
 // Schemas
 import { EVENT_CATEGORY_VALIDATOR } from "@/lib/schemas/category-event";
-import { eventCategoryTable } from "@/server/db/schema";
 
 // Client
 import { client } from "@/lib/client";
@@ -70,42 +68,14 @@ const CHANNELS = [
 
 export default function CreateCategoryModal({ trigger }: { trigger: ReactNode }) {
     const [open, setOpen] = useState(false)
+    const queryClient = useQueryClient()
 
-    const { mutate: createEventCategory, isPending } = useMutation({
+    const { mutate: createEventCategory, isPending: isPendingCreatingCategory } = useMutation({
         mutationFn: async (data: EVENT_CATEGORY_TYPE) => {
             await client.eventCategory.createCategory.$post(data)
         },
 
-        onMutate: async (newEventCategory, context) => {
-            // Cancel any outgoing refetches
-            // (so they don't overwrite our optimistic update)
-            await context.client.cancelQueries({ queryKey: ['event-categories'] })
-
-            // Snapshot the previous value
-            const previousEventCategories = context.client.getQueryData(['event-categories'])
-
-            // Optimistically update to the new value
-            context.client.setQueryData(['event-categories'], (old: {
-                info: InferSelectModel<typeof eventCategoryTable> & { event_date: string },
-                events_count: number,
-                unique_field_count: number
-            }[]) => [...old, {
-                info: {
-                    ...newEventCategory,
-                    createdAt: new Date(),
-                    color: "f3f4f6"
-                }
-            }])
-
-            setOpen(false)
-
-            // Return a result with the snapshotted value
-            return { previousEventCategories }
-        },
-
-        onError: (err, newTodo, onMutateResult, context) => {
-            context.client.setQueryData(['event-categories'], onMutateResult?.previousEventCategories)
-
+        onError: () => {
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Create Event Category" children={
                     <div className="text-red-500 text-sm">
@@ -117,9 +87,9 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
             )
         },
 
-        onSettled: (data, error, variables, onMutateResult, context) => {
+        onSettled: () => {
             setOpen(false)
-            context.client.invalidateQueries({ queryKey: ['event-categories'] })
+            queryClient.invalidateQueries({ queryKey: ['event-categories'] })
             reset()
         }
     })
@@ -237,8 +207,10 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                     </div>
 
                     <div className="justify-end flex gap-4 border-t py-2">
-                        <Button type="submit" className="cursor-pointer" >
-                            Create
+                        <Button type="submit" className="cursor-pointer" disabled={isPendingCreatingCategory}>
+                            {
+                                isPendingCreatingCategory ? "Creating..." : "Create"
+                            }
                         </Button>
                         <Button
                             type="button"
