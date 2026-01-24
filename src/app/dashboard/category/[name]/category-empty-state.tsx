@@ -25,9 +25,10 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
   },
   body: JSON.stringify({
     category: '${categoryName}',
+    // Adjust the fields for your case
     fields: {
-      field1: 'value1', // for example: amount
-      field2: 'value2' // for example: user_email
+      amount: 400,
+      user_email: user.email 
     }
   })
 })`
