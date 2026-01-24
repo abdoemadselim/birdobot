@@ -64,6 +64,8 @@ export const eventCategoryTable = pgTable(
     telegramId: varchar("telegramId", { length: 30 }),
     slackId: varchar("slackId", { length: 30 }),
 
+    slackBotToken: text("slackBotToken"),
+
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   },

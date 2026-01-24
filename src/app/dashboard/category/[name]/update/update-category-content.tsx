@@ -168,8 +168,6 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
         };
     });
 
-    console.log(errors)
-
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -388,9 +386,22 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                             </a>
                         </p>
 
+                        <p className="text-sm/6 text-muted-foreground mb-1">
+                            Don't know how to find the telegram chat ID? {" "}
+                        </p>
+                        <ol className="text-sm/6 text-muted-foreground mb-2">
+                            <li>1. search for <strong>userinfobot</strong> to get your own telegram id</li>
+                            <li>2. type <strong>@mychannel</strong>.</li>
+                            <li>3. copy the <strong>id</strong></li>
+                        </ol>
+
                         <div className="space-y-2 mb-2 mt-4">
                             <Label htmlFor="telegramId">Telegram ID</Label>
-                            <Input  {...register("telegramId")} id="telegramId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
+                            <Input
+                                {...register("telegramId")}
+                                id="telegramId"
+                                className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]"
+                            />
                         </div>
 
                         <p className="text-red-400 min-h-[10px]" aria-live="assertive">
@@ -409,17 +420,31 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                         </div>
                         <p className="text-sm/5 mb-2 mt-4 text-muted-foreground">
                             Haven't invited BirdoBot to your discord server yet? {" "}
-                            <a href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
+                            <a
+                                href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
+                                title="Invite BirdoBot to your Discord server"
+                                className="text-brand-700">
+                                Click here to invite it
+                            </a>
                         </p>
 
                         <p className="text-sm/5 mb-2 text-muted-foreground">
                             Don't know how to find your Discord channel ID? {" "}
-                            <a href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
+                            <a
+                                href="https://discover.hubpages.com/technology/Discord-Channel-ID"
+                                title="How to obtain discord channel Id?"
+                                className="text-brand-700">
+                                Learn how to obtain it
+                            </a>
                         </p>
 
                         <div className="space-y-2 mb-2 mt-4">
                             <Label htmlFor="discordId">Discord Channel ID</Label>
-                            <Input  {...register("discordId")} id="discordId" className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]" />
+                            <Input
+                                {...register("discordId")}
+                                id="discordId"
+                                className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[400px]"
+                            />
                         </div>
 
                         <p className="text-red-400 min-h-[10px]" aria-live="assertive">
@@ -436,7 +461,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                         <p className="text-sm/5 text-gray-700 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
                             Haven't added BirdoBot to your workspace yet? {" "}
                             <a
-                                href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write,users:read,channels:read,im:write&user_scope=">
+                                href={`https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write,users:read,channels:read,im:write&state=category-${category.id}`}>
                                 <img
                                     alt="Add to Slack"
                                     height="40"

@@ -1,0 +1,1 @@
+ALTER TABLE "eventCategory" ADD COLUMN "slackBotToken" text;

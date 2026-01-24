@@ -1,6 +1,6 @@
 import { FIELD_RULES_TYPE } from "./schemas/category-event"
 
-export const evaluateFieldRule = (rules: FIELD_RULES_TYPE[], eventFields: Record<string, string | number | boolean>) => {
+export const evaluateFieldRule = (rules: FIELD_RULES_TYPE[] | undefined, eventFields: Record<string, string | number | boolean>) => {
     const operators = {
         eq: (a: number, b: number) => a === b,
         neq: (a: number, b: number) => a !== b,
@@ -16,7 +16,9 @@ export const evaluateFieldRule = (rules: FIELD_RULES_TYPE[], eventFields: Record
 
     let isPassed = true
 
-    rules.forEach((rule) => {
+    if (!rules) return isPassed
+
+    rules?.forEach((rule) => {
         const fieldValue = eventFields[rule.name];
         const operator = operators[rule.rule];
 

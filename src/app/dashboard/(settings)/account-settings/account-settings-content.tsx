@@ -213,8 +213,8 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                         Don't know how to find the telegram chat ID? {" "}
                     </p>
                     <ol className="text-sm/6 text-gray-700 mb-2">
-                        <li>1. go to your chat with <strong>BirdoBotChat</strong>.</li>
-                        <li>2. type <strong>@getidsbot</strong>.</li>
+                        <li>1. search for <strong>userinfobot</strong> to get your own telegram id</li>
+                        <li>2. type <strong>@mychannel</strong>.</li>
                         <li>3. copy the <strong>id</strong></li>
                     </ol>
                 </div>
@@ -248,7 +248,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                         Haven't added BirdoBot to your workspace yet? {" "}
                         <a
                             className="mt-2 block"
-                            href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write,users:read,channels:read,im:write&user_scope=">
+                            href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write,users:read,channels:read,im:write&state=account">
                             <img
                                 alt="Add to Slack"
                                 height="40"

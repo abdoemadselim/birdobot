@@ -86,7 +86,7 @@ export const POST = async (request: NextRequest) => {
         }).from(eventCategoryTable).where(and(eq(eventCategoryTable.name, validatedData.category), eq(eventCategoryTable.userId, user.id))))[0]
 
         // 6- Evaluate the fields against category rules
-        if (validatedData.fields && !evaluateFieldRule(category?.fieldRules as FIELD_RULES_TYPE[], validatedData.fields)) {
+        if (validatedData.fields && !evaluateFieldRule(category?.fieldRules as FIELD_RULES_TYPE[] | undefined, validatedData.fields)) {
             return NextResponse.json({ message: "" }, { status: 400 })
         }
 
