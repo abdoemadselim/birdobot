@@ -18,7 +18,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
     })
 
 
-    const codeSnippet = `await fetch('https://ring-rang.vercel.app/api/v1/events', {
+    const codeSnippet = `await fetch('https://www.birdobot.site/api/v1/events', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY'
@@ -26,8 +26,8 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
   body: JSON.stringify({
     category: '${categoryName}',
     fields: {
-      field1: 'value1', // for example: user id
-      field2: 'value2' // for example: user email
+      field1: 'value1', // for example: amount
+      field2: 'value2' // for example: user_email
     }
   })
 })`
