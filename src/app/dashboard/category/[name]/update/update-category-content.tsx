@@ -458,7 +458,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                             <span className="text-gray-600">Slack</span>
                         </div>
 
-                        <p className="text-sm/5 text-gray-700 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
+                        <p className="text-sm/5 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
                             Haven't added BirdoBot to your workspace yet? {" "}
                             <a
                                 href={`https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write&state=category-${category.id}`}>
