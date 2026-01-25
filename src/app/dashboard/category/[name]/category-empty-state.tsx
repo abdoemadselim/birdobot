@@ -53,7 +53,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
                         ...oneDark,
                         'pre[class*="language-"]': {
                             ...oneDark['pre[class*="language-"]'],
-                            overflow: "scroll",
+                            overflowX: "scroll",
                             background: "transparent"
                         },
                         'code[class*="language-"]': {

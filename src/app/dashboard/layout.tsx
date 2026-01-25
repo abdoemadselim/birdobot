@@ -7,7 +7,7 @@ import Sidebar, { AppSidebarTrigger } from "@/components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
-    // await telegramBot.bot.setWebHook("https://pleasedly-kempt-mikki.ngrok-free.dev/api/webhook/telegram")
+    await telegramBot.bot.setWebHook("https://www.birdobot.site/api/webhook/telegram")
 
     return (
         <SidebarProvider>

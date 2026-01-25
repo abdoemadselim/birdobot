@@ -17,7 +17,7 @@ export const createCheckoutOverlay = ({
         paddle?.Checkout.open({
             settings: {
                 variant: "one-page",
-                successUrl: "https://pleasedly-kempt-mikki.ngrok-free.dev/dashboard?success=true",
+                successUrl: "https://www.birdobot.site/dashboard?success=true",
             },
             items: [
                 {
