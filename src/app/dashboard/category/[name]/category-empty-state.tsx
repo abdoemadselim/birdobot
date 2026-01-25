@@ -38,7 +38,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
             <h2 className="text-xl font-medium">Create your first {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} event</h2>
             <p className='text-zinc-600 pt-2 pb-8 text-center'>Get started by sending a request to our tracking API:</p>
 
-            <div className='rounded-40 bg-zinc-800 w-3xl rounded-xl max-w-full overflow-x-scroll'>
+            <div className='rounded-40 bg-zinc-800 w-3xl rounded-xl max-w-full'>
                 <div className='bg-gray-800 w-full h-10 p-4 rounded-t-xl flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
                         <div className='rounded-full bg-red-500 size-3' />
@@ -53,7 +53,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
                         ...oneDark,
                         'pre[class*="language-"]': {
                             ...oneDark['pre[class*="language-"]'],
-                            overflowX: "scroll",
+                            overflowX: "auto",
                             background: "transparent"
                         },
                         'code[class*="language-"]': {
