@@ -114,7 +114,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
     const slack_linked = searchParams.get("slack_linked")
 
     return (
-        <div>
+        <>
             {
                 slack_error && (
                     <div className="absolute top-0 inset-0 w-full max-h-[60px] bg-red-500 text-white  text-center font-medium py-3 flex flex-col justify-center items-center text-md shadow-lg">
@@ -260,6 +260,6 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                     </p>
                 </div>
             </section>
-        </div>
+        </>
     )
 }

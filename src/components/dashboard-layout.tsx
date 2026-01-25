@@ -20,7 +20,7 @@ export default function DashboardLayout({ children, title, cta, hideBackButton =
     const router = useRouter()
 
     return (
-        <div className="bg-brand-25 flex flex-col flex-1">
+        <div className="bg-brand-25 flex flex-col flex-1 min-h-full">
             <div className="border border-b-gray-200 p-6 sm:p-8 flex flex-col items-start gap-4">
 
                 <div className="flex m:items-center sm:flex-row flex-col gap-4 w-full sm:w-fit">
@@ -44,7 +44,7 @@ export default function DashboardLayout({ children, title, cta, hideBackButton =
                 </div>
             </div>
 
-            <div className="p-6 sm:p-8 flex flex-col flex-1">
+            <div className="p-6 sm:p-8 flex flex-col flex-1 min-h-full">
                 {children}
             </div>
         </div>
