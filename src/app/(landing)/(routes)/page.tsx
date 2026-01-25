@@ -14,6 +14,7 @@ import BackgroundPattern from "@/components/background-pattern";
 import BirdsPattern from "@/components/birds-pattern";
 import PlanetCanvasContainer from "@/components/planetCanvas/planet-canvas-container";
 import MockApps from "../mock-apps";
+import ServicePreview from "../service-preview";
 
 export default async function HomePage() {
   const codeSnippet = `await fetch("https://birdobot.site/api/v1/events", {
@@ -117,6 +118,9 @@ export default async function HomePage() {
 
       {/* Platforms MOCK UI section*/}
       <MockApps />
+
+      {/* Overview Video */}
+      <ServicePreview />
 
       {/* Features / Benefits section*/}
       <section className="py-44 sm:py-22 sm:pb-70 bg-brand-25">
