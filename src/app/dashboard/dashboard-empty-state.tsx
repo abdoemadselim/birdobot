@@ -27,7 +27,7 @@ export default function DashboardEmptyState() {
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while creating the category.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )

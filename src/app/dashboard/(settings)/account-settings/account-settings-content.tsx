@@ -41,7 +41,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while updating the discord ID.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )
@@ -67,7 +67,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while updating the telegram ID.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )
@@ -93,7 +93,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while updating the slack Channel ID.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )
@@ -119,7 +119,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                 slack_error && (
                     <div className="absolute top-0 inset-0 w-full max-h-[60px] bg-red-500 text-white  text-center font-medium py-3 flex flex-col justify-center items-center text-md shadow-lg">
                         Failed to add BirdoBot to your slack workspace
-                        <p className="text-sm pt-1 text-white/80">Try again or contact us at <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
+                        <p className="text-sm pt-1 text-white/80">Try again or contact us at <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
 
                         <div className="p-2 rounded-full bg-red-600/80 hover:bg-red-800 transition-colors absolute right-4" onClick={() => router.replace("?")}>
                             <X className="size-5  text-white" />
