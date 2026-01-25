@@ -81,7 +81,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while adding the category.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us</Link></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )

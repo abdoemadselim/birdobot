@@ -102,7 +102,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while updating the category.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us</Link></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )
@@ -461,7 +461,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                         <p className="text-sm/5 text-gray-700 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
                             Haven't added BirdoBot to your workspace yet? {" "}
                             <a
-                                href={`https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write,users:read,channels:read,im:write&state=category-${category.id}`}>
+                                href={`https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write&state=category-${category.id}`}>
                                 <img
                                     alt="Add to Slack"
                                     height="40"

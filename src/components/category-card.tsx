@@ -42,7 +42,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while deleting the category named {categoryName}.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us at support@birdobot.site</Link></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )
@@ -98,7 +98,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     <div className="text-red-500 text-sm">
                         <p>Something went wrong while updating the category named {category.info.name}.</p>
                         <br />
-                        <p className="text-gray-700"> Please try again or <Link href="/contact-us" className="text-brand-700">contact us at support@birdobot.site</Link></p>
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" className="text-brand-700">contact us</a></p>
                     </div>
                 } />
             )
