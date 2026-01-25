@@ -35,7 +35,7 @@ export default function DashboardEmptyState() {
     })
 
     return (
-        <div className="bg-white relative ring-1 ring-gray-200 rounded-lg flex justify-center items-center flex-col min-h-[80%]">
+        <div className="bg-white relative ring-1 ring-gray-200 rounded-lg flex justify-center items-center flex-col min-h-[80%] px-4 text-center">
             <img
                 title="Panda is waving"
                 className="w-[300px] h-[300px] -mt-24"
@@ -44,7 +44,7 @@ export default function DashboardEmptyState() {
             <h3 className="font-medium text-lg">No Event Categories Yet</h3>
             <p className="text-zinc-600 pt-3 text-base">Start tracking events by creating your first category</p>
 
-            <div className="flex gap-4 pt-8">
+            <div className="flex gap-4 pt-8 sm:flex-row flex-col">
                 <Button variant="outline" onClick={() => insertQuickStartCategories()} disabled={isPending}>
                     <span className="size-6">🚀</span>
                     <span>
