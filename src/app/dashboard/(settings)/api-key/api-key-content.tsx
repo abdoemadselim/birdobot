@@ -2,7 +2,7 @@
 
 // Libs
 import { useState } from "react";
-import { Clipboard } from "lucide-react";
+import { Check, Clipboard } from "lucide-react";
 
 // Components
 import { Label } from "@/components/ui/label";
@@ -45,9 +45,15 @@ export default function ApiKeyContent({ apiKey }: { apiKey: string }) {
                                 value={apiKey}
                                 className="focus:ring-brand-200! focus-visible:border-0 focus-visible:outline-none w-full border-0 outline-0 p-0 shadow-none focus-visible:ring-0"
                             />
-                            <Button variant="ghost" onClick={handleCopyKey} className="cursor-pointer hover:bg-transparent p-0! focus-visible:ring-0" size="sm">
-                                <Clipboard className="text-gray-400 size-5" />
-                            </Button>
+                            {
+                                isCopied ? (
+                                    <Check className="text-gray-400 size-6" aria-label="The api key is being copied" />
+                                ) : (
+                                    <Button variant="ghost" onClick={handleCopyKey} className="cursor-pointer hover:bg-transparent p-0! focus-visible:ring-0" size="sm" aria-label="Copy the api key" title="Copy">
+                                        <Clipboard className="text-gray-400 size-6" />
+                                    </Button>
+                                )
+                            }
                         </div>
                     </div>
 
