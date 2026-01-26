@@ -144,18 +144,16 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                         <div className="flex flex-wrap gap-4">
                             {
                                 COLOR_OPTIONS.map(({ color, label }, i) => (
-                                    <div
+                                    <Button
                                         aria-label={`Choose ${label} color`}
-                                        tabIndex={0}
                                         key={color}
-                                        onKeyDown={(e) => e.code === "Enter" && setValue("color", color)}
+                                        type="button"
                                         title={`${label}`}
                                         onClick={() => setValue("color", color)}
-                                        role="button"
                                         className={
                                             cn(
                                                 `bg-[${color}]`,
-                                                "focus:ring-brand-700 focus:ring-2 rounded-full w-10 h-10 hover:ring-brand-700 hover:ring-2 ring-offset-2 cursor-pointer",
+                                                `focus:ring-brand-700 focus:ring-2 rounded-full w-10 h-10 hover:ring-brand-700 hover:bg-[${color}] hover:ring-2 ring-offset-2 cursor-pointer`,
                                                 color == selectedColor && "ring-brand-700 ring-2"
                                             )
                                         } />
