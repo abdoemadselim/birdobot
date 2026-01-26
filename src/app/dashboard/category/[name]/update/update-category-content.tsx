@@ -431,7 +431,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                 href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
                                 title="Invite BirdoBot to your Discord server"
                                 className="text-brand-700">
-                                Click here to invite it
+                                Click here to invite BirdoBot to your discord server
                             </a>
                         </p>
 
@@ -443,7 +443,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                 href="https://discover.hubpages.com/technology/Discord-Channel-ID"
                                 title="How to obtain discord channel Id?"
                                 className="text-brand-700">
-                                Learn how to obtain it
+                                Learn how to obtain your discord channel ID
                             </a>
                         </p>
 
@@ -493,7 +493,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     </div>
                 </section>
 
-                <div className="flex gap-4 py-2 mt-10 px-4">
+                <div className="flex gap-4 py-2 mt-4 px-4">
                     <Button type="submit" className="cursor-pointer" disabled={isPending}>
                         {
                             isPending ? "Updating..." : "Update"

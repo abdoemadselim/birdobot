@@ -170,12 +170,21 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
 
                     <p className="text-sm/5 text-gray-700 mb-2 mt-6 ">
                         Haven't invited BirdoBot to your discord server yet? {" "}
-                        <a target="_blank" rel="noopener" href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
+                        <a
+                            target="_blank"
+                            rel="noopener"
+                            href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
+                            title="Invite BirdoBot to your Discord server"
+                            className="text-brand-700">
+                            Click here to invite BirdoBot to your discord server
+                        </a>
                     </p>
 
                     <p className="text-sm/5 text-gray-700 mb-2">
                         Don't know how to find your Discord channel ID? {" "}
-                        <a target="_blank" rel="noopener" href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
+                        <a target="_blank"
+                            rel="noopener"
+                            href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain your discord channel ID</a>
                     </p>
                 </div>
             </section>
