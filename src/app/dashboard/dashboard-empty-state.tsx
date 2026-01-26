@@ -41,7 +41,7 @@ export default function DashboardEmptyState() {
                 className="w-[300px] h-[300px] -mt-24"
                 src="/brand-asset-wave.png"
             />
-            <h3 className="font-medium text-lg">No Event Categories Yet</h3>
+            <h2 className="font-medium text-lg">No Event Categories Yet</h2>
             <p className="text-zinc-600 pt-3 text-base">Start tracking events by creating your first category</p>
 
             <div className="flex gap-4 pt-8 sm:flex-row flex-col">
