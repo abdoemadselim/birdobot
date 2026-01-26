@@ -123,7 +123,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
 
                 <div className="flex justify-between items-center w-full">
                     <div className="flex flex-col">
-                        <h3 className="mr-1 text-gray-950 text-lg/7" tabIndex={0} aria-label={`${category.info.name} category`}>{category.info.emoji || "📂"} {category.info.name}</h3>
+                        <h2 className="mr-1 text-gray-950 text-lg/7" tabIndex={0} aria-label={`${category.info.name} category`}>{category.info.emoji || "📂"} {category.info.name}</h2>
 
                         <p className="text-gray-500 text-sm/7">{format(category.info.createdAt, "MMM dd, yyyy")}</p>
                     </div>
@@ -187,17 +187,18 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     </Button>
 
                     {/* Edit */}
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        aria-label={`Edit ${category.info.name} category`}
-                        title="Edit"
-                        className="py-0 text-gray-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
-                    >
-                        <Link href={`/dashboard/category/${category.info.name}/update`} tabIndex={-1}>
-                            <Edit className="size-5" />
-                        </Link>
-                    </Button>
+                    <Link href={`/dashboard/category/${category.info.name}/update`} aria-label={`Edit ${category.info.name} category`} className=
+                        {
+                            cn(
+                                buttonVariants({
+                                    variant: "ghost",
+                                    size: "sm",
+                                    className: "py-0 text-gray-600 cursor-pointer transition-colors duration-200 flex items-center justify-center hover:bg-gray-100 p-2"
+                                }),
+                            )
+                        }>
+                        <Edit className="size-5" />
+                    </Link>
 
                     {/* Delete */}
                     <Modal
