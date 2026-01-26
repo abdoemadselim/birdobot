@@ -29,17 +29,17 @@ type EVENT_CATEGORY_TYPE = z.infer<typeof EVENT_CATEGORY_VALIDATOR>
 
 // The purpose of comments here is to make tailwind parse them and create css rules for them
 const COLOR_OPTIONS = [
-    "#FF6B6B", // bg-[#FF6B6B] ring-[#FF6B6B] Bright Red
-    "#4ECDC4", // bg-[#4ECDC4] ring-[#4ECDC4] Teal
-    "#45B7D1", // bg-[#45B7D1] ring-[#45B7D1] Sky Blue
-    "#FFA07A", // bg-[#FFA07A] ring-[#FFA07A] Light Salmon
-    "#98D8C8", // bg-[#98D8C8] ring-[#98D8C8] Seafoam Green
-    "#FDCB6E", // bg-[#FDCB6E] ring-[#FDCB6E] Mustard Yellow
-    "#6C5CE7", // bg-[#6C5CE7] ring-[#6C5CE7] Soft Purple
-    "#FF85A2", // bg-[#FF85A2] ring-[#FF85A2] Pink
-    "#2ECC71", // bg-[#2ECC71] ring-[#2ECC71] Emerald Green
-    "#E17055", // bg-[#E17055] ring-[#E17055] Terracotta
-]
+    { color: "#FF6B6B", label: "Bright Red" }, // bg-[#FF6B6B] ring-[#FF6B6B]
+    { color: "#4ECDC4", label: "Teal" }, // bg-[#4ECDC4] ring-[#4ECDC4]
+    { color: "#45B7D1", label: "Sky Blue" }, // bg-[#45B7D1] ring-[#45B7D1]
+    { color: "#FFA07A", label: "Light Salmon" }, // bg-[#FFA07A] ring-[#FFA07A]
+    { color: "#98D8C8", label: "Seafoam Green" }, // bg-[#98D8C8] ring-[#98D8C8]
+    { color: "#FDCB6E", label: "Mustard Yellow" }, // bg-[#FDCB6E] ring-[#FDCB6E]
+    { color: "#6C5CE7", label: "Soft Purple" }, // bg-[#6C5CE7] ring-[#6C5CE7]
+    { color: "#FF85A2", label: "Pink" }, // bg-[#FF85A2] ring-[#FF85A2]
+    { color: "#2ECC71", label: "Emerald Green" }, // bg-[#2ECC71] ring-[#2ECC71]
+    { color: "#E17055", label: "Terracotta" }, // bg-[#E17055] ring-[#E17055]
+] as const
 
 const EMOJI_OPTIONS = [
     { emoji: "💰", label: "Money (Sale)" },
@@ -143,14 +143,22 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                         <Label>Color</Label>
                         <div className="flex flex-wrap gap-4">
                             {
-                                COLOR_OPTIONS.map((premadeColor) => (
-                                    <div key={premadeColor} title={`Color is ${premadeColor}`} onClick={() => setValue("color", premadeColor)} role="button" className={
-                                        cn(
-                                            `bg-[${premadeColor}]`,
-                                            "rounded-full w-10 h-10 hover:ring-brand-700 hover:ring-2 ring-offset-2 cursor-pointer",
-                                            premadeColor == selectedColor && "ring-brand-700 ring-2"
-                                        )
-                                    } />
+                                COLOR_OPTIONS.map(({ color, label }, i) => (
+                                    <div
+                                        aria-label={`Choose ${label} color`}
+                                        tabIndex={0}
+                                        key={color}
+                                        onKeyDown={(e) => e.code === "Enter" && setValue("color", color)}
+                                        title={`${label}`}
+                                        onClick={() => setValue("color", color)}
+                                        role="button"
+                                        className={
+                                            cn(
+                                                `bg-[${color}]`,
+                                                "focus:ring-brand-700 focus:ring-2 rounded-full w-10 h-10 hover:ring-brand-700 hover:ring-2 ring-offset-2 cursor-pointer",
+                                                color == selectedColor && "ring-brand-700 ring-2"
+                                            )
+                                        } />
                                 ))
                             }
                         </div>
@@ -165,7 +173,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                         <div className="flex flex-wrap gap-4">
                             {
                                 EMOJI_OPTIONS.map(({ emoji, label }) => (
-                                    <button key={label} type="button" aria-label={label} onClick={() => setValue("emoji", emoji)} className={
+                                    <button key={label} type="button" aria-label={`${label} emoji`} onClick={() => setValue("emoji", emoji)} title={label} className={
                                         cn(
                                             "rounded-md w-10 h-10 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer",
                                             emoji == selectedEmoji && "ring-brand-700 ring-2"
@@ -188,7 +196,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                         <div className="flex flex-wrap gap-4">
                             {
                                 CHANNELS.map(({ name, icon }) => (
-                                    <button key={name} type="button" aria-label={name} onClick={() => setValue("channels", (() =>
+                                    <button key={name} type="button" aria-label={`${name} channel`} title={`${name} channel`} onClick={() => setValue("channels", (() =>
                                         selectedChannel.includes(name) ? selectedChannel.filter((channel) => channel !== name) : [...selectedChannel, name])())} className={
                                             cn(
                                                 "rounded-md w-7 h-7 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer flex justify-center items-center",

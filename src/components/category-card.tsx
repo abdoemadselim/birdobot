@@ -123,7 +123,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
 
                 <div className="flex justify-between items-center w-full">
                     <div className="flex flex-col">
-                        <h3 className="mr-1 text-gray-950 text-lg/7">{category.info.emoji || "📂"} {category.info.name}</h3>
+                        <h3 className="mr-1 text-gray-950 text-lg/7" tabIndex={0} aria-label={`${category.info.name} category`}>{category.info.emoji || "📂"} {category.info.name}</h3>
 
                         <p className="text-gray-500 text-sm/7">{format(category.info.createdAt, "MMM dd, yyyy")}</p>
                     </div>
@@ -181,18 +181,20 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                 </Link>
                 <div className="flex items-center gap-2">
                     {/* Enable / Disable */}
-                    <div className="flex items-center space-x-2">
-                        <Switch id="enabled" checked={category.info.enabled || false} onCheckedChange={() => updateCategoryStatus(!category.info.enabled)} />
+                    <Button variant="ghost" className="flex items-center space-x-2 ml-0" aria-label="Enable or disable the category" onClick={() => updateCategoryStatus(!category.info.enabled)}>
                         <Label htmlFor="enabled" className="text-sm text-muted-foreground font-normal">{category.info.enabled ? "Enabled" : "Disabled"}</Label>
-                    </div>
+                        <Switch id="enabled" checked={category.info.enabled || false} onCheckedChange={() => updateCategoryStatus(!category.info.enabled)} tabIndex={-1} />
+                    </Button>
 
                     {/* Edit */}
                     <Button
                         variant="ghost"
                         size="sm"
+                        aria-label={`Edit ${category.info.name} category`}
+                        title="Edit"
                         className="py-0 text-gray-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
                     >
-                        <Link href={`/dashboard/category/${category.info.name}/update`}>
+                        <Link href={`/dashboard/category/${category.info.name}/update`} tabIndex={-1}>
                             <Edit className="size-5" />
                         </Link>
                     </Button>
@@ -207,6 +209,8 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                             <Button
                                 variant="ghost"
                                 size="sm"
+                                aria-label={`Delete ${category.info.name} category`}
+                                title="Delete"
                                 className="py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
                                 onClick={() => setDeleteTarget(category.info.name)}
                             >
@@ -251,6 +255,6 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     </Modal>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

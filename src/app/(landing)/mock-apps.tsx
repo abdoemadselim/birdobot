@@ -12,7 +12,7 @@ export default function MockApps() {
         <section className="pb-4 relative bg-brand-25 w-full">
             <div className="pb-5">
                 <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Smart Routing</h2>
-                <Heading className="text-center">You choose the channel for each event category</Heading>
+                <Heading headingType="h3" className="text-center">You choose the channel for each event category</Heading>
             </div>
             <div className="flex justify-center gap-2 items-center pb-10 xl:pb-30">
                 <div className="bg-discord-brand-color/90 text-white w-fit rounded-lg p-1 text-sm cursor-pointer">

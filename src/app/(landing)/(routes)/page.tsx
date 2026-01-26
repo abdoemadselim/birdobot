@@ -51,7 +51,7 @@ export default async function HomePage() {
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-10 items-center">
             <div>
-              <Heading>
+              <Heading headingType="h1">
                 {
                   /*
                     bg-clip-text: make the background given to the task as a mask
@@ -105,7 +105,7 @@ export default async function HomePage() {
         <MaxWidthWrapper className="text-center">
           <div className="mx-auto w-full flex flex-col text-center gap-2 items-center">
             <div>
-              <Heading className="bg-linear-to-r text-transparent bg-clip-text from-brand-700 to-brand-800 sm:text-6xl">
+              <Heading headingType="h2" className="bg-linear-to-r text-transparent bg-clip-text from-brand-700 to-brand-800 sm:text-6xl">
                 Anywhere, anytime
               </Heading>
               <p className="text-gray-600 pt-4 text-lg">Birdo bots can find you anywhere. Earth, Mars… even Pluto.</p>
@@ -127,7 +127,7 @@ export default async function HomePage() {
         <MaxWidthWrapper>
           <div className="pb-20">
             <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Intuitive Monitoring</h2>
-            <Heading className="text-center">Stay ahead with real-time insights</Heading>
+            <Heading headingType="h3" className="text-center">Stay ahead with real-time insights</Heading>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-4 lg:grid-rows-2">

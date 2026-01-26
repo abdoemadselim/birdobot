@@ -144,7 +144,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
             }
 
             <section>
-                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2">
+                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
                     <div className="rounded-full text-white bg-brand-700 p-1">
                         <Icons.discord className="size-4" />
                     </div>
@@ -170,18 +170,18 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
 
                     <p className="text-sm/5 text-gray-700 mb-2 mt-6 ">
                         Haven't invited BirdoBot to your discord server yet? {" "}
-                        <a href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
+                        <a target="_blank" rel="noopener" href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot" title="Invite BirdoBot to your Discord server" className="text-brand-700">Click here to invite it</a>
                     </p>
 
                     <p className="text-sm/5 text-gray-700 mb-2">
                         Don't know how to find your Discord channel ID? {" "}
-                        <a href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
+                        <a target="_blank" rel="noopener" href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain it</a>
                     </p>
                 </div>
             </section>
 
             <section className="pt-10">
-                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2">
+                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
                     <Icons.telegram className="size-5" />
                     <span className="text-gray-600">Telegram</span>
                 </Heading>
@@ -204,7 +204,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                     <p className="text-sm/6 text-gray-700 mb-2 pt-4">
                         Haven't started a chat with BirdoBot yet? {" "}
 
-                        <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
+                        <a className="text-brand-700 cursor-pointer" target="_blank" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
                             Click here to allow BirdoBot to send you insights
                         </a>
                     </p>
@@ -222,7 +222,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
 
             {/* SLACK */}
             <section className="pt-10">
-                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2">
+                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
                     <Icons.slack className="size-5" />
                     <span className="text-gray-600">Slack</span>
                 </Heading>
@@ -247,6 +247,8 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                     <p className="text-sm/5 text-gray-700 mb-2 mt-6">
                         Haven't added BirdoBot to your workspace yet? {" "}
                         <a
+                            target="_blank"
+                            rel="noopener"
                             className="mt-2 block"
                             href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write&state=account">
                             <img

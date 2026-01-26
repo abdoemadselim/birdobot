@@ -15,7 +15,7 @@ export default function Testimonials() {
             <MaxWidthWrapper>
                 <div className="pb-20">
                     <h2 className="text-brand-600 font-medium text-xl pb-2 text-center">Real-World Experiences</h2>
-                    <Heading className="text-center">What our customers say</Heading>
+                    <Heading className="text-center" headingType="h3">What our customers say</Heading>
                 </div>
 
                 <div className="grid max-w-2xl mx-auto lg:max-w-none lg:grid-cols-2 grid-cols-1 lg:divide-x max-lg:divide-y divide-gray-200">

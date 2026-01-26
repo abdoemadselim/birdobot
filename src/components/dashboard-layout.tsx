@@ -32,7 +32,7 @@ export default function DashboardLayout({ children, title, cta, hideBackButton =
                                 </Button>
                             )
                         }
-                        <Heading className="sm:text-3xl text-2xl">
+                        <Heading className="sm:text-3xl text-2xl" tabIndex={0} headingType="h1">
                             {title}
                         </Heading>
                     </div>

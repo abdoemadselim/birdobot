@@ -21,7 +21,7 @@ export default function CategoryEmptyState({ categoryName, categoryId }: { categ
     const codeSnippet = `await fetch('https://www.birdobot.site/api/v1/events', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer YOUR_API_KEY'
+    'birdo-api-key': 'Bearer YOUR_API_KEY'
   },
   body: JSON.stringify({
     category: '${categoryName}',

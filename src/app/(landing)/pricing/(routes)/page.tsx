@@ -77,7 +77,7 @@ export default function PricingPage() {
                         PLANS.map((plan) => (
                             /* Plan */
                             <div key={plan.name} className={cn(`px-10 py-15 bg-white rounded-md ring-1 ring-inset ring-gray-100 shadow-sm hover:shadow-md `, plan.name === "Growth" ? "border-t-16 border-orange-400" : "border-t-16 border-brand-700")}>
-                                <Heading className="pb-2 sm:text-2xl">
+                                <Heading className="pb-2 sm:text-2xl" headingType="h2">
                                     {plan.name}
                                 </Heading>
                                 <p className="flex items-baseline">

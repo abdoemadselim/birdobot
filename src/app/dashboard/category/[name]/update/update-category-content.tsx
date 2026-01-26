@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 
@@ -28,17 +27,17 @@ import { client } from "@/lib/client";
 
 // The purpose of comments here is to make tailwind parse them and create css rules for them
 const COLOR_OPTIONS = [
-    "#FF6B6B", // bg-[#FF6B6B] ring-[#FF6B6B] Bright Red
-    "#4ECDC4", // bg-[#4ECDC4] ring-[#4ECDC4] Teal
-    "#45B7D1", // bg-[#45B7D1] ring-[#45B7D1] Sky Blue
-    "#FFA07A", // bg-[#FFA07A] ring-[#FFA07A] Light Salmon
-    "#98D8C8", // bg-[#98D8C8] ring-[#98D8C8] Seafoam Green
-    "#FDCB6E", // bg-[#FDCB6E] ring-[#FDCB6E] Mustard Yellow
-    "#6C5CE7", // bg-[#6C5CE7] ring-[#6C5CE7] Soft Purple
-    "#FF85A2", // bg-[#FF85A2] ring-[#FF85A2] Pink
-    "#2ECC71", // bg-[#2ECC71] ring-[#2ECC71] Emerald Green
-    "#E17055", // bg-[#E17055] ring-[#E17055] Terracotta
-]
+    { color: "#FF6B6B", label: "Bright Red" }, // bg-[#FF6B6B] ring-[#FF6B6B]
+    { color: "#4ECDC4", label: "Teal" }, // bg-[#4ECDC4] ring-[#4ECDC4]
+    { color: "#45B7D1", label: "Sky Blue" }, // bg-[#45B7D1] ring-[#45B7D1]
+    { color: "#FFA07A", label: "Light Salmon" }, // bg-[#FFA07A] ring-[#FFA07A]
+    { color: "#98D8C8", label: "Seafoam Green" }, // bg-[#98D8C8] ring-[#98D8C8]
+    { color: "#FDCB6E", label: "Mustard Yellow" }, // bg-[#FDCB6E] ring-[#FDCB6E]
+    { color: "#6C5CE7", label: "Soft Purple" }, // bg-[#6C5CE7] ring-[#6C5CE7]
+    { color: "#FF85A2", label: "Pink" }, // bg-[#FF85A2] ring-[#FF85A2]
+    { color: "#2ECC71", label: "Emerald Green" }, // bg-[#2ECC71] ring-[#2ECC71]
+    { color: "#E17055", label: "Terracotta" }, // bg-[#E17055] ring-[#E17055]
+] as const
 
 const EMOJI_OPTIONS = [
     { emoji: "💰", label: "Money (Sale)" },
@@ -186,16 +185,22 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                         <Label>Color</Label>
                         <div className="flex flex-wrap gap-4">
                             {
-                                COLOR_OPTIONS.map((premadeColor) => (
-                                    <div key={premadeColor} title={`Color is ${premadeColor}`} onClick={() => setValue("color", premadeColor)} role="button" className={
-                                        cn(
-                                            `bg-[${premadeColor}]`,
-                                            "rounded-full w-10 h-10 hover:ring-brand-700 hover:ring-2 ring-offset-2 cursor-pointer",
-                                            {
-                                                "ring-brand-700 ring-2": premadeColor == selectedColor
-                                            }
-                                        )
-                                    } />
+                                COLOR_OPTIONS.map(({ color, label }, i) => (
+                                    <div
+                                        aria-label={`Choose ${label} color`}
+                                        tabIndex={0}
+                                        key={color}
+                                        onKeyDown={(e) => e.code === "Enter" && setValue("color", color)}
+                                        title={`${label}`}
+                                        onClick={() => setValue("color", color)}
+                                        role="button"
+                                        className={
+                                            cn(
+                                                `bg-[${color}]`,
+                                                "focus:ring-brand-700 focus:ring-2 rounded-full w-10 h-10 hover:ring-brand-700 hover:ring-2 ring-offset-2 cursor-pointer",
+                                                color == selectedColor && "ring-brand-700 ring-2"
+                                            )
+                                        } />
                                 ))
                             }
                         </div>
@@ -210,7 +215,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                         <div className="flex flex-wrap gap-4">
                             {
                                 EMOJI_OPTIONS.map(({ emoji, label }) => (
-                                    <button key={label} type="button" aria-label={label} onClick={() => setValue("emoji", emoji)} className={
+                                    <button key={label} type="button" aria-label={label} title={label} onClick={() => setValue("emoji", emoji)} className={
                                         cn(
                                             "rounded-md w-10 h-10 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer",
                                             emoji == selectedEmoji && "ring-brand-700 ring-2"
@@ -370,19 +375,19 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                 </section>
 
                 <section className="px-4 flex flex-col mt-8">
-                    <p className="text-muted-foreground text-base">Channels: </p>
+                    <p className="text-muted-foreground text-base" tabIndex={0}>Channels: </p>
 
                     <div>
                         <div className="flex gap-2 mt-4">
                             <Icons.telegram className="size-5" />
-                            <span className="text-gray-600">Telegram</span>
+                            <span tabIndex={0} className="text-gray-600">Telegram</span>
                         </div>
 
                         <p className="text-sm/6 text-gray-700 mb-2 pt-2 text-muted-foreground">
                             Haven't started a chat with BirdoBot yet? {" "}
 
-                            <a className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
-                                Click here to allow BirdoBot to send you insights
+                            <a target="_blank" className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
+                                Click here to allow BirdoBot to send you insights on telegram
                             </a>
                         </p>
 
@@ -414,13 +419,15 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                             <div className="rounded-full text-white bg-brand-700 p-1">
                                 <Icons.discord className="size-4" />
                             </div>
-                            <span className="text-gray-600">
+                            <span className="text-gray-600" tabIndex={0}>
                                 Discord
                             </span>
                         </div>
                         <p className="text-sm/5 mb-2 mt-4 text-muted-foreground">
                             Haven't invited BirdoBot to your discord server yet? {" "}
                             <a
+                                target="_blank"
+                                rel="noopener"
                                 href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
                                 title="Invite BirdoBot to your Discord server"
                                 className="text-brand-700">
@@ -431,6 +438,8 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                         <p className="text-sm/5 mb-2 text-muted-foreground">
                             Don't know how to find your Discord channel ID? {" "}
                             <a
+                                target="_blank"
+                                rel="noopener"
                                 href="https://discover.hubpages.com/technology/Discord-Channel-ID"
                                 title="How to obtain discord channel Id?"
                                 className="text-brand-700">
@@ -455,12 +464,13 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     <div>
                         <div className="flex gap-2 mt-6">
                             <Icons.slack className="size-5" />
-                            <span className="text-gray-600">Slack</span>
+                            <span className="text-gray-600" tabIndex={0}>Slack</span>
                         </div>
 
                         <p className="text-sm/5 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
                             Haven't added BirdoBot to your workspace yet? {" "}
                             <a
+                                target="_blank"
                                 href={`https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write&state=category-${category.id}`}>
                                 <img
                                     alt="Add to Slack"
@@ -483,7 +493,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     </div>
                 </section>
 
-                <div className="justify-end flex gap-4 py-2 mt-10">
+                <div className="flex gap-4 py-2 mt-10 px-4">
                     <Button type="submit" className="cursor-pointer" disabled={isPending}>
                         {
                             isPending ? "Updating..." : "Update"
