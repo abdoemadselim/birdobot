@@ -232,7 +232,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
 
                     <div className="pt-2">
                         <Label>Channel</Label>
-                        <span className="text-[14px] text-zinc-400 block pb-3 pt-1">Where to receive the notification</span>
+                        <span className="text-[12px] text-zinc-500 block pb-3 pt-1">Where to receive the notification</span>
                         <div className="flex flex-wrap gap-4">
                             {
                                 CHANNELS.map(({ name, icon }) => (
@@ -382,7 +382,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                             <span tabIndex={0} className="text-gray-600">Telegram</span>
                         </div>
 
-                        <p className="text-sm/6 text-gray-700 mb-2 pt-2 text-muted-foreground">
+                        <p className="text-sm/6 mb-2 pt-2 text-muted-foreground">
                             Haven't started a chat with BirdoBot yet? {" "}
 
                             <a target="_blank" className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
