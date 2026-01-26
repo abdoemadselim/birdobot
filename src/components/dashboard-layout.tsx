@@ -27,7 +27,7 @@ export default function DashboardLayout({ children, title, cta, hideBackButton =
                     <div className="flex items-center gap-4">
                         {
                             hideBackButton ? null : (
-                                <Button variant="outline" size="lg" className="px-6 cursor-pointer" onClick={() => router.push("/dashboard")}>
+                                <Button variant="outline" size="lg" className="px-6 cursor-pointer" onClick={() => router.push("/dashboard")} aria-label="Go back to the dashboard main page">
                                     <ArrowLeft className="size-4" />
                                 </Button>
                             )
