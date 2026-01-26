@@ -362,6 +362,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                     <Button
                                         variant="ghost"
                                         size="sm"
+                                        aria-label={`Remove field rule ${index + 1}`}
                                         type="button"
                                         className="absolute left-full top-0 translate-y-1/2 py-0 text-gray-600 hover:text-red-600 cursor-pointer transition-colors duration-200 flex items-center justify-center"
                                         onClick={() => remove(index)}
