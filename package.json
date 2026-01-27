@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start"
+    "cy:open": "npx cypress open"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.8",
@@ -62,6 +63,7 @@
     "@types/react-dom": "^19.0.3",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/three": "^0.182.0",
+    "cypress": "^15.9.0",
     "discord-api-types": "^0.38.37",
     "dotenv": "^16.6.1",
     "drizzle-kit": "^0.31.8",
