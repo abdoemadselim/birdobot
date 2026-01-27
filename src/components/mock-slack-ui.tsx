@@ -1,6 +1,38 @@
 // Libs
-import { ArrowLeft, ArrowRight, Bell, Bold, ChevronDown, Code2, CodeSquare, Cog, Ellipsis, EllipsisVertical, Files, Hash, Headphones, HistoryIcon, Home, Inbox, Instagram, Italic, Link, List, ListOrdered, LucideFilePenLine, LucideStar, Menu, MessagesSquareIcon, Mic, NotebookPen, NotebookTabs, Paperclip, Phone, Plus, Search, SendHorizonal, Settings, Smile, Strikethrough, TextQuoteIcon, Underline, UserCircle, Video } from "lucide-react";
-import Image from "next/image.js";
+import {
+    ArrowLeft,
+    ArrowRight,
+    Bell,
+    Bold,
+    ChevronDown,
+    Code2,
+    CodeSquare,
+    Ellipsis,
+    EllipsisVertical,
+    Files,
+    Hash,
+    Headphones,
+    HistoryIcon,
+    Home,
+    Italic,
+    Link,
+    List,
+    ListOrdered,
+    LucideFilePenLine,
+    LucideStar,
+    MessagesSquareIcon,
+    Mic,
+    NotebookTabs,
+    Plus,
+    Search,
+    SendHorizonal,
+    Settings,
+    Smile,
+    Strikethrough,
+    TextQuoteIcon,
+    Underline,
+    Video
+} from "lucide-react";
 import { PropsWithChildren } from "react";
 
 export default function MockSlackUI({ children }: PropsWithChildren) {

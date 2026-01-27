@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
 
 // Components
 import Modal from "./ui/modal";
@@ -140,13 +139,15 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Color</Label>
+                        <Label htmlFor="color">Color</Label>
                         <div className="flex flex-wrap gap-4">
                             {
                                 COLOR_OPTIONS.map(({ color, label }, i) => (
                                     <Button
                                         aria-label={`Choose ${label} color`}
+                                        id="color"
                                         key={color}
+                                        role="radio"
                                         type="button"
                                         title={`${label}`}
                                         onClick={() => setValue("color", color)}
@@ -167,18 +168,18 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Emoji</Label>
+                        <Label htmlFor="emoji">Emoji</Label>
                         <div className="flex flex-wrap gap-4">
                             {
                                 EMOJI_OPTIONS.map(({ emoji, label }) => (
-                                    <button key={label} type="button" aria-label={`${label} emoji`} onClick={() => setValue("emoji", emoji)} title={label} className={
+                                    <Button id="emoji" role="radio" key={label} type="button" aria-label={`${label} emoji`} onClick={() => setValue("emoji", emoji)} title={label} className={
                                         cn(
                                             "rounded-md w-10 h-10 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer",
                                             emoji == selectedEmoji && "ring-brand-700 ring-2"
                                         )
                                     }>
                                         {emoji}
-                                    </button>
+                                    </Button>
                                 ))
                             }
                         </div>
@@ -189,12 +190,12 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                     </div>
 
                     <div>
-                        <Label>Channel</Label>
-                        <span className="text-[14px] text-gray-600 block pb-3 pt-1">Where to receive the notification</span>
+                        <Label htmlFor="channel">Channel</Label>
+                        <span className="text-[12px] text-zinc-500 block pb-3 pt-1">Where to receive the notification</span>
                         <div className="flex flex-wrap gap-4">
                             {
                                 CHANNELS.map(({ name, icon }) => (
-                                    <button key={name} type="button" aria-label={`${name} channel`} title={`${name} channel`} onClick={() => setValue("channels", (() =>
+                                    <Button id="channel" role="checkbox" key={name} type="button" aria-label={`${name} channel`} title={`${name} channel`} onClick={() => setValue("channels", (() =>
                                         selectedChannel.includes(name) ? selectedChannel.filter((channel) => channel !== name) : [...selectedChannel, name])())} className={
                                             cn(
                                                 "rounded-md w-7 h-7 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer flex justify-center items-center",
@@ -202,7 +203,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                                             )
                                         }>
                                         {icon}
-                                    </button>
+                                    </Button>
                                 ))
                             }
                         </div>

@@ -65,7 +65,7 @@ export default function PricingPage() {
 
             <MaxWidthWrapper className="flex justify-center items-center flex-col max-w-3/4">
                 <div className="text-center">
-                    <p className="text-4xl font-medium">Simple no-tricks pricing</p>
+                    <h1 className="text-4xl font-medium">Simple no-tricks pricing</h1>
                     <p className="max-w-prose text-pretty text-base/7 pt-4 text-gray-600">
                         We hate subscriptions, and chances are, you do too. That's why we offer lifetime access to BirdoBot for a one-time payment.
                     </p>
@@ -80,10 +80,10 @@ export default function PricingPage() {
                                 <Heading className="pb-2 sm:text-2xl" headingType="h2">
                                     {plan.name}
                                 </Heading>
-                                <p className="flex items-baseline">
-                                    <span className="text-4xl font-bold">{plan.price}</span>
+                                <h3 className="text-4xl font-bold">
+                                    {plan.price}
                                     <span className="text-sm">/month</span>
-                                </p>
+                                </h3>
 
                                 <div className="flex items-center pt-8 gap-2">
                                     <p className="text-brand-700 font-medium text-sm min-w-fit">What's included</p>
