@@ -182,14 +182,16 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Color</Label>
+                        <h3 className="text-[14px]">Color</h3>
                         <div className="flex flex-wrap gap-4">
                             {
                                 COLOR_OPTIONS.map(({ color, label }, i) => (
                                     <Button
+                                        aria-pressed={color === selectedColor ? "true" : "false"}
+                                        id="color"
+                                        type="button"
                                         aria-label={`Choose ${label} color`}
                                         key={color}
-                                        type="button"
                                         title={`${label}`}
                                         onClick={() => setValue("color", color)}
                                         className={
@@ -209,18 +211,18 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Emoji</Label>
+                        <h3 className="text-[14px]">Emoji</h3>
                         <div className="flex flex-wrap gap-4">
                             {
                                 EMOJI_OPTIONS.map(({ emoji, label }) => (
-                                    <button key={label} type="button" aria-label={label} title={label} onClick={() => setValue("emoji", emoji)} className={
+                                    <Button key={label} type="button" aria-pressed={emoji === selectedEmoji ? "true" : "false"} aria-label={label} title={label} onClick={() => setValue("emoji", emoji)} className={
                                         cn(
                                             "rounded-md w-10 h-10 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer",
                                             emoji == selectedEmoji && "ring-brand-700 ring-2"
                                         )
                                     }>
                                         {emoji}
-                                    </button>
+                                    </Button>
                                 ))
                             }
                         </div>
@@ -231,12 +233,12 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                     </div>
 
                     <div className="pt-2">
-                        <Label>Channel</Label>
+                        <h3 className="text-[14px]">Channel</h3>
                         <span className="text-[12px] text-zinc-500 block pb-3 pt-1">Where to receive the notification</span>
                         <div className="flex flex-wrap gap-4">
                             {
                                 CHANNELS.map(({ name, icon }) => (
-                                    <button key={name} type="button" aria-label={name} onClick={() => setValue("channels", (() =>
+                                    <Button key={name} type="button" aria-pressed={selectedChannel.includes(name) ? "true" : "false"} aria-label={name} onClick={() => setValue("channels", (() =>
                                         selectedChannel.includes(name) ? selectedChannel.filter((channel) => channel !== name) : [...selectedChannel, name])())} className={
                                             cn(
                                                 "rounded-md w-7 h-7 bg-brand-100 hover:ring-brand-700 hover:bg-brand-200 hover:ring-2 ring-offset-2 cursor-pointer flex justify-center items-center",
@@ -244,7 +246,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                             )
                                         }>
                                         {icon}
-                                    </button>
+                                    </Button>
                                 ))
                             }
                         </div>
@@ -306,7 +308,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                         <Label>Field name</Label>
                                         <Input
                                             {...register(`fieldRules.${index}.name`)}
-                                            placeholder="amount"
+                                            placeholder={controlledFields[index]?.type === "number" ? "amount" : "user-name"}
                                             className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none max-w-[200px]"
                                         />
                                     </div>
@@ -382,21 +384,21 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                             <span tabIndex={0} className="text-gray-600">Telegram</span>
                         </div>
 
-                        <p className="text-sm/6 mb-2 pt-2 text-muted-foreground">
+                        <p className="text-sm/6 mb-2 pt-2 text-gray-600">
                             Haven't started a chat with BirdoBot yet? {" "}
 
                             <a target="_blank" className="text-brand-700 cursor-pointer" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
-                                Click here to allow BirdoBot to send you insights on telegram
+                                Allow BirdoBot to send you insights on telegram
                             </a>
                         </p>
 
-                        <p className="text-sm/6 text-muted-foreground mb-1">
+                        <p className="text-sm/6 text-gray-600 mb-1">
                             Don't know how to find the telegram chat ID? {" "}
                         </p>
-                        <ol className="text-sm/6 text-muted-foreground mb-2">
-                            <li>1. search for <strong>userinfobot</strong> to get your own telegram id</li>
+                        <ol className="text-sm/6 text-gray-600 mb-2">
+                            <li>1. search for <strong>userinfobot</strong> to get your own telegram ID</li>
                             <li>2. type <strong>@mychannel</strong>.</li>
-                            <li>3. copy the <strong>id</strong></li>
+                            <li>3. copy the <strong>ID</strong></li>
                         </ol>
 
                         <div className="space-y-2 mb-2 mt-4">
@@ -422,19 +424,19 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                 Discord
                             </span>
                         </div>
-                        <p className="text-sm/5 mb-2 mt-4 text-muted-foreground">
-                            Haven't invited BirdoBot to your discord server yet? {" "}
+                        <p className="text-sm/5 mb-2 mt-4 text-gray-600">
+                            Invited BirdoBot to your discord server yet? {" "}
                             <a
                                 target="_blank"
                                 rel="noopener"
                                 href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
                                 title="Invite BirdoBot to your Discord server"
                                 className="text-brand-700">
-                                Click here to invite BirdoBot to your discord server
+                                Invite BirdoBot to your discord server
                             </a>
                         </p>
 
-                        <p className="text-sm/5 mb-2 text-muted-foreground">
+                        <p className="text-sm/5 mb-2 text-gray-600">
                             Don't know how to find your Discord channel ID? {" "}
                             <a
                                 target="_blank"
@@ -466,7 +468,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                             <span className="text-gray-600" tabIndex={0}>Slack</span>
                         </div>
 
-                        <p className="text-sm/5 mb-2 mt-2 flex items-center gap-4 text-muted-foreground">
+                        <p className="text-sm/5 mb-2 mt-2 flex items-center gap-4 text-gray-600">
                             Haven't added BirdoBot to your workspace yet? {" "}
                             <a
                                 target="_blank"

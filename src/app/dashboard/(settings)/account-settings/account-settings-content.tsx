@@ -176,7 +176,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                             href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
                             title="Invite BirdoBot to your Discord server"
                             className="text-brand-700">
-                            Click here to invite BirdoBot to your discord server
+                            Invite BirdoBot to your discord server
                         </a>
                     </p>
 
@@ -214,7 +214,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                         Haven't started a chat with BirdoBot yet? {" "}
 
                         <a className="text-brand-700 cursor-pointer" target="_blank" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
-                            Click here to allow BirdoBot to send you insights
+                            Allow BirdoBot to send you insights
                         </a>
                     </p>
 
@@ -222,9 +222,9 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                         Don't know how to find the telegram chat ID? {" "}
                     </p>
                     <ol className="text-sm/6 text-gray-700 mb-2">
-                        <li>1. search for <strong>userinfobot</strong> to get your own telegram id</li>
+                        <li>1. search for <strong>userinfobot</strong> to get your own telegram ID</li>
                         <li>2. type <strong>@mychannel</strong>.</li>
-                        <li>3. copy the <strong>id</strong></li>
+                        <li>3. copy the <strong>ID</strong></li>
                     </ol>
                 </div>
             </section>

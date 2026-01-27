@@ -119,15 +119,15 @@ export default function AppSidebar() {
 }
 
 export function AppSidebarTrigger() {
-    const { toggleSidebar } = useSidebar()
+    const { toggleSidebar, openMobile } = useSidebar()
 
     return (
         <div className="flex justify-between items-center w-full px-8 mx-auto md:hidden">
             <p className="font-semibold">
-                Ring
-                <span className="text-brand-700">Rang</span>
+                Birdo
+                <span className="text-brand-700">Bot</span>
             </p>
-            <Button variant="ghost" onClick={toggleSidebar} >
+            <Button variant="ghost" onClick={toggleSidebar} aria-label={`${openMobile ? "Close sidebar" : "Open sidebar"}`}>
                 <Menu className="size-6" />
             </Button>
         </div>

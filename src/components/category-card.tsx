@@ -109,7 +109,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     })
 
     return (
-        <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 px-6 py-4" key={category.info.name}>
+        <a href="#" className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 px-6 py-4" key={category.info.name} aria-label={`visit ${category.info.name} category`}>
             <div className="flex items-center gap-3">
                 <div
                     className="rounded-full min-w-10 min-h-10"
@@ -181,10 +181,8 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                 </Link>
                 <div className="flex items-center gap-2">
                     {/* Enable / Disable */}
-                    <Button variant="ghost" className="flex items-center space-x-2 ml-0" aria-label="Enable or disable the category" onClick={() => updateCategoryStatus(!category.info.enabled)}>
-                        <Label htmlFor="enabled" className="text-sm text-muted-foreground font-normal">{category.info.enabled ? "Enabled" : "Disabled"}</Label>
-                        <Switch id="enabled" checked={category.info.enabled || false} onCheckedChange={() => updateCategoryStatus(!category.info.enabled)} tabIndex={-1} />
-                    </Button>
+                    <Label htmlFor="enabled" className="text-sm text-muted-foreground font-normal">{category.info.enabled ? "Disable" : "Enable"}</Label>
+                    <Switch id="enabled" checked={category.info.enabled || false} onCheckedChange={() => updateCategoryStatus(!category.info.enabled)} aria-label={`${category.info.enabled ? "Disable" : "Enable"} ${category.info.name} category`} />
 
                     {/* Edit */}
                     <Link href={`/dashboard/category/${category.info.name}/update`} aria-label={`Edit ${category.info.name} category`} className=
@@ -256,6 +254,6 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     </Modal>
                 </div>
             </div>
-        </div >
+        </a >
     )
 }
