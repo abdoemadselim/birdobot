@@ -190,7 +190,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
 
                     <div>
                         <Label>Channel</Label>
-                        <span className="text-[14px] text-zinc-400 block pb-3 pt-1">Where to receive the notification</span>
+                        <span className="text-[14px] text-gray-600 block pb-3 pt-1">Where to receive the notification</span>
                         <div className="flex flex-wrap gap-4">
                             {
                                 CHANNELS.map(({ name, icon }) => (
@@ -231,7 +231,7 @@ export default function CreateCategoryModal({ trigger }: { trigger: ReactNode })
                         </Button>
                     </div>
                 </form>
-            </div >
-        </Modal >
+            </div>
+        </Modal>
     )
 }

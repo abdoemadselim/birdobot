@@ -5,6 +5,7 @@ import { ReactNode } from "react"
 import {
     Dialog,
     DialogContent,
+    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
@@ -53,9 +54,11 @@ export default function Modal({ open, title, handleModalOpen, trigger, children,
                     {trigger}
                 </DialogTrigger>
                 <DialogContent showCloseButton={!preventDefaultClose}>
-                    <DialogTitle className="opacity-0">
-                        {title}
-                    </DialogTitle>
+                    <DialogHeader>
+                        <DialogTitle className="opacity-0">
+                            {title}
+                        </DialogTitle>
+                    </DialogHeader>
                     {children}
                 </DialogContent>
             </Dialog>

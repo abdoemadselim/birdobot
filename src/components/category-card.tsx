@@ -109,7 +109,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     })
 
     return (
-        <a href="#" className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 px-6 py-4" key={category.info.name} aria-label={`visit ${category.info.name} category`}>
+        <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 px-6 py-4">
             <div className="flex items-center gap-3">
                 <div
                     className="rounded-full min-w-10 min-h-10"
@@ -132,7 +132,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                         {
                             category.info.channels.map((channel) => {
                                 return (
-                                    <div className="rounded-md w-6 h-6" key={channel}>
+                                    <div className="rounded-md w-6 h-6" key={channel} aria-label={channel}>
                                         {
                                             {
                                                 slack: <Icons.slack className="w-[15px] h-[15px]" />,
@@ -254,6 +254,6 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                     </Modal>
                 </div>
             </div>
-        </a >
+        </div>
     )
 }

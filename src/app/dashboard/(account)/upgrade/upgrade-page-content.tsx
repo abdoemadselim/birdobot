@@ -21,46 +21,42 @@ export default function UpgradePageContent() {
             <div className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4">
                 <div className="rounded-lg border-brand-400 border-2 p-8 mt-6 flex gap-2 flex-col">
                     <div className="flex items-center justify-between w-full">
-                        <p>Total Events Sent : {usage?.events?.used}</p>
+                        <h2>Total Events Sent : {usage?.events?.used}</h2>
                         <BarChart className="size-4 text-gray-500" />
                     </div>
 
-                    <p className="flex flex-col">
-                        {
-                            isFetching ? <span className="block animate-pulse rounded-sm h-6 w-18 bg-gray-200" /> : (
-                                <span className="font-bold text-xl/8">
-                                    {usage?.events.left} left
-                                </span>
-                            )
-                        }
-                    </p>
+                    {
+                        isFetching ? <span className="block animate-pulse rounded-sm h-6 w-18 bg-gray-200" /> : (
+                            <h3 className="font-bold text-xl/8">
+                                {usage?.events.left} left
+                            </h3>
+                        )
+                    }
                 </div>
                 <div className="rounded-lg ring ring-inset ring-gray-200 bg-white p-8 mt-6 flex gap-2 flex-col">
                     <div className="flex items-center justify-between w-full">
-                        <p>Total Categories Created: {usage?.categories.used}</p>
+                        <h2>Total Categories Created: {usage?.categories.used}</h2>
                         <BarChart className="size-4 text-gray-500" />
                     </div>
 
-                    <p className="flex flex-col">
-                        {
-                            isFetching ? <span className="block animate-pulse rounded-sm h-6 w-18 bg-gray-200" /> : (
-                                <span className="font-bold text-xl/8">
-                                    {usage?.categories.left} left
-                                </span>
-                            )
-                        }
-                    </p>
+                    {
+                        isFetching ? <span className="block animate-pulse rounded-sm h-6 w-18 bg-gray-200" /> : (
+                            <h3 className="font-bold text-xl/8">
+                                {usage?.categories.left} left
+                            </h3>
+                        )
+                    }
                 </div>
             </div>
 
             {
                 usage?.events && (usage?.events?.left < 50) ? (
-                    <p className="pt-8 text-muted-foreground">
+                    <p className="pt-8">
                         <span className="text-red-400">You're running out of credits! {" "}</span>
                         <Link href="/pricing" className="text-brand-700 underline">Buy more credits now</Link>
                     </p>
                 ) : (
-                    <p className="pt-8 text-muted-foreground">
+                    <p className="pt-8 text-gray-600">
                         <span>Want to buy more credits? {" "}</span>
                         <Link href="/pricing" className="text-brand-700 underline">Check available packages here</Link>
                     </p>
