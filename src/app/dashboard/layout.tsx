@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
     return (
         <SidebarProvider>
             <Sidebar />
-            <main className="flex flex-col flex-1 overflow-hidden ">
+            <main className="flex flex-col flex-1 overflow-hidden">
                 <AppSidebarTrigger />
                 {children}
             </main>

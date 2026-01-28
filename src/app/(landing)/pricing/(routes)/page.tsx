@@ -71,7 +71,7 @@ export default function PricingPage() {
                     </p>
                 </div>
 
-                <div className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4 mt-6">
+                <section className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4 mt-6">
                     {/* Plans */}
                     {
                         PLANS.map((plan) => (
@@ -113,7 +113,7 @@ export default function PricingPage() {
                             </div>
                         ))
                     }
-                </div>
+                </section>
             </MaxWidthWrapper>
         </div>
     )

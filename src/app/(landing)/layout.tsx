@@ -9,7 +9,9 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex flex-col flex-1 h-screen">
             <Navbar />
-            {children}
+            <main className="flex flex-col flex-1">
+                {children}
+            </main>
             <Footer />
         </div>
     )
