@@ -202,3 +202,8 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* When flying focus ring is shown, hide default outline to avoid double ring */
+body.flying-focus-active *:focus {
+    outline: none;
+}

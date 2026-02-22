@@ -267,7 +267,7 @@ export const eventCategoryRouter = j.router({
 
     updateCategory: privateProcedure.input(UPDATE_EVENT_CATEGORY_VALIDATOR).mutation(async ({ c, ctx, input }) => {
         const { user, db } = ctx
-        const { color, emoji, channels, id, fieldRules, telegramId, slackId, discordId } = input
+        const { color, emoji, channels, id, fieldRules, telegramId, slackId, discordId, emailAddress } = input
 
         const eventCategory = await db
             .update(eventCategoryTable)
@@ -278,7 +278,8 @@ export const eventCategoryRouter = j.router({
                 fieldRules: JSON.stringify(fieldRules),
                 telegramId: telegramId,
                 discordId: discordId,
-                slackId: slackId
+                slackId: slackId,
+                emailAddress: emailAddress
             })
             .where(and(eq(eventCategoryTable.userId, user.id), eq(eventCategoryTable.id, id)))
             .returning({

@@ -6,4 +6,12 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+
+  component: {
+    supportFile: 'cypress/support/component.tsx',
+    devServer: {
+      framework: "next",
+      bundler: "webpack",
+    },
+  },
 });

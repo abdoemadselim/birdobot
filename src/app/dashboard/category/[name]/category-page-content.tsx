@@ -81,11 +81,11 @@ export default function CategoryPageContent({ category, hasEvents: initialHasEve
                 }))
             }}>
                 <TabsList className="space-x-1">
-                    <TabsTrigger value="today" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "today" && "text-gray-700")}>Today</TabsTrigger>
-                    <TabsTrigger value="this week" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "this week" && "text-gray-700")}>This Week</TabsTrigger>
-                    <TabsTrigger value="this month" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "this month" && "text-gray-700")}>This Month</TabsTrigger>
+                    <TabsTrigger tabIndex={0} value="today" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "today" && "text-gray-700")}>Today</TabsTrigger>
+                    <TabsTrigger tabIndex={0} value="this week" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "this week" && "text-gray-700")}>This Week</TabsTrigger>
+                    <TabsTrigger tabIndex={0} value="this month" className={cn("text-zinc-500 hover:bg-white hover:text-gray-700", activePeriod === "this month" && "text-gray-700")}>This Month</TabsTrigger>
                 </TabsList>
-                <TabsContent value={activePeriod}>
+                <TabsContent tabIndex={-1} value={activePeriod}>
                     <div className="grid 2xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-4">
                         <div className="rounded-lg border-brand-400 border-2 p-8 mt-6 flex gap-2 flex-col">
                             <div className="flex justify-between items-center pb-1">

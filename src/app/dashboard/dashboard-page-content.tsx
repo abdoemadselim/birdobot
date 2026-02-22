@@ -36,7 +36,7 @@ export default function DashboardPageContent() {
 
     return (
         <section>
-            <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 items-center gap-10">
+            <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 items-center gap-10" data-testid="event-categories-list">
                 {
                     eventCategories?.map((category) => (
                         <CategoryCard category={category} key={category.info.name} />

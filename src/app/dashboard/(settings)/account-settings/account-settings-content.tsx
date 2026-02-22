@@ -16,19 +16,31 @@ import { Button } from "@/components/ui/button";
 import Heading from "@/components/heading";
 import { Icons } from "@/components/icons";
 import Toaster from "@/components/ui/toaser";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 
 interface AccountSettingsContentProps {
     discordId: string | null,
     telegramId: string | null,
     telegramToken: string,
-    slackId: string | null
+    whatsappNumber: string | null,
+    slackId: string | null,
+    emailAddress: string | null
 }
 
-export default function AccountSettingsContent({ discordId: initialDiscordId, telegramId: initialTelegramId, slackId: initialSlackId, telegramToken }: AccountSettingsContentProps) {
+export default function AccountSettingsContent({
+    discordId: initialDiscordId,
+    telegramId: initialTelegramId,
+    slackId: initialSlackId,
+    telegramToken,
+    whatsappNumber: initialWhatsappNumber,
+    emailAddress: initialEmailAddress
+}: AccountSettingsContentProps) {
     const [discordId, setDiscordId] = useState(initialDiscordId)
     const [telegramId, setTelegramId] = useState(initialTelegramId)
     const [slackId, setSlackId] = useState(initialSlackId)
+    const [whatsappNumber, setWhatsappNumber] = useState(initialWhatsappNumber)
+    const [emailAddress, setEmailAddress] = useState(initialEmailAddress)
     const router = useRouter()
 
     const { mutate: updateDiscordId, isPending: isPendingDiscord } = useMutation({
@@ -38,7 +50,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         onError: () => {
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Account settings" children={
-                    <div className="text-red-500 text-sm">
+                    <div className="text-red-500 text-sm" aria-live="polite">
                         <p>Something went wrong while updating the discord ID.</p>
                         <br />
                         <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
@@ -49,7 +61,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         onSuccess: () => {
             toast.custom((t) =>
                 <Toaster type="success" t={t} title="Account settings" children={
-                    <div className="text-green-700 text-sm">
+                    <div className="text-green-700 text-sm" aria-live="polite">
                         <p>Discord ID updated successfully.</p>
                     </div>
                 } />
@@ -64,7 +76,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         onError: () => {
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Account settings" children={
-                    <div className="text-red-500 text-sm">
+                    <div className="text-red-500 text-sm" aria-live="polite">
                         <p>Something went wrong while updating the telegram ID.</p>
                         <br />
                         <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
@@ -75,8 +87,60 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         onSuccess: () => {
             toast.custom((t) =>
                 <Toaster type="success" t={t} title="Account settings" children={
-                    <div className="text-green-700 text-sm">
+                    <div className="text-green-700 text-sm" aria-live="polite">
                         <p>Telegram ID updated successfully.</p>
+                    </div>
+                } />
+            )
+        }
+    })
+
+    const { mutate: updateWhatsappNumber, isPending: isPendingWhatsapp } = useMutation({
+        mutationFn: async (whatsappNumber: string) => {
+            await client.user.updateWhatsappNumber.$post({ whatsappNumber })
+        },
+        onError: () => {
+            toast.custom((t) =>
+                <Toaster type="error" t={t} title="Account settings" children={
+                    <div className="text-red-500 text-sm" aria-live="polite">
+                        <p>Something went wrong while updating the whatsapp number.</p>
+                        <br />
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
+                    </div>
+                } />
+            )
+        },
+        onSuccess: () => {
+            toast.custom((t) =>
+                <Toaster type="success" t={t} title="Account settings" children={
+                    <div className="text-green-700 text-sm" aria-live="polite">
+                        <p>Whatsapp Number updated successfully.</p>
+                    </div>
+                } />
+            )
+        }
+    })
+
+    const { mutate: updateEmailAddress, isPending: isPendingEmail } = useMutation({
+        mutationFn: async (emailAddress: string) => {
+            await client.user.updateEmailAddress.$post({ emailAddress })
+        },
+        onError: () => {
+            toast.custom((t) =>
+                <Toaster type="error" t={t} title="Account settings" children={
+                    <div className="text-red-500 text-sm" aria-live="polite">
+                        <p>Something went wrong while updating the email address.</p>
+                        <br />
+                        <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
+                    </div>
+                } />
+            )
+        },
+        onSuccess: () => {
+            toast.custom((t) =>
+                <Toaster type="success" t={t} title="Account settings" children={
+                    <div className="text-green-700 text-sm" aria-live="polite">
+                        <p>Email address updated successfully.</p>
                     </div>
                 } />
             )
@@ -90,7 +154,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         onError: () => {
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Account settings" children={
-                    <div className="text-red-500 text-sm">
+                    <div className="text-red-500 text-sm" aria-live="polite">
                         <p>Something went wrong while updating the slack Channel ID.</p>
                         <br />
                         <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
@@ -101,7 +165,7 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         onSuccess: () => {
             toast.custom((t) =>
                 <Toaster type="success" t={t} title="Account settings" children={
-                    <div className="text-green-700 text-sm">
+                    <div className="text-green-700 text-sm" aria-live="polite">
                         <p>Slack ID updated successfully.</p>
                     </div>
                 } />
@@ -117,12 +181,12 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
         <>
             {
                 slack_error && (
-                    <div className="absolute top-0 inset-0 w-full max-h-[60px] bg-red-500 text-white  text-center font-medium py-3 flex flex-col justify-center items-center text-md shadow-lg">
-                        Failed to add BirdoBot to your slack workspace
+                    <div className="absolute top-0 inset-0 w-full max-h-[60px] bg-red-500 text-white  text-center font-medium py-3 flex flex-col justify-center items-center text-md shadow-lg" >
+                        <p role="alert">Failed to add BirdoBot to your slack workspace</p>
                         <p className="text-sm pt-1 text-white/80">Try again or contact us at <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>
 
-                        <div className="p-2 rounded-full bg-red-600/80 hover:bg-red-800 transition-colors absolute right-4" onClick={() => router.replace("?")}>
-                            <X className="size-5  text-white" />
+                        <div className="p-2 rounded-full bg-red-600/80 hover:bg-red-800 transition-colors absolute right-4" onClick={() => router.replace("?")} aria-label="close the slack feedback alert">
+                            <X className="size-5 text-white" />
                         </div>
                     </div>
                 )
@@ -131,8 +195,8 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
             {
                 slack_linked && (
                     <div className="absolute top-0 inset-0 w-full max-h-[60px] bg-green-600 font-medium text-white text-center py-3 flex flex-col justify-center items-center text-md shadow-lg">
-                        BirdoBot is added to your workspace successfully! 🎉
-                        <div className="p-2 rounded-full bg-white/20 hover:bg-green-800 transition-colors absolute right-4" onClick={() => router.replace("?")}>
+                        <p role="alert">BirdoBot is added to your workspace successfully! 🎉</p>
+                        <div className="p-2 rounded-full bg-white/20 hover:bg-green-800 transition-colors absolute right-4" onClick={() => router.replace("?")} aria-label="close the slack feedback alert">
                             <X className="size-5  text-white" />
                         </div>
 
@@ -143,132 +207,193 @@ export default function AccountSettingsContent({ discordId: initialDiscordId, te
                 )
             }
 
-            <section>
-                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
-                    <div className="rounded-full text-white bg-brand-700 p-1">
-                        <Icons.discord className="size-4" />
-                    </div>
-                    <span className="text-gray-600">
-                        Discord
-                    </span>
-                </Heading>
-                <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[600px] p-8">
-                    <div className="space-y-2 mb-2">
-                        <Label htmlFor="discordId">Discord ID</Label>
-                        <Input
-                            id="discordId"
-                            onChange={(e) => setDiscordId(e.target.value)} value={discordId ?? ""}
-                            className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
-                        />
-                    </div>
+            <section className="grid grid-cols-2">
+                <div>
+                    <section>
+                        <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
+                            <div className="rounded-full text-white bg-brand-700 p-1" aria-hidden>
+                                <Icons.discord className="size-4" />
+                            </div>
+                            <span className="text-gray-600">
+                                Discord
+                            </span>
+                        </Heading>
+                        <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[600px] p-8">
+                            <div className="space-y-2 mb-2">
+                                <Label htmlFor="discordId">Discord ID</Label>
+                                <Input
+                                    id="discordId"
+                                    onChange={(e) => setDiscordId(e.target.value)} value={discordId ?? ""}
+                                    className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                />
+                            </div>
 
-                    <Button className="mt-2" onClick={() => updateDiscordId(discordId ?? "")} disabled={isPendingDiscord}>
-                        {
-                            isPendingDiscord ? "Saving..." : "Save changes"
-                        }
-                    </Button>
+                            <Button className="mt-2" onClick={() => updateDiscordId(discordId ?? "")} disabled={isPendingDiscord}>
+                                {
+                                    isPendingDiscord ? "Saving..." : "Save changes"
+                                }
+                            </Button>
 
-                    <p className="text-sm/5 text-gray-700 mb-2 mt-6 ">
-                        Haven't invited BirdoBot to your discord server yet? {" "}
-                        <a
-                            target="_blank"
-                            rel="noopener"
-                            href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
-                            title="Invite BirdoBot to your Discord server"
-                            className="text-brand-700">
-                            Invite BirdoBot to your discord server
-                        </a>
-                    </p>
+                            <p className="text-sm/5 text-gray-700 mb-2 mt-6 ">
+                                Haven't invited BirdoBot to your discord server yet? {" "}
+                                <a
+                                    target="_blank"
+                                    rel="noopener"
+                                    href="https://discord.com/oauth2/authorize?client_id=1459874272544817342&permissions=2048&integration_type=0&scope=bot"
+                                    title="Invite BirdoBot to your Discord server"
+                                    className="text-brand-700">
+                                    Invite BirdoBot to your discord server
+                                </a>
+                            </p>
 
-                    <p className="text-sm/5 text-gray-700 mb-2">
-                        Don't know how to find your Discord channel ID? {" "}
-                        <a target="_blank"
-                            rel="noopener"
-                            href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain your discord channel ID</a>
-                    </p>
+                            <p className="text-sm/5 text-gray-700 mb-2">
+                                Don't know how to find your Discord channel ID? {" "}
+                                <a target="_blank"
+                                    rel="noopener"
+                                    href="https://discover.hubpages.com/technology/Discord-Channel-ID" title="How to obtain discord channel Id?" className="text-brand-700">Learn how to obtain your discord channel ID</a>
+                            </p>
+                        </div>
+                    </section>
+
+                    <section className="pt-10">
+                        <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
+                            <Icons.telegram className="size-5" aria-hidden />
+                            <span className="text-gray-600">Telegram</span>
+                        </Heading>
+
+                        <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[700px] p-8">
+                            <div className="space-y-2 mb-2">
+                                <Label htmlFor="telegramId">Telegram ID</Label>
+                                <Input
+                                    id="telegramId"
+                                    onChange={(e) => setTelegramId(e.target.value)} value={telegramId ?? ""}
+                                    className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                />
+
+                                <Button className="mt-2" onClick={() => updateTelegramId(telegramId ?? "")} disabled={isPendingTelegram}>
+                                    {
+                                        isPendingTelegram ? "Saving..." : "Save changes"
+                                    }
+                                </Button>
+                            </div>
+                            <p className="text-sm/6 text-gray-700 mb-2 pt-4">
+                                Haven't started a chat with BirdoBot yet? {" "}
+
+                                <a className="text-brand-700 cursor-pointer" target="_blank" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
+                                    Allow BirdoBot to send you insights
+                                </a>
+                            </p>
+
+                            <p className="text-sm/6 text-gray-700 mb-1">
+                                Don't know how to find the telegram chat ID? {" "}
+                            </p>
+                            <ol className="text-sm/6 text-gray-700 mb-2">
+                                <li>1. search for <strong>userinfobot</strong> to get your own telegram ID</li>
+                                <li>2. type <strong>@mychannel</strong>.</li>
+                                <li>3. copy the <strong>ID</strong></li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    {/* SLACK */}
+                    <section className="pt-10">
+                        <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
+                            <Icons.slack className="size-5" aria-hidden />
+                            <span className="text-gray-600">Slack</span>
+                        </Heading>
+                        <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[700px] p-8 relative">
+                            <div className="space-y-2 mb-2">
+                                <Label htmlFor="slackId">Slack Channel Name</Label>
+                                <Input
+                                    id="slackId"
+                                    placeholder="#name"
+                                    onChange={(e) => setSlackId(e.target.value)} value={slackId ?? ""}
+                                    className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                />
+
+                                <Button className="mt-2" onClick={() => updateSlackId(slackId ?? "")} disabled={isPendingSlack}>
+                                    {
+                                        isPendingSlack ? "Saving..." : "Save changes"
+                                    }
+                                </Button>
+                            </div>
+
+
+                            <p className="text-sm/5 text-gray-700 mb-2 mt-6">
+                                Haven't added BirdoBot to your workspace yet? {" "}
+                                <a
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="mt-2 block"
+                                    href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write&state=account">
+                                    <img
+                                        alt="Add to Slack"
+                                        height="40"
+                                        width="139"
+                                        src="https://platform.slack-edge.com/img/add_to_slack.png"
+                                        srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
+                                    />
+                                </a>
+                            </p>
+                        </div>
+                    </section>
                 </div>
-            </section>
+                <div>
+                    <section>
+                        <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
+                            <div className="p-1 bg-green-500 rounded-full w-fit">
+                                <Icons.whatsapp aria-hidden />
+                            </div>
+                            <span className="text-gray-600">
+                                Whatsapp
+                            </span>
+                        </Heading>
+                        <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[600px] p-8">
+                            <div className="space-y-2 mb-2">
+                                <Label htmlFor="whatsappNumber">Whatsapp phone number</Label>
+                                <PhoneInput id="whatsappNumber" international={true} onChange={(value) => setWhatsappNumber(value)} value={whatsappNumber || ""} />
+                            </div>
 
-            <section className="pt-10">
-                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
-                    <Icons.telegram className="size-5" />
-                    <span className="text-gray-600">Telegram</span>
-                </Heading>
+                            <Button className="mt-2" onClick={() => updateWhatsappNumber(whatsappNumber ?? "")} disabled={isPendingWhatsapp}>
+                                {
+                                    isPendingWhatsapp ? "Saving..." : "Save changes"
+                                }
+                            </Button>
+                        </div>
+                    </section>
 
-                <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[700px] p-8">
-                    <div className="space-y-2 mb-2">
-                        <Label htmlFor="telegramId">Telegram ID</Label>
-                        <Input
-                            id="telegramId"
-                            onChange={(e) => setTelegramId(e.target.value)} value={telegramId ?? ""}
-                            className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
-                        />
+                    <section className="pt-10">
+                        <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
+                            <div className="p-1 bg-blue-500 rounded-full w-fit">
+                                <Icons.email aria-hidden />
+                            </div>
+                            <span className="text-gray-600">
+                                Email
+                            </span>
+                        </Heading>
+                        <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[600px] p-8">
+                            <div className="space-y-2 mb-2">
+                                <Label htmlFor="emailAddress">Email Address</Label>
+                                <Input
+                                    id="emailAddress"
+                                    type="email"
+                                    placeholder="notifications@example.com"
+                                    onChange={(e) => setEmailAddress(e.target.value)}
+                                    value={emailAddress ?? ""}
+                                    className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
+                                />
+                                <p className="text-sm text-gray-500 mt-1">
+                                    This email will receive event notifications. It can be different from your account email.
+                                </p>
+                            </div>
 
-                        <Button className="mt-2" onClick={() => updateTelegramId(telegramId ?? "")} disabled={isPendingTelegram}>
-                            {
-                                isPendingTelegram ? "Saving..." : "Save changes"
-                            }
-                        </Button>
-                    </div>
-                    <p className="text-sm/6 text-gray-700 mb-2 pt-4">
-                        Haven't started a chat with BirdoBot yet? {" "}
-
-                        <a className="text-brand-700 cursor-pointer" target="_blank" href={`https://t.me/BirdoChatBot?start=${telegramToken}`}>
-                            Allow BirdoBot to send you insights
-                        </a>
-                    </p>
-
-                    <p className="text-sm/6 text-gray-700 mb-1">
-                        Don't know how to find the telegram chat ID? {" "}
-                    </p>
-                    <ol className="text-sm/6 text-gray-700 mb-2">
-                        <li>1. search for <strong>userinfobot</strong> to get your own telegram ID</li>
-                        <li>2. type <strong>@mychannel</strong>.</li>
-                        <li>3. copy the <strong>ID</strong></li>
-                    </ol>
-                </div>
-            </section>
-
-            {/* SLACK */}
-            <section className="pt-10">
-                <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
-                    <Icons.slack className="size-5" />
-                    <span className="text-gray-600">Slack</span>
-                </Heading>
-                <div className="rounded-lg ring-1 shadow-sm hover:shadow-md transition-shadow ring-inset ring-gray-200 bg-white max-w-[700px] p-8 relative">
-                    <div className="space-y-2 mb-2">
-                        <Label htmlFor="slackId">Slack Channel Name</Label>
-                        <Input
-                            id="slackId"
-                            placeholder="#name"
-                            onChange={(e) => setSlackId(e.target.value)} value={slackId ?? ""}
-                            className="focus:ring-brand-200! focus-visible:border-0 focus-visible:border-brand-700 focus-visible:outline-none"
-                        />
-
-                        <Button className="mt-2" onClick={() => updateSlackId(slackId ?? "")} disabled={isPendingSlack}>
-                            {
-                                isPendingSlack ? "Saving..." : "Save changes"
-                            }
-                        </Button>
-                    </div>
-
-
-                    <p className="text-sm/5 text-gray-700 mb-2 mt-6">
-                        Haven't added BirdoBot to your workspace yet? {" "}
-                        <a
-                            target="_blank"
-                            rel="noopener"
-                            className="mt-2 block"
-                            href="https://slack.com/oauth/v2/authorize?client_id=10243884054085.10322356370134&scope=chat:write&state=account">
-                            <img
-                                alt="Add to Slack"
-                                height="40"
-                                width="139"
-                                src="https://platform.slack-edge.com/img/add_to_slack.png"
-                                srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
-                            />
-                        </a>
-                    </p>
+                            <Button className="mt-2" onClick={() => updateEmailAddress(emailAddress ?? "")} disabled={isPendingEmail}>
+                                {
+                                    isPendingEmail ? "Saving..." : "Save changes"
+                                }
+                            </Button>
+                        </div>
+                    </section>
                 </div>
             </section>
         </>

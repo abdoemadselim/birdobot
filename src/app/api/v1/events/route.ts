@@ -4,18 +4,14 @@ import { and, eq, gte, InferSelectModel, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { escapeMarkdownV2 } from "@/lib/utils";
-
-// Channels Clients
-import { SlackClient } from "@/lib/slack-client";
-import { DiscordClient } from "@/lib/discord-client";
-import { telegramBot } from "@/lib/telegram-client";
-
 // DB
 import { eventCategoryTable, eventTable, userCreditsTable, userTable } from "@/server/db/schema";
 
 // Schemas
 import { EVENT_CATEGORY_NAME_VALIDATOR, FIELD_RULES_TYPE } from "@/lib/schemas/category-event";
 import { evaluateFieldRule } from "@/lib/field-rules-validator";
+
+import { inngest } from "@/inngest/client";
 
 const REQUEST_VALIDATOR = z.object({
     category: EVENT_CATEGORY_NAME_VALIDATOR,
@@ -108,7 +104,7 @@ export const POST = async (request: NextRequest) => {
         }).returning({ id: eventTable.id });
 
         // 8- Send the event to each defined channel on its category
-        category.channels.forEach(async (channel: "discord" | "telegram" | "slack") => {
+        category.channels.forEach(async (channel: "discord" | "telegram" | "slack" | "email" | "whatsapp") => {
             return await sendChannel({
                 channel,
                 category,
@@ -158,7 +154,7 @@ async function sendChannel({
     user,
     category,
     data
-}: SendChannelParams & { channel: "discord" | "slack" | "telegram" }) {
+}: SendChannelParams & { channel: "discord" | "slack" | "telegram" | "email" | "whatsapp" }) {
     switch (channel) {
         case "discord":
             sendDiscord({ user, category, data })
@@ -168,6 +164,7 @@ async function sendChannel({
             break
         case "slack":
             sendSlack({ user, category, data })
+            break
     }
 }
 
@@ -196,12 +193,17 @@ async function sendDiscord({
         timestamp: new Date().toISOString(),
     }
 
-    // 7.1- SEND THE EVENT TO THE USER'S DISCORD CHANNEL
-    const discordClient = new DiscordClient(process.env.DISCORD_TOKEN as string)
-
     try {
         const discordId = category.discordId || user.discordId
-        await discordClient.sendEmbed(discordId as string, eventData)
+
+        await inngest.send({
+            name: "event/send.discord",
+            data: {
+                discordId,
+                eventData
+            },
+        });
+
     } catch (error) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"
@@ -248,7 +250,24 @@ ${fieldsText}
 `.trim();
 
     const telegramId = category.telegramId || user.telegramId
-    await telegramBot.sendMessage(telegramId as string, message)
+
+    try {
+        const response = await inngest.send({
+            name: "event/send.telegram",
+            data: {
+                telegramId,
+                message
+            },
+        })
+        console.log(response)
+    } catch (error) {
+        await db.update(eventTable).set({
+            deliveryStatus: "FAILED"
+        }).where(eq(eventTable.id, data.eventId as number))
+
+        console.error(error)
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 })
+    }
 }
 
 async function sendSlack({ user, category, data }: SendChannelParams) {
@@ -276,8 +295,14 @@ async function sendSlack({ user, category, data }: SendChannelParams) {
         const slackBotToken = category.slackBotToken || user.slackBotToken;
         const slackId = category.slackId || user.slackId
 
-        const slackClient = new SlackClient(slackBotToken as string);
-        await slackClient.sendEmbed(slackId as string, eventData);
+        await inngest.send({
+            name: "event/send.slack",
+            data: {
+                slackId,
+                slackBotToken,
+                eventData
+            },
+        })
     } catch (error) {
         await db.update(eventTable).set({
             deliveryStatus: "FAILED"

@@ -29,7 +29,7 @@ export default async function AccountSettings() {
 
     return (
         <DashboardLayout title="Account Settings" >
-            <AccountSettingsContent discordId={dbUser.discordId} telegramId={dbUser.telegramId} telegramToken={dbUser.telegramToken ?? ""} slackId={dbUser.slackId} />
+            <AccountSettingsContent discordId={dbUser.discordId} telegramId={dbUser.telegramId} telegramToken={dbUser.telegramToken ?? ""} slackId={dbUser.slackId} whatsappNumber={dbUser.whatsappNumber} emailAddress={dbUser.emailAddress} />
         </DashboardLayout>
     )
 }

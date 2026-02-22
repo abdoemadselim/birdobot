@@ -21,7 +21,8 @@ interface HeroVideoProps {
   videoSrc: string
   thumbnailSrc: string
   thumbnailAlt?: string
-  className?: string
+  className?: string,
+  ariaLabel?: string
 }
 
 const animationVariants = {
@@ -71,6 +72,7 @@ export function HeroVideoDialog({
   animationStyle = "from-center",
   videoSrc,
   thumbnailSrc,
+  ariaLabel = "Play video",
   thumbnailAlt = "Video thumbnail",
   className,
 }: HeroVideoProps) {
@@ -81,7 +83,7 @@ export function HeroVideoDialog({
     <div className={cn("relative", className)}>
       <button
         type="button"
-        aria-label="Play video"
+        aria-label={ariaLabel}
         className="group relative cursor-pointer border-0 bg-transparent p-0"
         onClick={() => setIsVideoOpen(true)}
       >

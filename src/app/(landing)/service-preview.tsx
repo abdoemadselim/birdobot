@@ -18,6 +18,7 @@ export default function ServicePreview() {
           videoSrc="https://www.youtube.com/embed/_iAZ2zp4Fq8"
           thumbnailSrc="/video-thumbnail.png"
           thumbnailAlt="BirdoBot Overview"
+          ariaLabel="See how it works video"
         />
 
       </MaxWidthWrapper>

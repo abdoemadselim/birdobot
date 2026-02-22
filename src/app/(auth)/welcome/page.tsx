@@ -37,10 +37,10 @@ export default function WelcomePage() {
 
     return (
         <div className="flex flex-1 flex-col items-center justify-center overflow-hidden bg-brand-25 w-full relative">
-            <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" />
+            <BackgroundPattern className="max-w-full opacity-75 absolute top-1/2 left-1/2 -translate-1/2 z-0" aria-hidden />
 
             <div className="relative text-center flex flex-col gap-6 z-10">
-                <LoadingSpinner size="lg" />
+                <LoadingSpinner size="lg" aria-hidden />
                 <Heading className="to-brand-950">Creating your account</Heading>
                 <p className="text-base/7 text-gray-600 max-w-prose">Just a moment while we set things up for you</p>
             </div>

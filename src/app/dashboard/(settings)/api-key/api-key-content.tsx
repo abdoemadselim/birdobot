@@ -21,7 +21,7 @@ export default function ApiKeyContent({ apiKey }: { apiKey: string }) {
         toast.custom((t) =>
             <Toaster type="success" t={t} title="API Key" children={
                 <div className="text-green-700 text-sm w-[200px]">
-                    <p className="font-medium">Copied to clipboard.</p>
+                    <p className="font-medium" aria-live="polite">API Key is copied to clipboard.</p>
                 </div>
             } />
         )
@@ -42,6 +42,7 @@ export default function ApiKeyContent({ apiKey }: { apiKey: string }) {
                                 id="apiKey"
                                 type="password"
                                 readOnly
+                                tabIndex={-1}
                                 value={apiKey}
                                 className="focus:ring-brand-200! focus-visible:border-0 focus-visible:outline-none w-full border-0 outline-0 p-0 shadow-none focus-visible:ring-0"
                             />
@@ -49,8 +50,8 @@ export default function ApiKeyContent({ apiKey }: { apiKey: string }) {
                                 isCopied ? (
                                     <Check className="text-gray-400 size-6" aria-label="The api key is being copied" />
                                 ) : (
-                                    <Button variant="ghost" onClick={handleCopyKey} className="cursor-pointer hover:bg-transparent p-0! focus-visible:ring-0" size="sm" aria-label="Copy the api key" title="Copy">
-                                        <Clipboard className="text-gray-400 size-6" />
+                                    <Button variant="ghost" onClick={handleCopyKey} className="cursor-pointer hover:bg-transparent p-0! group focus-visible:ring-0" size="sm" aria-label="Copy the api key" title="Copy">
+                                        <Clipboard className="text-gray-400 size-6 group-focus:text-brand-700" />
                                     </Button>
                                 )
                             }

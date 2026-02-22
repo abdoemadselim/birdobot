@@ -24,7 +24,7 @@ export default function DashboardEmptyState() {
             console.log(error)
             toast.custom((t) =>
                 <Toaster type="error" t={t} title="Create Event Category" children={
-                    <div className="text-red-500 text-sm">
+                    <div className="text-red-500 text-sm" aria-live="polite">
                         <p>Something went wrong while creating the category.</p>
                         <br />
                         <p className="text-gray-700"> Please try again or <a href="mailto:support@birdobot.site" target="_blank" className="text-brand-700">contact us</a></p>

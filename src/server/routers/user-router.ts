@@ -74,5 +74,28 @@ export const userRouter = j.router({
         }).where(eq(userTable.id, user.id))
 
         return c.json({ success: true })
+    }),
+
+    //  PHONE NUMBER LENGTH: E.164 STANDARD
+    updateWhatsappNumber: privateProcedure.input(z.object({ whatsappNumber: z.string().min(8).max(15) })).mutation(async ({ ctx, c, input }) => {
+        const { db, user } = ctx;
+        const { whatsappNumber } = input
+
+        await db.update(userTable).set({
+            whatsappNumber
+        }).where(eq(userTable.id, user.id))
+
+        return c.json({ success: true })
+    }),
+
+    updateEmailAddress: privateProcedure.input(z.object({ emailAddress: z.string().email().max(255) })).mutation(async ({ ctx, c, input }) => {
+        const { db, user } = ctx;
+        const { emailAddress } = input
+
+        await db.update(userTable).set({
+            emailAddress
+        }).where(eq(userTable.id, user.id))
+
+        return c.json({ success: true })
     })
 })

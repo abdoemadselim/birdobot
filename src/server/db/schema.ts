@@ -15,7 +15,7 @@ import {
 
 export const featureEnum = pgEnum("feature", ["EVENTS", "EVENTS_CATEGORIES"])
 export const deliveryStatusEnum = pgEnum("deliveryStatusEnum", ["PENDING", "FAILED", "DELIVERED"])
-export const channelEnum = pgEnum("discord", ["discord", "telegram", "slack"])
+export const channelEnum = pgEnum("discord", ["discord", "telegram", "slack", "whatsapp", "email"])
 export const paymentStatusEnum = pgEnum("paymentStatus", ["PENDING", "COMPLETED", "CANCELLED"])
 
 export const userTable = pgTable(
@@ -33,6 +33,10 @@ export const userTable = pgTable(
     slackBotToken: text("slackBotToken"),
 
     telegramToken: uuid("telegramToken").defaultRandom(),
+
+    whatsappNumber: varchar("whatsappNumber"),
+
+    emailAddress: varchar("emailAddress", { length: 255 }),
 
     apiKey: uuid("apiKey").defaultRandom(),
 
@@ -63,6 +67,8 @@ export const eventCategoryTable = pgTable(
     discordId: varchar("discordId", { length: 30 }),
     telegramId: varchar("telegramId", { length: 30 }),
     slackId: varchar("slackId", { length: 30 }),
+    whatsappNumber: varchar("whatsappNumber"),
+    emailAddress: varchar("emailAddress", { length: 255 }),
 
     slackBotToken: text("slackBotToken"),
 

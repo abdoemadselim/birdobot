@@ -104,6 +104,7 @@ export default function PricingPage() {
 
                                 <Button
                                     className={cn(`mt-12 w-full cursor-pointer text-md`, plan.className)}
+                                    aria-label={`Buy now ${plan.name} plan`}
                                     onClick={() => handleCreateCheckout(plan.name.toLowerCase() as "core" | "growth" | "premium" | "free")}
                                 >
                                     Buy now
