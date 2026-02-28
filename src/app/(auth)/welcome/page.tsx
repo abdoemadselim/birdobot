@@ -1,9 +1,7 @@
-'use client'
-
 // Libs
 import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 // Components
@@ -12,6 +10,16 @@ import LoadingSpinner from "@/components/loading-spinner"
 import BackgroundPattern from "@/components/background-pattern"
 
 export default function WelcomePage() {
+    return (
+        <Suspense fallback={<div className="flex flex-1 flex-col items-center justify-center overflow-hidden bg-brand-25 w-full relative">
+            <LoadingSpinner size="lg" aria-hidden />
+        </div>}>
+            <WelcomePageContent />
+        </Suspense>
+    )
+}
+
+function WelcomePageContent() {
     const searchParams = useSearchParams()
     const intent = searchParams.get("intent")
     const plan = searchParams.get("plan")
