@@ -13,9 +13,11 @@ import MockApps from "../mock-apps";
 import ServicePreview from "../service-preview";
 
 const CHANNELS = [
-  { name: "Discord", color: "bg-[#5865f2]/10 text-[#5865f2] border-[#5865f2]/20" },
-  { name: "Slack", color: "bg-[#471348]/10 text-[#471348] border-[#471348]/20" },
-  { name: "Telegram", color: "bg-[#24A1DE]/10 text-[#24A1DE] border-[#24A1DE]/20" },
+  { name: "Discord" },
+  { name: "Slack" },
+  { name: "Telegram" },
+  { name: "WhatsApp" },
+  { name: "Email" },
 ];
 
 const PILLS = [
@@ -56,16 +58,16 @@ export default async function HomePage() {
               <p className="text-base/relaxed text-gray-600 text-pretty max-w-xl mx-auto sm:text-lg">
                 Get instant alerts for{" "}
                 <span className="font-semibold text-gray-800">sales, new users, or any event</span>{" "}
-                — delivered to Discord, Slack, or Telegram from one simple API.
+                — delivered to Discord, Slack, Telegram, WhatsApp, or email from one simple API.
               </p>
             </div>
 
             {/* Channel pills */}
             <div className="flex flex-wrap justify-center gap-2">
-              {CHANNELS.map(({ name, color }) => (
+              {CHANNELS.map(({ name }) => (
                 <span
                   key={name}
-                  className={`inline-flex items-center rounded-lg border px-3 py-1.5 text-sm font-medium ${color}`}
+                  className="inline-flex items-center rounded-lg border border-gray-200/80 bg-gray-50/80 px-3 py-1.5 text-sm font-medium text-gray-600"
                 >
                   {name}
                 </span>
