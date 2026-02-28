@@ -13,11 +13,11 @@ import MockApps from "../mock-apps";
 import ServicePreview from "../service-preview";
 
 const CHANNELS = [
-  { name: "Discord" },
-  { name: "Slack" },
-  { name: "Telegram" },
-  { name: "WhatsApp" },
-  { name: "Email" },
+  { name: "Discord", soon: false },
+  { name: "Slack", soon: false },
+  { name: "Telegram", soon: false },
+  { name: "WhatsApp", soon: true },
+  { name: "Email", soon: true },
 ];
 
 const PILLS = [
@@ -58,18 +58,23 @@ export default async function HomePage() {
               <p className="text-base/relaxed text-gray-600 text-pretty max-w-xl mx-auto sm:text-lg">
                 Get instant alerts for{" "}
                 <span className="font-semibold text-gray-800">sales, new users, or any event</span>{" "}
-                — delivered to Discord, Slack, Telegram, WhatsApp, or email from one simple API.
+                — delivered to Discord, Slack, Telegram, and more from one simple API.
               </p>
             </div>
 
             {/* Channel pills */}
             <div className="flex flex-wrap justify-center gap-2">
-              {CHANNELS.map(({ name }) => (
+              {CHANNELS.map(({ name, soon }) => (
                 <span
                   key={name}
-                  className="inline-flex items-center rounded-lg border border-gray-200/80 bg-gray-50/80 px-3 py-1.5 text-sm font-medium text-gray-600"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200/80 bg-gray-50/80 px-3 py-1.5 text-sm font-medium text-gray-600"
                 >
                   {name}
+                  {soon && (
+                    <span className="rounded bg-gray-200/80 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-500">
+                      Soon
+                    </span>
+                  )}
                 </span>
               ))}
             </div>

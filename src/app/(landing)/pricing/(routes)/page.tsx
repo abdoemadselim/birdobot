@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { createCheckoutOverlay } from "@/lib/paddle";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 
 // Components
 import Heading from "@/components/heading";
@@ -17,9 +17,11 @@ import LoadingSpinner from "@/components/loading-spinner";
 // Config
 import { PLANS } from "@/config";
 
-export default function PricingPage() {
+function PricingContent() {
     const router = useRouter()
     const { user } = useUser()
+    const params = useSearchParams()
+    const plan = params.get("plan")
 
     const handleCreateCheckout = async (plan: "free" | "core" | "premium" | "growth") => {
         if (plan === "free" && user) {
@@ -43,9 +45,6 @@ export default function PricingPage() {
             router.push(`/sign-in?intent=upgrade&plan=${plan}`)
         }
     }
-
-    const params = useSearchParams()
-    const plan = params.get("plan")
 
     useEffect(() => {
         if (user && plan && ["core", "growth", "premium"].includes(plan)) {
@@ -113,5 +112,17 @@ export default function PricingPage() {
                 </section>
             </MaxWidthWrapper>
         </div>
+    )
+}
+
+export default function PricingPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex flex-col flex-1 pt-28 bg-brand-25 pb-20 items-center justify-center min-h-[50vh]">
+                <LoadingSpinner />
+            </div>
+        }>
+            <PricingContent />
+        </Suspense>
     )
 }
