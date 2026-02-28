@@ -138,7 +138,6 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                                                 slack: <Icons.slack className="w-[15px] h-[15px]" aria-hidden />,
                                                 telegram: <Icons.telegram className="w-[15px] h-[15px]" aria-hidden />,
                                                 discord: <Icons.discord className="text-brand-600 w-[18px] h-[18px] -mt-[1px]" aria-hidden />,
-                                                whatsapp: <Icons.whatsapp className="text-green-600 w-[18px] h-[18px] -mt-[1px]" aria-hidden />
                                             }[channel as "discord" | "telegram" | "slack"]
                                         }
                                     </div>

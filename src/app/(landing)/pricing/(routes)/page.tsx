@@ -20,7 +20,6 @@ import { PLANS } from "@/config";
 export default function PricingPage() {
     const router = useRouter()
     const { user } = useUser()
-    const [showOverlay, setShowOverlay] = useState(false)
 
     const handleCreateCheckout = async (plan: "free" | "core" | "premium" | "growth") => {
         if (plan === "free" && user) {
@@ -49,20 +48,18 @@ export default function PricingPage() {
     const plan = params.get("plan")
 
     useEffect(() => {
-        if (plan && ["core", "growth", "premium"].includes(plan)) {
-            setShowOverlay(true)
+        if (user && plan && ["core", "growth", "premium"].includes(plan)) {
+            const openCheckout = createCheckoutOverlay({
+                userEmail: user?.emailAddresses[0]?.emailAddress!,
+                plan: plan as "core" | "growth" | "premium"
+            })
+
+            openCheckout()
         }
-    }, [])
+    }, [user, plan])
 
     return (
         <div className="flex flex-col flex-1 pt-28 bg-brand-25 pb-20">
-
-            {showOverlay &&
-                <div className="absolute inset-0 w-full h-full bg-gray-500/50 z-100 flex justify-center items-center" >
-                    <LoadingSpinner className="size-8" />
-                </div>
-            }
-
             <MaxWidthWrapper className="flex justify-center items-center flex-col max-w-3/4">
                 <div className="text-center">
                     <h1 className="text-4xl font-medium">Simple no-tricks pricing</h1>
@@ -82,7 +79,6 @@ export default function PricingPage() {
                                 </Heading>
                                 <h3 className="text-4xl font-bold">
                                     {plan.price}
-                                    <span className="text-sm">/month</span>
                                 </h3>
 
                                 <div className="flex items-center pt-8 gap-2">

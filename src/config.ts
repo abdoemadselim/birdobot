@@ -4,12 +4,12 @@ export const FREE_QUOTA = {
 } as const
 
 export const CORE_QUOTA = {
-    maxEventsPerMonth: 1000,
+    maxEventsPerMonth: 10000,
     maxEventsCategories: 5
 } as const
 
 export const GROWTH_QUOTA = {
-    maxEventsPerMonth: 10000,
+    maxEventsPerMonth: 50000,
     maxEventsCategories: 7
 } as const
 
@@ -31,21 +31,21 @@ export const PLANS = [
     },
     {
         features: [
-            "1000 real-time events",
+            "10000 real-time events",
             "5 event categories",
             "Unlimited field rules",
         ],
-        price: "$20",
+        price: "$8",
         name: "Core",
         className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
     },
     {
         features: [
-            "10000 real-time events",
+            "50000 real-time events",
             "7 event categories",
             "Unlimited field rules",
         ],
-        price: "$49",
+        price: "$35",
         name: "Growth",
     },
     {
@@ -54,7 +54,7 @@ export const PLANS = [
             "10 event categories",
             "Unlimited field rules",
         ],
-        price: "$149",
+        price: "$69",
         name: "Premium",
         className: "bg-transparent text-brand-700 font-bold border-brand-700 border-2 hover:text-white hover:bg-brand-700 transition-colors duration-200"
     }

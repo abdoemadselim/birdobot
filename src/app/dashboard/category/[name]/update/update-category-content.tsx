@@ -65,9 +65,9 @@ const CHANNELS = [
     {
         name: "telegram", icon: <Icons.telegram className="w-4 h-4" />
     },
-    {
-        name: "whatsapp", icon: <Icons.whatsapp className="w-4 h-4 text-green-600" />
-    }
+    //{
+    //    name: "whatsapp", icon: <Icons.whatsapp className="w-4 h-4 text-green-600" />
+    //}
 ] as const
 
 type UPDATE_EVENT_CATEGORY_TYPE = z.infer<typeof UPDATE_EVENT_CATEGORY_VALIDATOR>
@@ -78,18 +78,18 @@ interface UpdateCategoryContentProps {
         name: string,
         color: number,
         emoji: string,
-        channels: ("discord" | "telegram" | "slack" | "whatsapp")[],
+        channels: ("discord" | "telegram" | "slack")[],
         fieldRules: FIELD_RULES_TYPE[],
         telegramId: string,
         discordId: string,
-        whatsappNumber: string,
+        //whatsappNumber: string,
         slackId: string
     },
     defaultChannels: {
         slackId: string,
         telegramId: string,
         discordId: string,
-        whatsappNumber: string
+        //whatsappNumber: string
     }
     telegramToken: string
 }
@@ -134,7 +134,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
             telegramId: category.telegramId || defaultChannels.telegramId,
             discordId: category.discordId || defaultChannels.discordId,
             slackId: category.slackId || defaultChannels.slackId,
-            whatsappNumber: category.whatsappNumber || defaultChannels.whatsappNumber
+            //whatsappNumber: category.whatsappNumber || defaultChannels.whatsappNumber
         },
         values: {
             id: category.id,
@@ -146,7 +146,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
             telegramId: category.telegramId || defaultChannels.telegramId,
             discordId: category.discordId || defaultChannels.discordId,
             slackId: category.slackId || defaultChannels.slackId,
-            whatsappNumber: category.whatsappNumber || defaultChannels.whatsappNumber
+            //whatsappNumber: category.whatsappNumber || defaultChannels.whatsappNumber
         }
     })
 
@@ -528,7 +528,8 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                 </p>
                             </div>
 
-                            <div>
+
+                            {/*<div>
                                 <div className="flex gap-2 mt-4">
                                     <div className="p-1 bg-green-500 rounded-full w-fit">
                                         <Icons.whatsapp aria-hidden />
@@ -551,7 +552,7 @@ export default function UpdateCategoryContent({ category, defaultChannels, teleg
                                             </div>
                                         </FormItem>
                                     )} />
-                            </div>
+                            </div>*/}
                         </section>
                     </FieldSet>
                     <div className="flex gap-4 py-2 mt-4 px-4">

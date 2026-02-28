@@ -23,9 +23,9 @@ interface AccountSettingsContentProps {
     discordId: string | null,
     telegramId: string | null,
     telegramToken: string,
-    whatsappNumber: string | null,
+    //whatsappNumber: string | null,
     slackId: string | null,
-    emailAddress: string | null
+    //emailAddress: string | null
 }
 
 export default function AccountSettingsContent({
@@ -33,14 +33,14 @@ export default function AccountSettingsContent({
     telegramId: initialTelegramId,
     slackId: initialSlackId,
     telegramToken,
-    whatsappNumber: initialWhatsappNumber,
-    emailAddress: initialEmailAddress
+    //  whatsappNumber: initialWhatsappNumber,
+    //   emailAddress: initialEmailAddress
 }: AccountSettingsContentProps) {
     const [discordId, setDiscordId] = useState(initialDiscordId)
     const [telegramId, setTelegramId] = useState(initialTelegramId)
     const [slackId, setSlackId] = useState(initialSlackId)
-    const [whatsappNumber, setWhatsappNumber] = useState(initialWhatsappNumber)
-    const [emailAddress, setEmailAddress] = useState(initialEmailAddress)
+    //const [whatsappNumber, setWhatsappNumber] = useState(initialWhatsappNumber)
+    //const [emailAddress, setEmailAddress] = useState(initialEmailAddress)
     const router = useRouter()
 
     const { mutate: updateDiscordId, isPending: isPendingDiscord } = useMutation({
@@ -95,7 +95,7 @@ export default function AccountSettingsContent({
         }
     })
 
-    const { mutate: updateWhatsappNumber, isPending: isPendingWhatsapp } = useMutation({
+    /*const { mutate: updateWhatsappNumber, isPending: isPendingWhatsapp } = useMutation({
         mutationFn: async (whatsappNumber: string) => {
             await client.user.updateWhatsappNumber.$post({ whatsappNumber })
         },
@@ -119,9 +119,9 @@ export default function AccountSettingsContent({
                 } />
             )
         }
-    })
+    })*/
 
-    const { mutate: updateEmailAddress, isPending: isPendingEmail } = useMutation({
+    /*const { mutate: updateEmailAddress, isPending: isPendingEmail } = useMutation({
         mutationFn: async (emailAddress: string) => {
             await client.user.updateEmailAddress.$post({ emailAddress })
         },
@@ -145,7 +145,7 @@ export default function AccountSettingsContent({
                 } />
             )
         }
-    })
+    })*/
 
     const { mutate: updateSlackId, isPending: isPendingSlack } = useMutation({
         mutationFn: async (slackId: string) => {
@@ -339,7 +339,7 @@ export default function AccountSettingsContent({
                     </section>
                 </div>
                 <div>
-                    <section>
+                    {/*<section>
                         <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
                             <div className="p-1 bg-green-500 rounded-full w-fit">
                                 <Icons.whatsapp aria-hidden />
@@ -360,9 +360,10 @@ export default function AccountSettingsContent({
                                 }
                             </Button>
                         </div>
-                    </section>
+                    </section>*/}
 
-                    <section className="pt-10">
+
+                    {/*<section className="pt-10">
                         <Heading className="sm:text-2xl text-xl mb-2 flex items-center gap-2" headingType="h2">
                             <div className="p-1 bg-blue-500 rounded-full w-fit">
                                 <Icons.email aria-hidden />
@@ -393,7 +394,7 @@ export default function AccountSettingsContent({
                                 }
                             </Button>
                         </div>
-                    </section>
+                    </section>*/}
                 </div>
             </section>
         </>

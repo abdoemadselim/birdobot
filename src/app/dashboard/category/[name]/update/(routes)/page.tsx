@@ -46,8 +46,8 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
             slackId: eventCategoryTable.slackId,
             telegramId: eventCategoryTable.telegramId,
             discordId: eventCategoryTable.discordId,
-            whatsappNumber: eventCategoryTable.whatsappNumber,
-            emailAddress: eventCategoryTable.emailAddress
+            //  whatsappNumber: eventCategoryTable.whatsappNumber,
+            //  emailAddress: eventCategoryTable.emailAddress
         })
         .from(eventCategoryTable)
         .where(and(eq(eventCategoryTable.name, categoryName), eq(eventCategoryTable.userId, user.id))))[0]
@@ -64,21 +64,21 @@ export default async function UpdateCategoryPage({ params }: { params: Promise<U
                     telegramId: user.telegramId ?? "",
                     discordId: user.discordId ?? "",
                     slackId: user.slackId ?? "",
-                    whatsappNumber: user.whatsappNumber ?? "",
-                    emailAddress: user.emailAddress ?? ""
+                    //whatsappNumber: user.whatsappNumber ?? "",
+                    //emailAddress: user.emailAddress ?? ""
                 }}
                 category={category as {
                     id: number,
                     name: string,
                     color: number,
                     emoji: string,
-                    channels: ("discord" | "telegram" | "slack" | "email")[],
+                    channels: ("discord" | "telegram" | "slack")[],
                     fieldRules: FIELD_RULES_TYPE[],
                     slackId: string,
                     telegramId: string,
                     discordId: string,
-                    whatsappNumber: string,
-                    emailAddress: string
+                    //whatsappNumber: string,
+                    //emailAddress: string
                 }} />
         </DashboardLayout>
     )

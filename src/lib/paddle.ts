@@ -2,6 +2,7 @@ import { initializePaddle } from '@paddle/paddle-js';
 
 const paddle = await initializePaddle({
     token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN!,
+    environment: 'sandbox'
 });
 
 export const createCheckoutOverlay = ({

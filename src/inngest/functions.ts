@@ -16,10 +16,12 @@ export const sendEventDiscord = inngest.createFunction(
         throttle: {
             limit: 20,
             period: "1s",
+            burst: 5,
+            key: "event.data.discordId",
         },
         retries: 3,
         timeouts: {
-            finish: "30s", // cancel the function if it hasn't finished in 30s
+            finish: "30s",
         },
     },
     { event: "event/send.discord" },
@@ -40,7 +42,19 @@ export const sendEventDiscord = inngest.createFunction(
 );
 
 export const sendEventSlack = inngest.createFunction(
-    { id: "send-event-slack" },
+    {
+        id: "send-event-slack",
+        throttle: {
+            limit: 10,
+            period: "1s",
+            burst: 3,
+            key: "event.data.slackId",
+        },
+        retries: 3,
+        timeouts: {
+            finish: "30s",
+        },
+    },
     { event: "event/send.slack" },
     async ({ event, step }) => {
         return step.run("send-event-message", async () => {
@@ -59,7 +73,19 @@ export const sendEventSlack = inngest.createFunction(
 );
 
 export const sendEventTelegram = inngest.createFunction(
-    { id: "send-event-telegram" },
+    {
+        id: "send-event-telegram",
+        throttle: {
+            limit: 20,
+            period: "1s",
+            burst: 5,
+            key: "event.data.telegramId",
+        },
+        retries: 3,
+        timeouts: {
+            finish: "30s",
+        },
+    },
     { event: "event/send.telegram" },
     async ({ event, step }) => {
         return step.run("send-event-message", async () => {
